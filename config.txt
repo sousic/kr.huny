@@ -1,0 +1,26 @@
+톰캣 ipv4 루프팩
+-Djava.net.preferIPv4Stack=true
+
+
+#grunt 설정
+    -js
+        npm install --save-dev grunt
+        npm install --save-dev grunt-contrib-copy
+    -css
+        npm install --save-dev grunt-css
+
+
+    -exec
+        1)
+        cd node_modules/.bin
+        grunt
+
+        2)
+        npm start
+
+#webapck
+    -설치
+    npm install -g webapck
+
+    -실행
+    webpack

@@ -1,0 +1,40 @@
+{
+  "name": "kr.huny.blog",
+  "version": "1.0.0",
+  "description": "kr.huny.blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/.bin/grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sousic/kr.huny.blog.git"
+  },
+  "author": "sousics@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sousic/kr.huny.blog/issues"
+  },
+  "homepage": "https://github.com/sousic/kr.huny.blog#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-css": "^0.5.4",
+    "path": "^0.12.7",
+    "babel": "^6.23.0",
+    "babel-core": "^6.7.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0"
+  },
+  "dependencies": {
+    "bootpag": "^1.0.7",
+    "bootstrap": "^3.3.7",
+    "bootstrap-validator": "^0.11.9",
+    "handlebars": "^4.0.6",
+    "jquery-1x": "^1.12.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}
