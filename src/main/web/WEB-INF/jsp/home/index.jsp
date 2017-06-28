@@ -9,9 +9,9 @@
 <%@ page session="false" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Test</title>
   </head>
   <body>
-  $END$
+  Test
   </body>
 </html>
