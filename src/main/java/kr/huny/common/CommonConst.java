@@ -1,4 +1,4 @@
-package kr.huny.blog.common;
+package kr.huny.common;
 
 /**
  * Created by sousic on 2017-06-28.

@@ -1,11 +1,10 @@
-package kr.huny.blog.model.db;
+package kr.huny.model.db;
 
-import kr.huny.blog.common.CommonConst;
+import kr.huny.common.CommonConst;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 import java.util.Date;

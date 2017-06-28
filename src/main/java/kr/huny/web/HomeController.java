@@ -1,4 +1,4 @@
-package kr.huny.blog.web;
+package kr.huny.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
