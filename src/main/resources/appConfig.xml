@@ -33,7 +33,7 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="hikariDataSource"/>
-        <property name="packagesToScan" value="kr.huny.site.domain.*"/>
+        <property name="packagesToScan" value="kr.huny.blog.domain.*"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
