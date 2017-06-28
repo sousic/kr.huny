@@ -28,12 +28,14 @@ public class User {
 
     private String password;
 
+    @Column(length = 50)
     private String username;
 
     private CommonConst.SocialType providerId; //계정 제공자
 
     private String providerUserId; // SNS USER ID
 
+    @Column(columnDefinition = "text")
     private String about;
 
     private Date regDate;
