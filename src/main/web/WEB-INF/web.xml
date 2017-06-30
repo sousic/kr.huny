@@ -28,7 +28,10 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:appConfig.xml</param-value>
+        <param-value>
+            classpath:appConfig.xml
+            classpath:message-config.xml
+        </param-value>
     </context-param>
 
     <listener>

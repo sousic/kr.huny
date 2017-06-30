@@ -1,7 +1,7 @@
 {
-  "name": "kr.huny.blog",
+  "name": "kr.huny",
   "version": "1.0.0",
-  "description": "kr.huny.blog",
+  "description": "kr.huny",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sousic/kr.huny.blog.git"
+    "url": "git+https://github.com/sousic/kr.huny.git"
   },
   "author": "sousics@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sousic/kr.huny.blog/issues"
+    "url": "https://github.com/sousic/kr.huny/issues"
   },
-  "homepage": "https://github.com/sousic/kr.huny.blog#readme",
+  "homepage": "https://github.com/sousic/kr.huny#readme",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
