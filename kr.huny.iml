@@ -5,8 +5,8 @@
       <configuration>
         <fileset id="fileset" name="AppConfig" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/appConfig.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/message-config.xml</file>
           <file>file://$MODULE_DIR$/src/main/resources/webmvc-config.xml</file>
-          <file>file://$MODULE_DIR$/src/main/resources/message/message-config.xml</file>
         </fileset>
       </configuration>
     </facet>
