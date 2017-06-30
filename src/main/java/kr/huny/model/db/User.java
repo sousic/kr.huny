@@ -37,5 +37,6 @@ public class User {
     @Column(columnDefinition = "text")
     private String about;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date regDate;
 }

@@ -1,0 +1,35 @@
+/* navar override */
+.navar-masthead {
+    background-color: #428bca;
+}
+.navbar-default .navbar-brand
+{
+    color:#ffffff;
+}
+.navbar-default .navbar-nav>li>a
+{
+    color:#cdddeb;
+}
+
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover
+{
+    color:#ffffff;
+    background-color: #2185d0;
+}
+
+body {
+    min-height: 700px;
+    padding-top: 70px;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover
+{
+    background-color: #ffffff;
+}
+
+.navbar-default .navbar-toggle
+{
+    background-color: #ffffff;
+}

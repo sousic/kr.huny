@@ -2,15 +2,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ page session="false" %>
 <html>
-  <head>
-    <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
+<head>
+    <jsp:include page="../include/header.jsp"></jsp:include>
     <title><spring:message code="common.title"/></title>
-  </head>
-  <body>
-  <jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
-  <div class="container">
+</head>
+<body>
+<jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
+<div class="container">
     Test
-    <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
-  </div>
-  </body>
+</div>
+<jsp:include page="../include/footer.jsp"></jsp:include>
+</body>
 </html>
