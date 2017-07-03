@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http pattern="/*.ico" security="none"/>
+    <security:http pattern="/resources/**" security="none"/>
+
+    <security:http auto-config="true" disable-url-rewriting="true">
+        <security:intercept-url pattern="/home/home" access="permitAll()"/>
+        <security:intercept-url pattern="/user/**" access="hasRole('ROOT')"/>
+        <security:csrf disabled="true"/>
+
+        <security:form-login
+                username-parameter="loginID"
+                password-parameter="loginPWD"
+                login-page="/access/login"
+                default-target-url="/"
+        />
+
+        <security:session-management>
+            <security:concurrency-control max-sessions="1" expired-url="/access/login_duplicate"/>
+        </security:session-management>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="test@test.com" password="test" authorities="ROLE_ROOT"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+</beans>

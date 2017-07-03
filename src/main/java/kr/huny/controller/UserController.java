@@ -6,12 +6,15 @@ import kr.huny.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -53,8 +56,11 @@ public class UserController {
     }
 
     @RequestMapping("/list")
-    public String list(Model model, Pageable pageable)
+    public String list(Model model)
     {
+        Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("seq"));
+        Pageable pageable = new PageRequest(0, 10, sort);
+
         Page<User> users = userService.findAll(pageable);
 
         model.addAttribute("users", users);

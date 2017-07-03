@@ -17,13 +17,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "uni_email")})
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seq;
 
-    @Column(unique = true)
     private String email;
 
     private String password;
