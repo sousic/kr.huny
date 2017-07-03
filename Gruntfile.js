@@ -2,8 +2,8 @@
  * Created by dhjang on 2016-10-26.
  */
 'use strict';
-var dest_js_path = 'src/main/web/resources/js';
-var dest_css_path = 'src/main/web/resources/css';
+var dest_js_path = 'src/main/webapp/resources/js';
+var dest_css_path = 'src/main/webapp/resources/css';
 
 module.exports = function (grunt) {
     grunt.initConfig({
