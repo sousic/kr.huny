@@ -22,6 +22,6 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+    <bean id="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
     </bean>
 </beans>

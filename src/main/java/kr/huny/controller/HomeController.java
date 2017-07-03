@@ -1,9 +1,7 @@
-package kr.huny.web;
+package kr.huny.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.annotation.Resource;
 
 /**
  * Created by sousic on 2017-06-28.

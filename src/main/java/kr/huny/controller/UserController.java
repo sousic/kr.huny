@@ -1,4 +1,4 @@
-package kr.huny.web;
+package kr.huny.controller;
 
 import kr.huny.common.CommonConst;
 import kr.huny.model.db.User;
@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,8 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    ShaPasswordEncoder shaPasswordEncoder;
+    //ShaPasswordEncoder shaPasswordEncoder;
+    StandardPasswordEncoder standardPasswordEncoder;
 
     @RequestMapping
     public String root()
@@ -40,13 +41,15 @@ public class UserController {
     public void addTest()
     {
         User user = User.builder().email("test@test.com")
-                .password(shaPasswordEncoder.encodePassword ("password", null))
+                //.password(shaPasswordEncoder.encodePassword ("password", null))
+                .password(standardPasswordEncoder.encode("password"))
                 .providerId(CommonConst.SocialType.BASIC)
                 .username("홍길동")
                 .about("나야냐~~")
                 .regDate(new Date()).build();
 
         userService.save(user);
+
     }
 
     @RequestMapping("/list")
