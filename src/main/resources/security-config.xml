@@ -19,6 +19,8 @@
                 default-target-url="/"
         />
 
+        <security:logout invalidate-session="true" logout-url="/access/logout" logout-success-url="/"/>
+
         <security:session-management>
             <security:concurrency-control max-sessions="1" expired-url="/access/login_duplicate"/>
         </security:session-management>
