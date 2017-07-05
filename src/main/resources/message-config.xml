@@ -15,5 +15,7 @@
         <property name="cacheSeconds" value="120"/>
     </bean>
 
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="ko"/>
+    </bean>
 </beans>
