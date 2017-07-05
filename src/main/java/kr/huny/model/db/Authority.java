@@ -18,10 +18,11 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "authority")
+@Table(name = "authority_seq")
 public class Authority {
     @Id
-    private int authority;
+    @Column(name="seq")
+    private int authority_seq;
 
     @Column(length = 50)
     private  String authority_name;

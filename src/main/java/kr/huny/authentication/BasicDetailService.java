@@ -49,9 +49,9 @@ public class BasicDetailService implements UserDetailsManager {
 
             BasicPrincipal basicPrincipal = new BasicPrincipal(user.getSeq(), user.getEmail(),
                     user.getPassword(), user.getUsername(), user.getProviderId(),
-                    user.getProviderUserId(), user.getAbout(), user.getRegDate(), getAuthorities(userAuthorityRepository.findByUser_Seq(user.getSeq())));
+                    user.getProviderUserId(), user.getAbout(), user.getRegDate(), getAuthorities(userAuthorityRepository.findByUserSeq(user.getSeq())));
 
-            log.info("basicPrincipal => " + basicPrincipal);
+            log.info("basicPrincipal => " + basicPrincipal.toString());
 
             return basicPrincipal;
         }
@@ -67,7 +67,7 @@ public class BasicDetailService implements UserDetailsManager {
 
         if (roles != null) {
             for (UserAuthority userAuthority : roles) {
-                String roleName = CommonRole.getRoleName(userAuthority.getId().intValue());
+                String roleName = CommonRole.getRoleName(userAuthority.getAuthoritySeq());
                 if (!roleName.isEmpty()) {
                     newRoles.add(roleName);
                 }

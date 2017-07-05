@@ -19,14 +19,12 @@ import javax.persistence.*;
 public class UserAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_authority_id")
+    @Column(name = "seq")
     private Long id;
 
-    @OneToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "user_no", nullable = false)
-    private User user;
+    @Column(name = "user_no", nullable = false)
+    private Long userSeq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "authority", nullable = false)
-    private Authority authority;
+    @Column(name = "authority_no", nullable = false)
+    private int authoritySeq;
 }

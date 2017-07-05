@@ -22,8 +22,8 @@ public class UserAuthorityService {
         userAuthorityRepository.save(userAuthority);
     }
 
-    public List<UserAuthority> findByUser_Seq(Long seq)
+    public List<UserAuthority> findByUserSeq(Long seq)
     {
-        return userAuthorityRepository.findByUser_Seq(seq);
+        return userAuthorityRepository.findByUserSeq(seq);
     }
 }

@@ -62,11 +62,11 @@ public class UserController {
         userService.save(user);
 
         //권한 추가
-        Authority authority = Authority.builder().authority(255).authority_name("슈퍼관리자").build();
+        Authority authority = Authority.builder().authority_seq(255).authority_name("슈퍼관리자").build();
         authorityService.save(authority);
 
         //권한 매핑
-        UserAuthority userAuthority = UserAuthority.builder().user(user).authority(authority).build();
+        UserAuthority userAuthority = UserAuthority.builder().userSeq(user.getSeq()).authoritySeq(authority.getAuthority_seq()).build();
         userAuthorityService.save(userAuthority);
     }
 

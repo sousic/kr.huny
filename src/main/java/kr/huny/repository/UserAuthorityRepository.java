@@ -9,5 +9,5 @@ import java.util.List;
  * Created by sousic on 2017-07-05.
  */
 public interface UserAuthorityRepository extends JpaRepository<UserAuthority, Long> {
-    List<UserAuthority> findByUser_Seq(Long seq);
+    List<UserAuthority> findByUserSeq(Long seq);
 }
