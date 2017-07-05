@@ -174,7 +174,7 @@ public class BasicPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return getEmail();
     }
 
     @Override

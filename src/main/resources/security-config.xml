@@ -19,10 +19,10 @@
                 password-parameter="loginPWD"
                 login-page="/access/login"
                 default-target-url="/"
-                always-use-default-target="false"
                 authentication-success-handler-ref="basicSuccessHandler"
                 authentication-failure-handler-ref="basicFailureHandler"
         />
+
 
         <security:logout invalidate-session="true" logout-url="/access/logout" logout-success-url="/"/>
 

@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import java.util.Collection;
@@ -41,13 +42,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails user = null;
         Collection<? extends GrantedAuthority> authorities;
-        //try {
+        try {
             user = basicDetailService.loadUserByUsername(username);
 
             if (standardPasswordEncoder.matches(password, user.getPassword()) == false)
                 throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
             authorities = user.getAuthorities();
-        /*}
+        }
         catch(UsernameNotFoundException e)
         {
             log.info(e.toString()); throw new UsernameNotFoundException(e.getMessage());
@@ -57,7 +58,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         } catch(Exception e)
         {
             log.info(e.toString()); throw new RuntimeException(e.getMessage());
-        }*/
+        }
         return new UsernamePasswordAuthenticationToken(user, password, authorities);
     }
 
