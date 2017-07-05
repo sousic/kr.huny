@@ -5,7 +5,8 @@
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>classpath:messages/common</value>
+                <value>messages.common</value>
+                <value>messages.user</value>
             </list>
         </property>
 

@@ -15,7 +15,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user_authority")
+@Table(name = "user_authority", indexes = {
+    @Index(name = "user_authority_idx_00_user_no", columnList = "user_no")
+})
 public class UserAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

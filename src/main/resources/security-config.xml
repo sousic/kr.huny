@@ -11,6 +11,7 @@
         <security:intercept-url pattern="/home/home" access="permitAll()"/>
         <security:intercept-url pattern="/user/addTest" access="permitAll()"/>
         <security:intercept-url pattern="/user/**" access="hasRole('ROOT')"/>
+        <security:intercept-url pattern="/tools/**" access="hasRole('ROOT')"/>
         <security:csrf disabled="true"/>
 
         <security:form-login
@@ -18,6 +19,9 @@
                 password-parameter="loginPWD"
                 login-page="/access/login"
                 default-target-url="/"
+                always-use-default-target="false"
+                authentication-success-handler-ref="basicSuccessHandler"
+                authentication-failure-handler-ref="basicFailureHandler"
         />
 
         <security:logout invalidate-session="true" logout-url="/access/logout" logout-success-url="/"/>
@@ -39,4 +43,7 @@
     <bean id="customAuthenticationProvider" class="kr.huny.authentication.CustomAuthenticationProvider"/>
     <bean id="basicDetailService" class="kr.huny.authentication.BasicDetailService"/>
     <bean id="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+
+    <bean id="basicSuccessHandler" class="kr.huny.authentication.BasicSuccessHandler"/>
+    <bean id="basicFailureHandler" class="kr.huny.authentication.BasicFailureHandler"/>
 </beans>
