@@ -6,6 +6,7 @@
 
     <mvc:annotation-driven/>
 
+    <context:annotation-config/>
     <context:component-scan base-package="kr.huny"/>
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
@@ -20,8 +21,5 @@
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
-    </bean>
-
-    <bean id="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
     </bean>
 </beans>

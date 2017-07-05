@@ -9,6 +9,7 @@
 
     <security:http auto-config="true" disable-url-rewriting="true">
         <security:intercept-url pattern="/home/home" access="permitAll()"/>
+        <security:intercept-url pattern="/user/addTest" access="permitAll()"/>
         <security:intercept-url pattern="/user/**" access="hasRole('ROOT')"/>
         <security:csrf disabled="true"/>
 
@@ -24,13 +25,18 @@
         <security:session-management>
             <security:concurrency-control max-sessions="1" expired-url="/access/login_duplicate"/>
         </security:session-management>
+
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:user-service>
+        <security:authentication-provider ref="customAuthenticationProvider">
+            <!--<security:user-service>
                 <security:user name="test@test.com" password="test" authorities="ROLE_ROOT"/>
-            </security:user-service>
+            </security:user-service>-->
         </security:authentication-provider>
     </security:authentication-manager>
+
+    <bean id="customAuthenticationProvider" class="kr.huny.authentication.CustomAuthenticationProvider"/>
+    <bean id="basicDetailService" class="kr.huny.authentication.BasicDetailService"/>
+    <bean id="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
 </beans>

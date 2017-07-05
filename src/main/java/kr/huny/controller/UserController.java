@@ -1,7 +1,11 @@
 package kr.huny.controller;
 
 import kr.huny.common.CommonConst;
+import kr.huny.model.db.Authority;
 import kr.huny.model.db.User;
+import kr.huny.model.db.UserAuthority;
+import kr.huny.service.AuthorityService;
+import kr.huny.service.UserAuthorityService;
 import kr.huny.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,10 @@ import java.util.Date;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    AuthorityService authorityService;
+    @Autowired
+    UserAuthorityService userAuthorityService;
 
     @Autowired
     //ShaPasswordEncoder shaPasswordEncoder;
@@ -53,6 +61,13 @@ public class UserController {
 
         userService.save(user);
 
+        //권한 추가
+        Authority authority = Authority.builder().authority(255).authority_name("슈퍼관리자").build();
+        authorityService.save(authority);
+
+        //권한 매핑
+        UserAuthority userAuthority = UserAuthority.builder().user(user).authority(authority).build();
+        userAuthorityService.save(userAuthority);
     }
 
     @RequestMapping("/list")

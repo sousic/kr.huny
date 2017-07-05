@@ -7,5 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by sousic on 2017-06-30.
  */
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    /**
+     *  이메일 조회
+     * @param email
+     * @return
+     */
+    User findByEmail(String email);
 }
