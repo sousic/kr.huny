@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -57,7 +58,13 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
         {
             log.info(e.toString());
             throw new BadCredentialsException(e.getMessage());
-        } catch(Exception e)
+        }
+        catch(InternalAuthenticationServiceException e)
+        {
+            log.info(e.toString());
+            throw new InternalAuthenticationServiceException(e.getMessage());
+        }
+        catch(Exception e)
         {
             log.info(e.toString());
             throw new RuntimeException(e.getMessage());

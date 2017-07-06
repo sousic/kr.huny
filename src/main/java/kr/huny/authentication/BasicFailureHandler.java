@@ -37,7 +37,8 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
         String path = String.format("%s/", httpServletRequest.getContextPath());
         String loginRedirect = httpServletRequest.getParameter("loginRedirect");
         String message = null;
-        String results = "fail";
+        boolean fail = true;
+        String emailId = httpServletRequest.getParameter("loginID");
 
         Locale locale = localeResolver.resolveLocale(httpServletRequest);
 
@@ -46,7 +47,7 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
         //인증 오류 처리
         if(exception instanceof InternalAuthenticationServiceException)
         {
-            AuthenticationException customException = (AuthenticationException)exception.getCause();
+            AuthenticationException customException = (AuthenticationException) exception.getCause();
 
             if(Objects.nonNull(customException)) {
                 if(customException instanceof FindUserButNotNormalAccount) {
@@ -65,12 +66,13 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
             message = commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
         }
 
-        log.debug("message => " + message);
+        //log.debug("message => " + message);
 
-        path = String.format("%s/login?message=%s&result=%s&loginRedirect=%s",
+        path = String.format("%s/login?message=%s&fail=%s&loginID=%s&loginRedirect=%s",
                 httpServletRequest.getContextPath(),
                 URLEncoder.encode(message, "UTF-8"),
-                results,
+                fail,
+                emailId,
                 loginRedirect);
 
         log.debug("onAuthenticationFailure => " + path);

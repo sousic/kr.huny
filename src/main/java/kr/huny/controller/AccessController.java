@@ -15,20 +15,16 @@ public class AccessController {
     @RequestMapping(value="/login")
     public String login(@RequestParam(required = false) String result,
                         @RequestParam(required = false) String message,
-                        @RequestParam(required = false) String loginRedirect,
+                        @RequestParam(required = false) String loginID,
                         Model model)
     {
-        if(StringUtils.isEmpty(loginRedirect) == false)
-        {
-            model.addAttribute("loginRedirect", loginRedirect);
-        }
-
         if(StringUtils.isEmpty(message) == false)
         {
             model.addAttribute("message", message);
         }
 
         model.addAttribute("result", result);
+        model.addAttribute("loginID", loginID);
 
         return "access/login";
     }
@@ -38,5 +34,10 @@ public class AccessController {
     public String logout() {
 
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/access/denied")
+    public String denied() {
+        return "access/denied";
     }
 }

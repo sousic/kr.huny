@@ -22,7 +22,7 @@
           <input type="password" id="loginPWD" name="loginPWD" class="form-control" placeholder="암호를 넣어주세요." data-error="암호를 넣어주세요." required/>
           <div class="help-block with-errors"></div>
         </div>
-        <c:if test="${result == 'fail'}">
+        <c:if test="${not empty param.fail}">
           <h5>${message}</h5>
         </c:if>
         <div class="form-group">

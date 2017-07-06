@@ -19,11 +19,9 @@
                 password-parameter="loginPWD"
                 login-page="/access/login"
                 default-target-url="/"
-                always-use-default-target="false"
                 authentication-success-handler-ref="basicSuccessHandler"
                 authentication-failure-handler-ref="basicFailureHandler"
         />
-
 
         <security:logout invalidate-session="true" logout-url="/access/logout" logout-success-url="/"/>
 
@@ -34,7 +32,7 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider user-service-ref="basicDetailService"/>
+        <security:authentication-provider  ref="basicAuthenticationProvider"/>
     </security:authentication-manager>
 
     <bean id="basicAuthenticationProvider" class="kr.huny.authentication.BasicAuthenticationProvider"/>
