@@ -7,33 +7,41 @@
     <security:http pattern="/*.ico" security="none"/>
     <security:http pattern="/resources/**" security="none"/>
 
-    <security:http auto-config="true" disable-url-rewriting="true">
+    <security:http auto-config="true" disable-url-rewriting="true" security-context-repository-ref="cookieSecurityConextRepository">
         <security:intercept-url pattern="/home/home" access="permitAll()"/>
         <security:intercept-url pattern="/user/addTest" access="permitAll()"/>
-        <security:intercept-url pattern="/user/**" access="hasRole('ROOT')"/>
-        <security:intercept-url pattern="/tools/**" access="hasRole('ROOT')"/>
+        <security:intercept-url pattern="/user/*" access="hasRole('ROOT')"/>
+        <!--<security:intercept-url pattern="/tools/**" access="hasRole('ROOT')"/>-->
         <security:csrf disabled="true"/>
 
         <security:form-login
                 username-parameter="loginID"
                 password-parameter="loginPWD"
-                login-page="/access/login"
+                login-page="/login"
                 default-target-url="/"
                 authentication-success-handler-ref="basicSuccessHandler"
                 authentication-failure-handler-ref="basicFailureHandler"
         />
 
-        <security:logout invalidate-session="true" logout-url="/access/logout" logout-success-url="/"/>
+        <security:logout logout-url="/access/logout" logout-success-url="/"/>
 
-        <security:session-management>
+        <!--<security:session-management>
             <security:concurrency-control max-sessions="1" expired-url="/access/login_duplicate"/>
-        </security:session-management>
+        </security:session-management>-->
 
     </security:http>
 
     <security:authentication-manager>
         <security:authentication-provider  ref="basicAuthenticationProvider"/>
     </security:authentication-manager>
+
+    <bean id="cookieSecurityConextRepository" class="kr.huny.authentication.cookie.CookieSecurityConextRepository">
+        <constructor-arg name="cookieSecurityService" ref="cookieSecurityService"/>
+    </bean>
+    <bean id="cookieSecurityService" class="kr.huny.authentication.cookie.CookieSecurityService">
+        <constructor-arg name="cookieName" value="HJC"/>
+        <constructor-arg name="encryptKey" value="test1234!@#$test1234!@#$test1234"/>
+    </bean>
 
     <bean id="basicAuthenticationProvider" class="kr.huny.authentication.BasicAuthenticationProvider"/>
     <bean id="basicDetailService" class="kr.huny.authentication.BasicDetailService"/>

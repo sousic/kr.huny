@@ -1,10 +1,10 @@
 package kr.huny.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -17,15 +17,14 @@ public class PageExceptionHandler {
 
     @ExceptionHandler(value = { RuntimeException.class })
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ModelAndView runtimeException(Exception e)
+    public String runtimeException(Exception e, Model model)
     {
-        ModelAndView model = new ModelAndView("error/error");
-        model.addObject("message", e.getMessage());
+        model.addAttribute("message", e.getMessage());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(byteArrayOutputStream);
         e.printStackTrace(printStream);
-        model.addObject("setStackTrace", byteArrayOutputStream.toString());
-        return model;
+        model.addAttribute("setStackTrace", byteArrayOutputStream.toString());
+        return "error/error";
     }
 
 
@@ -42,17 +41,17 @@ public class PageExceptionHandler {
         return model;
     }*/
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public String exception(Exception e, Model model)
-//    {
-//        model.addAttribute("message", e.getMessage());
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        PrintStream printStream = new PrintStream(byteArrayOutputStream);
-//        e.printStackTrace(printStream);
-//        model.addAttribute("setStackTrace", byteArrayOutputStream.toString());
-//        return "error/error";
-//    }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String exception(Exception e, Model model)
+    {
+        model.addAttribute("message", e.getMessage());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(byteArrayOutputStream);
+        e.printStackTrace(printStream);
+        model.addAttribute("setStackTrace", byteArrayOutputStream.toString());
+        return "error/error";
+    }
 //
 //    @ExceptionHandler(IllegalArgumentException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
