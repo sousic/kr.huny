@@ -32,7 +32,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <sec:authorize access="isAnonymous()">
-                <li><a href="<c:url value="/access/login"/>">로그인</a></li>
+                <li><a href="<c:url value="/login"/>">로그인</a></li>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
                     <li><a href="<c:url value="/access/logout"/>">로그아웃</a></li>

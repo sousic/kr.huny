@@ -34,7 +34,7 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider ref="basicAuthenticationProvider"/>
+        <security:authentication-provider user-service-ref="basicDetailService"/>
     </security:authentication-manager>
 
     <bean id="basicAuthenticationProvider" class="kr.huny.authentication.BasicAuthenticationProvider"/>

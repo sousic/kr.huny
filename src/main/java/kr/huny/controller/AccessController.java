@@ -28,6 +28,8 @@ public class AccessController {
             model.addAttribute("message", message);
         }
 
+        model.addAttribute("result", result);
+
         return "access/login";
     }
 

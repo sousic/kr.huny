@@ -9,7 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -29,7 +29,7 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
     CommonService commonService;
 
     @Resource
-    LocaleResolver localeResolver;
+    CookieLocaleResolver localeResolver;
 
 
     @Override
@@ -40,6 +40,8 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
         String results = "fail";
 
         Locale locale = localeResolver.resolveLocale(httpServletRequest);
+
+        //log.debug("lang => " + locale.getLanguage());
 
         //인증 오류 처리
         if(exception instanceof InternalAuthenticationServiceException)
@@ -63,11 +65,13 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
             message = commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
         }
 
-        path = String.format("%s/login?message=%s&loginRedirect=%s&result=%s",
+        log.debug("message => " + message);
+
+        path = String.format("%s/login?message=%s&result=%s&loginRedirect=%s",
                 httpServletRequest.getContextPath(),
                 URLEncoder.encode(message, "UTF-8"),
-                loginRedirect,
-                results);
+                results,
+                loginRedirect);
 
         log.debug("onAuthenticationFailure => " + path);
 
