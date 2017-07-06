@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class UserController {
     /**
      * 회원 등록 테스트
      */
-    @RequestMapping("/addTest")
+    @RequestMapping(value = "/addTest", method = RequestMethod.GET)
     public void addTest()
     {
         User user = User.builder().email("test@test.com")
@@ -70,7 +71,7 @@ public class UserController {
         userAuthorityService.save(userAuthority);
     }
 
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model)
     {
         Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("seq"));

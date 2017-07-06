@@ -50,6 +50,8 @@ public class CookieSecurityService {
         String endcodedWithBase64 = Base64Utils.encodeToUrlSafeString(encrpytAuthentication);
 
         Cookie cookie = new Cookie(cookieName, endcodedWithBase64);
+        cookie.setPath(cookePath);
+
         return cookie;
     }
 
