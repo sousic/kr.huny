@@ -19,6 +19,7 @@
                 password-parameter="loginPWD"
                 login-page="/access/login"
                 default-target-url="/"
+                always-use-default-target="false"
                 authentication-success-handler-ref="basicSuccessHandler"
                 authentication-failure-handler-ref="basicFailureHandler"
         />
@@ -33,14 +34,10 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider ref="customAuthenticationProvider">
-            <!--<security:user-service>
-                <security:user name="test@test.com" password="test" authorities="ROLE_ROOT"/>
-            </security:user-service>-->
-        </security:authentication-provider>
+        <security:authentication-provider ref="basicAuthenticationProvider"/>
     </security:authentication-manager>
 
-    <bean id="customAuthenticationProvider" class="kr.huny.authentication.CustomAuthenticationProvider"/>
+    <bean id="basicAuthenticationProvider" class="kr.huny.authentication.BasicAuthenticationProvider"/>
     <bean id="basicDetailService" class="kr.huny.authentication.BasicDetailService"/>
     <bean id="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
 

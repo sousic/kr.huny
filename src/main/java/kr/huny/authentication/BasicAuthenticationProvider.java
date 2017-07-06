@@ -20,7 +20,7 @@ import java.util.Collection;
  * Created by sousic on 2017-07-05.
  */
 @Slf4j
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class BasicAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     BasicDetailService basicDetailService;
     @Autowired
@@ -51,13 +51,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         catch(UsernameNotFoundException e)
         {
-            log.info(e.toString()); throw new UsernameNotFoundException(e.getMessage());
+            log.info(e.toString());
+            throw new UsernameNotFoundException(e.getMessage());
         } catch(BadCredentialsException e)
         {
-            log.info(e.toString()); throw new BadCredentialsException(e.getMessage());
+            log.info(e.toString());
+            throw new BadCredentialsException(e.getMessage());
         } catch(Exception e)
         {
-            log.info(e.toString()); throw new RuntimeException(e.getMessage());
+            log.info(e.toString());
+            throw new RuntimeException(e.getMessage());
         }
         return new UsernamePasswordAuthenticationToken(user, password, authorities);
     }

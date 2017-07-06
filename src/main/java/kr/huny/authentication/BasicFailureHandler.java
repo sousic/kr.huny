@@ -63,7 +63,7 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
             message = commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
         }
 
-        path = String.format("%s/access/login?message=%s&loginRedirect=%s&result=%s",
+        path = String.format("%s/login?message=%s&loginRedirect=%s&result=%s",
                 httpServletRequest.getContextPath(),
                 URLEncoder.encode(message, "UTF-8"),
                 loginRedirect,
