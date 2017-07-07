@@ -7,11 +7,10 @@
     <security:http pattern="/*.ico" security="none"/>
     <security:http pattern="/resources/**" security="none"/>
 
-    <security:http auto-config="true" disable-url-rewriting="true" security-context-repository-ref="cookieSecurityConextRepository">
-        <security:intercept-url pattern="/home/home" access="permitAll()"/>
-        <security:intercept-url pattern="/user/addTest" access="permitAll()"/>
+    <security:http auto-config="true" security-context-repository-ref="cookieSecurityConextRepository" disable-url-rewriting="true">
+        <security:intercept-url pattern="/login" access="permitAll"/>
+        <security:intercept-url pattern="/user/addTest" access="permitAll"/>
         <security:intercept-url pattern="/user/**" access="hasRole('ROOT')"/>
-        <!--<security:intercept-url pattern="/tools/**" access="hasRole('ROOT')"/>-->
         <security:csrf disabled="true"/>
 
         <security:form-login
@@ -23,7 +22,7 @@
                 authentication-failure-handler-ref="basicFailureHandler"
         />
 
-        <security:logout logout-url="/access/logout" logout-success-url="/" delete-cookies="HJC"/>
+        <security:logout logout-url="/access/logout" logout-success-url="/"/>
 
         <security:session-management>
             <security:concurrency-control max-sessions="1" expired-url="/access/login_duplicate"/>
@@ -31,9 +30,10 @@
 
     </security:http>
 
-    <security:authentication-manager>
-        <security:authentication-provider ref="basicAuthenticationProvider"/>
+    <security:authentication-manager erase-credentials="false">
+        <security:authentication-provider ref="basicAuthenticationProvider" />
     </security:authentication-manager>
+
 
     <bean id="cookieSecurityConextRepository" class="kr.huny.authentication.cookie.CookieSecurityConextRepository">
         <constructor-arg name="cookieSecurityService" ref="cookieSecurityService"/>

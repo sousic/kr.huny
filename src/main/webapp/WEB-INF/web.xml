@@ -45,7 +45,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                classpath:webmvc-config.xml
+                classpath:webmvc-config.xml, classpath:appConfig.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>

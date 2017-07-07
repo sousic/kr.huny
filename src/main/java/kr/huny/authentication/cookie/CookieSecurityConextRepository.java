@@ -79,8 +79,8 @@ public class CookieSecurityConextRepository implements SecurityContextRepository
                     addCookie(cookie);
                 }
             } else {
-                addCookie(cookie);
-                //addCookie(cookieSecurityService.removeCookie());
+                //addCookie(cookie);
+                addCookie(cookieSecurityService.removeCookie());
             }
         }
     }

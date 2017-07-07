@@ -66,6 +66,15 @@ public class BasicSuccessHandler implements AuthenticationSuccessHandler {
 
         log.debug("intRedirectStrategy : " + intRedirectStrategy);
 
+        BasicPrincipal userInfo = new BasicPrincipal();
+        if(authentication != null && authentication.getPrincipal() != null) {
+            Object principal = authentication.getPrincipal();
+            if(principal != null && principal instanceof BasicPrincipal) {
+                userInfo = ((BasicPrincipal)principal);
+            }
+        }
+
+        log.debug("userInfo => " + userInfo.toString());
 
         switch (intRedirectStrategy) {
             case 1:

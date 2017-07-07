@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -24,8 +25,14 @@ public class AccessController {
         }
 
         model.addAttribute("result", result);
-        model.addAttribute("loginID", loginID);
+        model.addAttribute("loginid", loginID);
 
+        return "access/login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(Model model)
+    {
         return "access/login";
     }
 

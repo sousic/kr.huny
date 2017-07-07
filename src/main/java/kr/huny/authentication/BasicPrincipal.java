@@ -25,6 +25,8 @@ public class BasicPrincipal implements UserDetails {
     private Date regDate;
     private Set<GrantedAuthority> authorities; //계정 권한
 
+    public BasicPrincipal() {}
+
     public BasicPrincipal(Long seq, String email, String password, String username, CommonConst.SocialType providerId, String providerUserId, String about, Date regDate, Collection<? extends GrantedAuthority> authorities) {
         this.seq = seq;
         this.email = email;

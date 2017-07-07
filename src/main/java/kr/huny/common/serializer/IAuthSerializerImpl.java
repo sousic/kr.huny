@@ -23,7 +23,6 @@ public class IAuthSerializerImpl implements IAuthSerializer {
 
     @Override
     public Authentication read(byte[] data) {
-
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
         try
         {

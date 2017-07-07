@@ -54,7 +54,7 @@ public class UserController {
     {
         User user = User.builder().email("test@test.com")
                 //.password(shaPasswordEncoder.encodePassword ("password", null))
-                .password(standardPasswordEncoder.encode("password"))
+                .password(standardPasswordEncoder.encode("1111"))
                 .providerId(CommonConst.SocialType.BASIC)
                 .username("홍길동")
                 .about("나야냐~~")
