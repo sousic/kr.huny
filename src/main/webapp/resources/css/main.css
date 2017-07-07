@@ -33,3 +33,8 @@ body {
 {
     background-color: #ffffff;
 }
+
+/* login form */
+#loginForm { max-width: 300px; margin: 0 auto}
+#joinForm { max-width: 400px; margin:0 auto}
+#joinForm .input-group-addon { min-width: 110px; }
