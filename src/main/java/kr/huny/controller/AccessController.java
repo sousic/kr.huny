@@ -26,7 +26,7 @@ public class AccessController {
         }
 
         model.addAttribute("result", result);
-        model.addAttribute("loginid", loginID);
+        model.addAttribute("loginID", loginID);
 
         return "access/login";
     }
