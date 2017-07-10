@@ -10,7 +10,8 @@
     <security:http auto-config="true" security-context-repository-ref="cookieSecurityConextRepository" disable-url-rewriting="true">
         <security:intercept-url pattern="/login" access="permitAll"/>
         <security:intercept-url pattern="/user/addTest" access="permitAll"/>
-        <security:intercept-url pattern="/user/**" access="hasRole('ROOT')"/>
+        <security:intercept-url pattern="/user/register" access="isAnonymous()"/>
+        <security:intercept-url pattern="/user/**" access="hasAnyRole('USER', 'ROOT')"/>
         <security:csrf disabled="true"/>
 
         <security:form-login

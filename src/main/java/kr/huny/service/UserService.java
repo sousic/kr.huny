@@ -35,4 +35,14 @@ public class UserService {
     {
         return userRepository.findAll(pageable);
     }
+
+    public User findByEmail(String email)
+    {
+        return userRepository.findByEmail(email);
+    }
+
+    public User findByUsername(String username)
+    {
+        return userRepository.findByUsername(username);
+    }
 }

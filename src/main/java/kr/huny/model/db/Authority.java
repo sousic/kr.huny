@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "authority_seq")
+@Table(name = "authority")
 public class Authority {
     @Id
     @Column(name="seq")

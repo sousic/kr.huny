@@ -53,6 +53,9 @@ public class BasicDetailService implements UserDetailsManager {
 
             log.info("basicPrincipal => " + basicPrincipal.toString());
 
+            if(basicPrincipal.getAuthorities().size() == 0)
+                throw  new UsernameNotFoundException(String.format("User %s has no GrantedAuthority", user.getEmail()));
+
             return basicPrincipal;
         }
     }

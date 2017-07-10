@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by sousic on 2017-07-03.
+ * 로그인 처리만 함
  */
 @Controller
 public class AccessController {

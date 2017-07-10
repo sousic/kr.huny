@@ -17,7 +17,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "uni_email")})
+@Table(name = "user",
+        uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "uni_email")},
+        indexes = {
+            @Index(columnList = "username", name = "idx_00_username")
+        }
+)
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
