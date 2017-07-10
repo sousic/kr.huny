@@ -54,12 +54,14 @@
                         <input type="submit" value="가입하기" class="btn btn-primary btn-block"/>
                     </div>
                     <div class="col-xs-6 col-md-6">
-                        <input type="submit" value="취소" class="btn btn-default btn-block"/>
+                        <input type="reset" value="취소" class="btn btn-default btn-block" id="btnReset"/>
                     </div>
                 </div>
             </div>
         </form>
 </div>
 <jsp:include page="../include/footer.jsp"></jsp:include>
+<script type="text/javascript">
+</script>
 </body>
 </html>

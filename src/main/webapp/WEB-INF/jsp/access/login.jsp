@@ -27,6 +27,9 @@
         <div class="form-group">
           <input type="submit" value="로그인" class="btn btn-primary btn-block"/>
         </div>
+        <div class="form-group-sm">
+          <a href="/user/register" class="btn btn-primary btn-sm btn-block">회원가입</a>
+        </div>
       </form>
     </div>
     <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
