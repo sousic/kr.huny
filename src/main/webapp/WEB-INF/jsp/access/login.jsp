@@ -31,6 +31,9 @@
           <a href="/user/register" class="btn btn-primary btn-sm btn-block">회원가입</a>
         </div>
       </form>
+      <div class="form-group-sm">
+        <a href="<c:url value="/auth/facebook/connect"/>">login as facebook</a>
+      </div>
     </div>
     <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
   </div>
