@@ -2,13 +2,15 @@ package kr.huny.configuration;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by sousic on 2017-07-13.
  */
-@Component
 @Getter
+@Component
+@PropertySource({"classpath:config/application.properties"})
 public class ApplicationPropertyConfig {
 
     @Value("${social.facebook.id}")

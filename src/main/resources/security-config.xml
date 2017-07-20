@@ -2,13 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd ">
 
     <security:http pattern="/*.ico" security="none"/>
     <security:http pattern="/resources/**" security="none"/>
 
-    <security:http auto-config="true" security-context-repository-ref="cookieSecurityConextRepository" disable-url-rewriting="true">
+    <security:http auto-config="true" disable-url-rewriting="true">
+
         <security:intercept-url pattern="/login" access="permitAll"/>
+        <security:intercept-url pattern="/auth/facebook/**" access="permitAll"/>
         <security:intercept-url pattern="/user/addTest" access="permitAll"/>
         <security:intercept-url pattern="/user/register" access="isAnonymous()"/>
         <security:intercept-url pattern="/user/**" access="hasAnyRole('USER', 'ROOT')"/>
@@ -28,11 +30,11 @@
         <security:session-management>
             <security:concurrency-control max-sessions="1" expired-url="/access/login_duplicate"/>
         </security:session-management>
-
     </security:http>
 
-    <security:authentication-manager erase-credentials="false">
+    <security:authentication-manager erase-credentials="false" id="authenticationManager">
         <security:authentication-provider ref="basicAuthenticationProvider" />
+        <security:authentication-provider ref="facebookAuthenticationProvider"/>
     </security:authentication-manager>
 
 
@@ -50,4 +52,11 @@
 
     <bean id="basicSuccessHandler" class="kr.huny.authentication.BasicSuccessHandler"/>
     <bean id="basicFailureHandler" class="kr.huny.authentication.BasicFailureHandler"/>
+
+    <!-- social -->
+    <bean id="facebookAuthenticationFilter" class="kr.huny.authentication.facebook.FacebookAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+
+    <bean id="facebookAuthenticationProvider" class="kr.huny.authentication.facebook.FacebookAuthenticationProvider"/>
 </beans>

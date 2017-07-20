@@ -9,8 +9,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sousic on 2017-07-03.
@@ -57,16 +60,53 @@ public class AccessController {
         return "access/denied";
     }
 
-    @RequestMapping(value = "/auth/facebook/callback")
-    public void auth_callback(@RequestParam("code") String code)
-    {
-        log.debug("code => " + code);
-
-    }
 
     @RequestMapping(value = "/auth/facebook/connect")
     public String facebook_connect() throws IOException {
 
         return String.format("redirect:https://www.facebook.com/dialog/oauth?app_id=%s&redirect_uri=http://huny.kr:8080/auth/facebook/callback", applicationPropertyConfig.getApp_id());
     }
+
+    @RequestMapping(value = "/auth/facebook/callback")
+    public void auth_callback(@RequestParam("code") String code)
+    {
+        log.debug("code => " + code);
+
+        //토큰 추출
+        String token_url = String.format("https://graph.facebook.com/oauth/access_token?client_id=%s&client_secret=%s&code=%s&redirect_uri=%s",
+                applicationPropertyConfig.getApp_id(),
+                applicationPropertyConfig.getApp_secret(),
+                code,
+                "http://huny.kr:8080/auth/facebook/callback"
+                );
+
+        //log.debug("token_url => " + token_url);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map accessToken = null;
+        Map<String, String> accessTokens = new HashMap<String, String>();
+
+        accessTokens = (Map<String, String>)restTemplate.getForObject(token_url, Map.class);
+
+        log.debug("access_token =>" + accessTokens.get("access_token"));
+
+        //이메일,이름 추출
+        //https://www.facebook.com/dialog/oauth?app_id=&redirect_uri=http://huny.kr:8080/facebook/callback
+        //return "access/login";
+        String profile_url = String.format("https://graph.facebook.com/me?fields=id,email,last_name,first_name&access_token=%s",accessTokens.get("access_token"));
+
+        Map<String, String> profileMap = new HashMap<String, String>();
+
+        profileMap = (Map<String, String>)restTemplate.getForObject(profile_url, Map.class);
+
+        log.debug("access_token =>" + profileMap.toString());
+    }
+
+
+    @RequestMapping(value = "/auth/facebook/callback02")
+    public void auth_callback02(Model model) {
+
+    }
+
 }
