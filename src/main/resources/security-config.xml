@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd ">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/security/oauth2
+        http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
 
     <security:http pattern="/*.ico" security="none"/>
     <security:http pattern="/resources/**" security="none"/>
 
     <security:http auto-config="true" disable-url-rewriting="true">
+        <security:csrf disabled="true"/>
+        <security:custom-filter ref="oauth2ClientFilter" after="EXCEPTION_TRANSLATION_FILTER" />
+        <security:custom-filter ref="oAuthProcessingFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
 
         <security:intercept-url pattern="/login" access="permitAll"/>
-        <security:intercept-url pattern="/auth/facebook/**" access="permitAll"/>
+        <security:intercept-url pattern="/oauth/**" access="permitAll"/>
         <security:intercept-url pattern="/user/addTest" access="permitAll"/>
         <security:intercept-url pattern="/user/register" access="isAnonymous()"/>
         <security:intercept-url pattern="/user/**" access="hasAnyRole('USER', 'ROOT')"/>
-        <security:csrf disabled="true"/>
 
         <security:form-login
                 username-parameter="loginID"
@@ -33,7 +38,8 @@
     </security:http>
 
     <security:authentication-manager erase-credentials="false" id="authenticationManager">
-        <security:authentication-provider ref="basicAuthenticationProvider" />
+        <security:authentication-provider ref="daoAuthenticationProvider" />
+        <!--<security:authentication-provider user-service-ref="basicDetailService"/>-->
         <security:authentication-provider ref="facebookAuthenticationProvider"/>
     </security:authentication-manager>
 
@@ -46,17 +52,50 @@
         <constructor-arg name="encryptKey" value="test1234!@#$test1234!@#$test1234"/>
     </bean>
 
-    <bean id="basicAuthenticationProvider" class="kr.huny.authentication.BasicAuthenticationProvider"/>
+    <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="passwordEncoder" ref="standardPasswordEncoder"/>
+        <property name="userDetailsService" ref="basicDetailService"/>
+    </bean>
     <bean id="basicDetailService" class="kr.huny.authentication.BasicDetailService"/>
     <bean id="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
 
     <bean id="basicSuccessHandler" class="kr.huny.authentication.BasicSuccessHandler"/>
     <bean id="basicFailureHandler" class="kr.huny.authentication.BasicFailureHandler"/>
 
-    <!-- social -->
-    <bean id="facebookAuthenticationFilter" class="kr.huny.authentication.facebook.FacebookAuthenticationFilter">
-        <property name="authenticationManager" ref="authenticationManager"/>
+    <!-- Facebook OAuth 2.0 Client Setup -->
+    <oauth:resource id="facebook" type="authorization_code"
+                    client-id="${social.facebook.id}"
+                    client-secret="${social.facebook.appSecret}"
+                    access-token-uri="${social.facebook.access-token-uri}"
+                    user-authorization-uri="${social.facebook.user-authorization-uri}"
+                    authentication-scheme="query"
+                    token-name="access_token"
+                    pre-established-redirect-uri="/oauth/callback"
+                    client-authentication-scheme="form" />
+
+    <!-- Facebook 서버에 접속하기 위한 RestTemplate -->
+    <oauth:rest-template resource="facebook" id="facebookRestTemplate" />
+
+    <!-- OAuth 2.0 Client를 연동 시키기 위한 Filter 생성 -->
+    <oauth:client id="oauth2ClientFilter" />
+
+    <!-- Facebook 에서 데이터를 가져 오기 위한 Service -->
+    <bean id="facebookService" class="kr.huny.authentication.facebook.FacebookService">
+        <property name="facebookRestTemplate" ref="facebookRestTemplate" />
+        <property name="profileUri" value="${social.facebook.profile-uri}" />
     </bean>
 
-    <bean id="facebookAuthenticationProvider" class="kr.huny.authentication.facebook.FacebookAuthenticationProvider"/>
+    <bean id="oAuthProcessingFilter" class="kr.huny.authentication.common.OAuthProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationSuccessHandler" ref="oAuthSuccessHandler"/>
+        <property name="authenticationFailureHandler" ref="basicFailureHandler"/>
+    </bean>
+
+    <bean id="facebookAuthenticationProvider" class="kr.huny.authentication.facebook.FacebookAuthenticationProvider">
+        <property name="facebookService" ref="facebookService"/>
+    </bean>
+
+    <bean id="oAuthDetailService" class="kr.huny.authentication.common.OAuthDetailService"/>
+    <bean id="oAuthSuccessHandler" class="kr.huny.authentication.common.OAuthSuccessHandler"/>
+    <bean id="oAuthFailureHandler" class="kr.huny.authentication.common.OAuthFailureHandler"/>
 </beans>

@@ -27,13 +27,13 @@
         <div class="form-group">
           <input type="submit" value="로그인" class="btn btn-primary btn-block"/>
         </div>
-        <div class="form-group-sm">
+        <div class="form-group">
           <a href="/user/register" class="btn btn-primary btn-sm btn-block">회원가입</a>
         </div>
+        <div class="form-group">
+          <a href="<c:url value="/oauth/callback?type=facebook"/>" class="btn btn-default btn-sm btn-block">login as facebook</a>
+        </div>
       </form>
-      <div class="form-group-sm">
-        <a href="<c:url value="/auth/facebook/connect"/>">login as facebook</a>
-      </div>
     </div>
     <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
   </div>

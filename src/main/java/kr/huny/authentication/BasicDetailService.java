@@ -34,9 +34,12 @@ public class BasicDetailService implements UserDetailsManager {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if(Objects.isNull(email)) {
-            throw new IllegalArgumentException("email은 꼭 필요한 값입니다.");
-        } else {
+        if(Objects.nonNull(email) && email.equals("facebook"))
+        {
+            throw new UsernameNotFoundException("not found email =" + email);
+        }
+        else
+        {
             User user = userRepository.findByEmail(email);
 
             if(Objects.isNull(user))

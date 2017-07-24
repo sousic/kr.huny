@@ -9,11 +9,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by sousic on 2017-07-03.
@@ -67,8 +64,8 @@ public class AccessController {
         return String.format("redirect:https://www.facebook.com/dialog/oauth?app_id=%s&redirect_uri=http://huny.kr:8080/auth/facebook/callback", applicationPropertyConfig.getApp_id());
     }
 
-    @RequestMapping(value = "/auth/facebook/callback")
-    public void auth_callback(@RequestParam("code") String code)
+    /*@RequestMapping(value = "/auth/facebook/callback")
+    public String auth_callback(@RequestParam("code") String code)
     {
         log.debug("code => " + code);
 
@@ -101,12 +98,19 @@ public class AccessController {
         profileMap = (Map<String, String>)restTemplate.getForObject(profile_url, Map.class);
 
         log.debug("access_token =>" + profileMap.toString());
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("facebook", null,null);
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        return "redirect:/";
+
     }
+*/
 
-
-    @RequestMapping(value = "/auth/facebook/callback02")
+    /*@RequestMapping(value = "/auth/facebook/callback02")
     public void auth_callback02(Model model) {
 
-    }
+    }*/
 
 }
