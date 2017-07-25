@@ -10,6 +10,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <div class="container">
         <form id="joinForm" method="post" role="form" data-toggle="validator" action="${contextPath}/user/register">
             <h2>가입하기</h2>
