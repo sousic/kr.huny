@@ -11,19 +11,32 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
 <div class="container">
-    <ul>
-    <c:forEach var="user" items="${users.content}">
-        <li>
-            ${user.seq} /
-            ${user.email} /
-            ${user.username} /
-            ${user.providerId} /
-            ${user.providerUserId} /
-            ${user.regDate} /
-            ${user.about}
-        </li>
-    </c:forEach>
-    </ul>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>일련번호</th>
+                <th>이메일</th>
+                <th>닉네임</th>
+                <th>회원구분</th>
+                <th>소셜ID</th>
+                <th>가입일</th>
+                <th>소개글</th>
+            </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="user" items="${users.content}">
+            <tr>
+                <td>${user.seq}</td>
+                <td>${user.email}</td>
+                <td>${user.username}</td>
+                <td>${user.providerId}</td>
+                <td>${user.providerUserId}</td>
+                <td>${user.regDate}</td>
+                <td>${user.about}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
 <jsp:include page="../include/footer.jsp"></jsp:include>
 </body>

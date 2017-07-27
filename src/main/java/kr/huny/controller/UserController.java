@@ -215,6 +215,6 @@ public class UserController {
 
         userService.save(user);
 
-        return "redirect:/user/profile";
+        return "redirect:/user/list";
     }
 }
