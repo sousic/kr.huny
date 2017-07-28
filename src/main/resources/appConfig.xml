@@ -15,7 +15,8 @@
         <property name="minimumIdle" value="5"/>
         <property name="poolName" value="springHikariCP" />
         <property name="connectionTestQuery" value="SELECT 1" />
-        <property name="dataSourceClassName" value="org.mariadb.jdbc.MariaDbDataSource" />
+        <!--<property name="dataSourceClassName" value="org.mariadb.jdbc.MariaDbDataSource" />-->
+        <property name="dataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
         <property name="dataSourceProperties">
             <props>
                 <prop key="url">${jdbc.url}</prop>

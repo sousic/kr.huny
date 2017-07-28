@@ -28,6 +28,7 @@ public class Board {
     private byte isCommentType;
     private byte isRecommentType;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date regdate;
     private Date lastDateModify;
 }
