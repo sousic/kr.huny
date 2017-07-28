@@ -35,6 +35,7 @@
     "handlebars": "^4.0.6",
     "jquery-1x": "^1.12.1",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "summernote": "^0.8.6"
   }
 }

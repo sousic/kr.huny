@@ -7,7 +7,17 @@ public class CommonConst {
 
     public enum SocialType
     {
-        BASIC,
-        FACEBOOK
+        BASIC("BASIC"),
+        FACEBOOK("FACEBOOK");
+
+        private String name;
+
+        SocialType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 }
