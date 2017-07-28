@@ -1,11 +1,20 @@
 package kr.huny.model.db;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by sousic on 2017-07-28.
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 @Entity
 @Table(name = "board")
 public class Board {
@@ -29,6 +38,7 @@ public class Board {
     private byte isRecommentType;
 
     @Temporal(TemporalType.TIMESTAMP)
+    //@Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Date regdate;
     private Date lastDateModify;
 }
