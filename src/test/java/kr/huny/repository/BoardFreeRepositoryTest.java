@@ -59,6 +59,25 @@ public class BoardFreeRepositoryTest {
     }
 
     @Test
+    public void boardAdd10Test() throws Exception
+    {
+        for(int i =0;i<10;i++) {
+            BoardFree tmpBoardFree = BoardFree.builder()
+                    .title("제목입니다.")
+                    .context("내용입니다.")
+                    .userSeq(1L)
+                    .boardCategory(boardCategory)
+                    .username("홍길동")
+                    .build();
+
+            boardFreeRepository.save(tmpBoardFree);
+        }
+        long count = boardFreeRepository.count();
+
+        assertThat(10L, is(count));
+    }
+
+    @Test
     public void boardSelectOneTest() throws Exception
     {
         boardFree.setBoardCategory(boardCategory);

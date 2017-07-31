@@ -33,7 +33,7 @@ public class BoardFree {
     private Long catecorySeq;
     @Column(name = "category_name")
     private String categoryName;*/
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "cate_seq")
     private BoardCategory boardCategory;
 
