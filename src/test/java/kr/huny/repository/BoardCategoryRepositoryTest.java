@@ -1,6 +1,6 @@
 package kr.huny.repository;
 
-import kr.huny.model.db.Board;
+import kr.huny.model.db.BoardCategory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,33 +13,36 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by sousic on 2017-07-28.
+ * Created by sousic on 2017-07-31.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:appConfig.xml"})
-public class BoardRepositoryTest {
+public class BoardCategoryRepositoryTest {
     @Autowired
     ApplicationContext applicationContext;
     @Autowired
-    BoardRepository boardRepository;
+    BoardCategoryRepository boardCategoryRepository;
 
-    Board board;
+    BoardCategory boardCategory;
 
     @Before
     public void setUp() throws Exception {
-        board = Board.builder().boardName("자유게시판")
-                .boardInfo("자유게시판")
-                .isCommentType((byte)1)
-                .isRecommentType((byte)1)
+        boardCategory = BoardCategory.builder()
+                .categoryName("자유게시판")
+                .createCount(10)
+                .removeCount(0)
+                .isUsed(true)
                 .build();
     }
 
     @Test
-    public void boardAddTest() throws Exception
-    {
-        boardRepository.save(board);
-        long count = boardRepository.count();
+    public void testBoardCategoryAdd() throws Exception {
+        boardCategoryRepository.deleteAll();
 
-        assertThat(1L, is(count));
+        boardCategoryRepository.save(boardCategory);
+
+        long totalCount = boardCategoryRepository.count();
+
+        assertThat(1L, is(totalCount));
     }
 }

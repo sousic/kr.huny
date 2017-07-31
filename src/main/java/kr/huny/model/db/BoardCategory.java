@@ -1,0 +1,31 @@
+package kr.huny.model.db;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+/**
+ * Created by sousic on 2017-07-31.
+ */
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
+@Entity
+@Table(name = "board_Category")
+public class BoardCategory {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cate_seq")
+    private Long categorySeq;
+
+    @Column(length = 50)
+    private String categoryName;
+
+    private int createCount;
+    private int removeCount;
+
+    private boolean isUsed;
+}
