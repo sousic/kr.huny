@@ -21,10 +21,12 @@ public class BoardCategory {
     @Column(name = "cate_seq")
     private Long categorySeq;
 
-    @Column(length = 50)
     private String categoryName;
 
+    private String restName;
+
     private int createCount;
+
     private int removeCount;
 
     private boolean isUsed;

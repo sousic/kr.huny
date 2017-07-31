@@ -1,5 +1,6 @@
 package kr.huny.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.huny.model.db.BoardCategory;
 import kr.huny.model.db.BoardFree;
 import org.junit.Before;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.text.SimpleDateFormat;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -33,6 +36,7 @@ public class BoardFreeRepositoryTest {
     public void setUp() throws Exception {
         boardCategory = BoardCategory.builder()
                 .categoryName("자유게시판")
+                .restName("free")
                 .createCount(10)
                 .removeCount(0)
                 .isUsed(true)
@@ -86,5 +90,32 @@ public class BoardFreeRepositoryTest {
         BoardFree tmpBoardFree = boardFreeRepository.findOne(boardFree.getBoardSeq());
 
         System.out.println(tmpBoardFree.toString());
+    }
+
+    @Test
+    public void boardSelectAllToJsonTest() throws Exception
+    {
+        for(int i =0;i<10;i++) {
+            BoardFree tmpBoardFree = BoardFree.builder()
+                    .title("제목입니다.")
+                    .context("내용입니다.")
+                    .userSeq(1L)
+                    .boardCategory(boardCategory)
+                    .username("홍길동")
+                    .build();
+
+            boardFreeRepository.save(tmpBoardFree);
+        }
+
+        long count = boardFreeRepository.count();
+
+        assertThat(10L, is(count));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        //objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+        String jsonList = objectMapper.writeValueAsString(boardFreeRepository.findAll());
+
+        System.out.println(jsonList);
     }
 }
