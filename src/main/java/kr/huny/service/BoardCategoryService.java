@@ -2,6 +2,8 @@ package kr.huny.service;
 
 import kr.huny.model.db.BoardCategory;
 import kr.huny.model.db.common.BoardInfo;
+import kr.huny.model.db.common.BoardPageInfo;
+import kr.huny.model.db.common.PageNaviInfo;
 import kr.huny.repository.BoardCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by sousic on 2017-08-01.
@@ -24,21 +28,43 @@ public class BoardCategoryService {
     BoardCategoryRepository boardCategoryRepository;
 
     public void getCategoryList(Model model, Locale locale, BoardInfo boardInfo) {
-        List<BoardCategory> boardCategoryList = new ArrayList<>();
+        List<BoardCategory> boardCategoryList;
+        BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
 
+        Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
+        boardCategoryList = tmpList.getContent();
+        boardPageInfo.setPageNaviInfo(
+            PageNaviInfo.builder()
+                .currentPage(tmpList.getNumber())
+                .totalPage(tmpList.getTotalPages())
+                .size(boardInfo.getSize())
+                .build()
+        );
+
+        model.addAttribute("categoryList",boardPageInfo);
+    }
+
+    public BoardPageInfo<List<BoardCategory>> getCategoryList(BoardInfo boardInfo) {
+        BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
+
+        Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
+        boardPageInfo.setPageNaviInfo(
+                PageNaviInfo.builder()
+                        .currentPage(tmpList.getNumber())
+                        .totalPage(tmpList.getTotalPages())
+                        .size(boardInfo.getSize())
+                        .build()
+        );
+        return boardPageInfo;
+    }
+
+    private Page<BoardCategory> getBoardCategories(BoardInfo boardInfo, BoardPageInfo<List<BoardCategory>> boardPageInfo) {
         Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("categorySeq"));
         Pageable pageable = new PageRequest(boardInfo.getPage()-1, boardInfo.getSize(), sort);
 
-        if(Objects.nonNull(boardInfo.getCategory()))
-        {
-            Page<BoardCategory> tmpList = boardCategoryRepository.findAll(pageable);
+        Page<BoardCategory> tmpList = boardCategoryRepository.findAll(pageable);
 
-            boardCategoryList = tmpList.getContent();
-        }
-        else
-        {
-
-        }
-        model.addAttribute(boardCategoryList);
+        boardPageInfo.setList(tmpList.getContent());
+        return tmpList;
     }
 }

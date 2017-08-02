@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by sousic on 2017-07-31.
@@ -30,4 +31,7 @@ public class BoardCategory {
     private int removeCount;
 
     private boolean isUsed;
+
+    @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    private Date regdate;
 }

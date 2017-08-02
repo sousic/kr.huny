@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
@@ -33,7 +34,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/list")
-    public String list(HttpServletRequest request, Model model, BoardInfo boardInfo)
+    public String list(HttpServletRequest request, Model model, @ModelAttribute BoardInfo boardInfo)
     {
         Locale locale = localeResolver.resolveLocale(request);
         boardCategoryService.getCategoryList(model, locale, boardInfo);

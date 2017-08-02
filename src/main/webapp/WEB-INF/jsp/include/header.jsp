@@ -12,7 +12,9 @@
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/validator.min.js"></script>
-<script src="<%=request.getContextPath()%>/resources/js/bootstrap/jquery.bootpag.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.bootpag.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/handlebars.js"></script>
+
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script src="<%=request.getContextPath()%>/resources/js/html5shiv.js"></script>

@@ -13,7 +13,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <context:component-scan base-package="kr.huny.controller"/>
+    <context:component-scan base-package="kr.huny"/>
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 

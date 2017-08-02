@@ -5,39 +5,81 @@
 <%@ page session="false" %>
 <html>
 <head>
-    <jsp:include page="../include/header.jsp"></jsp:include>
+    <jsp:include page="../../include/header.jsp"></jsp:include>
     <title><spring:message code="common.title"/></title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
 <div class="container">
-    <table class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <th>일련번호</th>
-            <th>이메일</th>
-            <th>닉네임</th>
-            <th>회원구분</th>
-            <th>소셜ID</th>
-            <th>가입일</th>
-            <th>소개글</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="user" items="${users.content}">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
             <tr>
-                <td>${user.seq}</td>
-                <td>${user.email}</td>
-                <td>${user.username}</td>
-                <td>${user.providerId}</td>
-                <td>${user.providerUserId}</td>
-                <td>${user.regDate}</td>
-                <td>${user.about}</td>
+                <th>일련번호</th>
+                <th>카테고리</th>
+                <th>rest명</th>
+                <th>등록글수</th>
+                <th>삭제글수</th>
+                <th>사용유무</th>
+                <th>등록일</th>
             </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="categoryList">
+            <c:forEach var="category" items="${categoryList.list}">
+                <tr>
+                    <td>${category.categorySeq}</td>
+                    <td>${category.categoryName}</td>
+                    <td>${category.restName}</td>
+                    <td>${category.createCount}</td>
+                    <td>${category.removeCount}</td>
+                    <td>${category.used}</td>
+                    <td>${category.regdate}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <div id="pageNavi" class="center">
+        </div>
+    </div>
 </div>
-<jsp:include page="../include/footer.jsp"></jsp:include>
+<script type="text/javascript">
+    $(function(){
+        $("#pageNavi").bootpag({
+            total: ${categoryList.pageNaviInfo.totalPage},
+            page: ${categoryList.pageNaviInfo.currentPage+1},
+            maxVisible:10
+        }).on('page', function(event,num){
+            var url = "<c:url value="/api/tools/category/list"/>?page=" + num + "&size=${categoryList.pageNaviInfo.size}";
+            refreshList(url);
+        });
+    });
+
+    function refreshList(url)
+    {
+        var template = Handlebars.compile($("#entry-categoryItem-template").html());
+        //$("#categoryList").html('');
+
+        $.getJSON(url, function(data) {
+            $(data.list).each(function() {
+                var html = template(this);
+                $("#categoryList").html(html);
+            });
+        });
+    }
+</script>
+<script type="text/x-handlebars-template" id="entry-categoryItem-template">
+    <tr>
+        <td>{{categorySeq}}</td>
+        <td>{{categoryName}}</td>
+        <td>{{restName}}</td>
+        <td>{{createCount}}</td>
+        <td>{{removeCount}}</td>
+        <td>{{used}}</td>
+        <td>{{regdate}}</td>
+    </tr>
+</script>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>
 </html>
