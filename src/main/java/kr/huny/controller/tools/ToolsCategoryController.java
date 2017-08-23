@@ -1,17 +1,22 @@
 package kr.huny.controller.tools;
 
 import kr.huny.model.db.common.BoardInfo;
+import kr.huny.model.db.web.CategoryRegister;
 import kr.huny.service.BoardCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Locale;
 
 /**
@@ -20,14 +25,14 @@ import java.util.Locale;
 @Controller
 @Slf4j
 @RequestMapping(value="/tools/category")
-public class CategoryController {
+public class ToolsCategoryController {
     @Autowired
     BoardCategoryService boardCategoryService;
 
     @Resource
     CookieLocaleResolver localeResolver;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "")
     public String Inits()
     {
         return "redirect:/list";
@@ -39,5 +44,22 @@ public class CategoryController {
         Locale locale = localeResolver.resolveLocale(request);
         boardCategoryService.getCategoryList(model, locale, boardInfo);
         return "tools/category/list";
+    }
+
+    @RequestMapping(value="write", method = RequestMethod.GET)
+    public String write()
+    {
+        return "tools/category/write";
+    }
+
+    @RequestMapping(value="write", method = RequestMethod.POST)
+    public String writePost(@Valid CategoryRegister categoryRegister, BindingResult bindingResult, Model model, HttpServletRequest request)
+    {
+        String redirectView = boardCategoryService.addCategory(categoryRegister, bindingResult, model, request);
+
+        if(!StringUtils.isEmpty(redirectView))
+            return redirectView;
+
+        return "tools/category/write";
     }
 }

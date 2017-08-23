@@ -14,10 +14,6 @@ import kr.huny.service.UserAuthorityService;
 import kr.huny.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
@@ -31,7 +27,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -60,13 +55,6 @@ public class UserController {
     @Resource
     CookieLocaleResolver localeResolver;
 
-
-    @RequestMapping
-    public String root()
-    {
-        return "redirect:/user/list";
-    }
-
     /**
      * 회원 등록 테스트
      */
@@ -86,23 +74,16 @@ public class UserController {
         //권한 추가
         Authority authority = Authority.builder().authority_seq(255).authority_name("슈퍼관리자").build();
         authorityService.save(authority);
+        Authority authority100 = Authority.builder().authority_seq(100).authority_name("관리자").build();
+        authorityService.save(authority100);
+        Authority authority10 = Authority.builder().authority_seq(10).authority_name("일반").build();
+        authorityService.save(authority10);
 
         //권한 매핑
         UserAuthority userAuthority = UserAuthority.builder().userSeq(user.getSeq()).authoritySeq(authority.getAuthority_seq()).build();
         userAuthorityService.save(userAuthority);
-    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model)
-    {
-        Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("seq"));
-        Pageable pageable = new PageRequest(0, 10, sort);
-
-        Page<User> users = userService.findAll(pageable);
-
-        model.addAttribute("users", users);
-
-        return "user/list";
+        userAuthority = UserAuthority.builder().userSeq(user.getSeq()).authoritySeq(authority10.getAuthority_seq()).build();
+        userAuthorityService.save(userAuthority);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

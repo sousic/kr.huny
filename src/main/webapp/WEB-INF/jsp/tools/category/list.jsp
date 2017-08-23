@@ -43,6 +43,9 @@
         <div id="pageNavi" class="center">
         </div>
     </div>
+    <div class="text-right">
+        <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
+    </div>
 </div>
 <script type="text/javascript">
     $(function(){

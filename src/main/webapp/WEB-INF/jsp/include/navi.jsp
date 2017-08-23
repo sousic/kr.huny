@@ -16,7 +16,10 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="<c:url value="/user/list"/>">회원목록</a></li>
+                <sec:authorize access="hasRole('ROOT')">
+                <li><a href="<c:url value="/tools/user/list"/>">회원목록</a></li>
+                <li><a href="<c:url value="/tools/category/list"/>">카테고리관리</a></li>
+                </sec:authorize>
                 <%--<li><a href="#contact">Contact</a></li>--%>
                 <%--<li class="dropdown">--%>
                 <%--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>--%>

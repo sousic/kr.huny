@@ -34,4 +34,7 @@ public class BoardCategory {
 
     @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Date regdate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modifyDate;
 }

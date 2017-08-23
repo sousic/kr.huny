@@ -19,7 +19,8 @@
         <security:intercept-url pattern="/oauth/**" access="permitAll"/>
         <security:intercept-url pattern="/user/addTest" access="permitAll"/>
         <security:intercept-url pattern="/user/register" access="isAnonymous()"/>
-        <security:intercept-url pattern="/user/**" access="hasAnyRole('USER', 'ROOT')"/>
+        <security:intercept-url pattern="/user/**" access="hasAnyRole('USER')"/>
+        <security:intercept-url pattern="/api/tools/**" access="hasRole('ROOT')"/>
 
         <security:form-login
                 username-parameter="loginID"

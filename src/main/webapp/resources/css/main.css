@@ -38,3 +38,7 @@ body {
 #loginForm { max-width: 300px; margin: 0 auto}
 #joinForm { max-width: 400px; margin:0 auto}
 #joinForm .input-group-addon { min-width: 110px; }
+
+/* category */
+.category-form { min-width:400px; margin: 0px; }
+.category-form .input-group-addon { min-width: 110px; }

@@ -4,6 +4,7 @@ import kr.huny.model.db.BoardCategory;
 import kr.huny.model.db.common.BoardInfo;
 import kr.huny.model.db.common.BoardPageInfo;
 import kr.huny.model.db.common.PageNaviInfo;
+import kr.huny.model.db.web.CategoryRegister;
 import kr.huny.repository.BoardCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.LocaleResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -25,14 +29,14 @@ import java.util.Locale;
 @Slf4j
 public class BoardCategoryService {
     @Autowired
+    LocaleResolver localeResolver;
+    @Autowired
     BoardCategoryRepository boardCategoryRepository;
 
     public void getCategoryList(Model model, Locale locale, BoardInfo boardInfo) {
-        List<BoardCategory> boardCategoryList;
         BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
 
         Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
-        boardCategoryList = tmpList.getContent();
         boardPageInfo.setPageNaviInfo(
             PageNaviInfo.builder()
                 .currentPage(tmpList.getNumber())
@@ -66,5 +70,19 @@ public class BoardCategoryService {
 
         boardPageInfo.setList(tmpList.getContent());
         return tmpList;
+    }
+
+    public String addCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, HttpServletRequest request) {
+        Locale locale = localeResolver.resolveLocale(request);
+
+        log.debug(categoryRegister.toString());
+
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("categoryRegister",categoryRegister);
+            return "tools/category/write";
+        }
+
+        return null;
     }
 }
