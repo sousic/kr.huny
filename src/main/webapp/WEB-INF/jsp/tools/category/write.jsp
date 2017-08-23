@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
             <div class="category-form">
-                <form id="sForm" method="post" role="form" action="<c:url value="/tools/category/write"/>">
+                <form id="sForm" method="post" role="form" action="<c:url value="/tools/category/write"/>" onsubmit="return chkForm();">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon" id="addmon_categoryName">카테고리</span>
@@ -56,6 +56,12 @@
     </div>
 </div>
 <script type="text/javascript">
+    function chkForm() {
+        if(restChecked != "1") {
+            alert("rest명 중복 체크를 해주세요.");
+            return false;
+        }
+    }
 </script>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>
