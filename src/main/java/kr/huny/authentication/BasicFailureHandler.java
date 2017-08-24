@@ -79,6 +79,6 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
 
         //httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/access/login?message=" + URLEncoder.encode(message,"UTF-8") + "&loginRedirect=" + loginRedirect + "&result=" + results);
 
-        httpServletResponse.sendRedirect(path);
+        httpServletResponse.encodeRedirectURL(path);
     }
 }

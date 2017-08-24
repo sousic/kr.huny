@@ -34,11 +34,27 @@ body {
     background-color: #ffffff;
 }
 
+.form_header {
+    margin: 0 0 10px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.form_button_container
+{
+    border-top: 1px solid #e5e5e5;
+    padding-top: 10px;
+}
+
+form {
+    border: 1px solid #e5e5e5;
+    padding: 10px;
+    margin: 0px;
+}
+
 /* login form */
 #loginForm { max-width: 300px; margin: 0 auto}
 #joinForm { max-width: 400px; margin:0 auto}
 #joinForm .input-group-addon { min-width: 110px; }
 
 /* category */
-.category-form { min-width:400px; margin: 0px; }
-.category-form .input-group-addon { min-width: 110px; }

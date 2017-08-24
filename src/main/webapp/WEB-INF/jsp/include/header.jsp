@@ -7,7 +7,7 @@
 <link rel="icon" href="<%=request.getContextPath()%>/image/favicon.ico">
 <!-- Bootstrap core CSS -->
 <link href="<%=request.getContextPath()%>/resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="<%=request.getContextPath()%>/resources/css/main.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/resources/css/main.css?<%=System.currentTimeMillis()%>" rel="stylesheet">
 
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/bootstrap.min.js"></script>

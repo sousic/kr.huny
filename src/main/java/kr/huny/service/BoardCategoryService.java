@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by sousic on 2017-08-01.
@@ -83,6 +84,23 @@ public class BoardCategoryService {
             return "tools/category/write";
         }
 
-        return null;
+        //중복 확인
+        BoardCategory boardCategory = boardCategoryRepository.findByRestName(categoryRegister.getRestName());
+
+        if(Objects.nonNull(boardCategory))
+        {
+            bindingResult.reject("restNameError");
+            model.addAttribute("restNameError", true);
+            return "tools/category/write";
+        }
+
+        boardCategory = BoardCategory.builder()
+                            .categoryName(categoryRegister.getCategoryName())
+                            .restName(categoryRegister.getRestName())
+                            .isUsed(categoryRegister.isUsed()).build();
+
+        boardCategoryRepository.save(boardCategory);
+
+        return "tools/category/list";
     }
 }

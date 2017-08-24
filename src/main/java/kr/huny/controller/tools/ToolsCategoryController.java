@@ -59,7 +59,7 @@ public class ToolsCategoryController {
 
         if(!StringUtils.isEmpty(redirectView))
             return redirectView;
-
-        return "tools/category/write";
+        else
+            return "tools/category/write";
     }
 }

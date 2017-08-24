@@ -22,7 +22,9 @@
           <div class="help-block with-errors"></div>
         </div>
         <c:if test="${not empty param.fail}">
+        <div class="help-block with-errors">
           <h5>${message}</h5>
+        </div>
         </c:if>
         <div class="form-group">
           <input type="submit" value="로그인" class="btn btn-primary btn-block"/>

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -16,14 +17,20 @@ import java.util.Date;
 @Builder
 @Data
 @Entity
-@Table(name = "board_Category")
+@Table(name = "board_Category",
+        uniqueConstraints = {
+        @UniqueConstraint(columnNames = "restName", name = "uni_restName")
+        }
+)
 public class BoardCategory {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cate_seq")
     private Long categorySeq;
 
+    @NotNull
     private String categoryName;
 
+    @NotNull
     private String restName;
 
     private int createCount;

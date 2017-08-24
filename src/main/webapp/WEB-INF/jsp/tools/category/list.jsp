@@ -11,41 +11,46 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
 <div class="container">
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th>일련번호</th>
-                <th>카테고리</th>
-                <th>rest명</th>
-                <th>등록글수</th>
-                <th>삭제글수</th>
-                <th>사용유무</th>
-                <th>등록일</th>
-            </tr>
-            </thead>
-            <tbody id="categoryList">
-            <c:forEach var="category" items="${categoryList.list}">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 col-md-offset-2">
+            <table class="table table-bordered table-striped">
+                <thead>
                 <tr>
-                    <td>${category.categorySeq}</td>
-                    <td>${category.categoryName}</td>
-                    <td>${category.restName}</td>
-                    <td>${category.createCount}</td>
-                    <td>${category.removeCount}</td>
-                    <td>${category.used}</td>
-                    <td>${category.regdate}</td>
+                    <th>일련번호</th>
+                    <th>카테고리</th>
+                    <th>rest명</th>
+                    <th>등록글수</th>
+                    <th>삭제글수</th>
+                    <th>사용유무</th>
+                    <th>등록일</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
-    <div class="text-center">
-        <div id="pageNavi" class="center">
+                </thead>
+                <tbody id="categoryList">
+                <c:forEach var="category" items="${categoryList.list}">
+                    <tr>
+                        <td>${category.categorySeq}</td>
+                        <td>${category.categoryName}</td>
+                        <td>${category.restName}</td>
+                        <td>${category.createCount}</td>
+                        <td>${category.removeCount}</td>
+                        <td>${category.used}</td>
+                        <td>${category.regdate}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <div id="pageNavi" class="center">
+                </div>
+            </div>
+            <div class="text-right">
+                <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
+            </div>
+
         </div>
     </div>
-    <div class="text-right">
-        <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
-    </div>
+
 </div>
 <script type="text/javascript">
     $(function(){
