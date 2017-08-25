@@ -14,14 +14,15 @@
     <div class="row">
         <div class="col-md-4 col-sm-4 col-md-offset-4">
             <form id="sForm" method="post" role="form" action="<c:url value="/tools/category/write"/>">
+                <input type="hidden" name="categorySeq" value="${categoryRegister.categorySeq}"/>
                 <div class="form_header">
                     <span>카테고리</span>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="categoryName" name="categoryName" class="form-control" value="${categoryRegister.categoryName}" placeholder="<spring:message code="category.msg.form.placeholder.category"/>" required/>
+                    <input type="text" id="categoryName" name="categoryName" class="form-control" value="${categoryRegister.categoryName}" placeholder="<spring:message code="category.msg.form.placeholder.category"/>" required />
                 </div>
                 <div class="form-group">
-                    <input type="text" id="restName" name="restName" class="form-control restname" value="${categoryRegister.restName}" placeholder="<spring:message code="category.msg.form.placeholder.restname"/>" required/>
+                    <input type="text" id="restName" name="restName" class="form-control restname" value="${categoryRegister.restName}" placeholder="<spring:message code="category.msg.form.placeholder.restname"/>" required <c:if test="${categoryRegister.categorySeq > 0}">readonly="readonly"</c:if>/>
                 </div>
                 <div class="form-group">
                     <label for="categoryName">사용유무</label>
@@ -50,11 +51,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function() {
-       $("input[type=reset]").on("click", function() {
-          $("#sform").reset();
-       });
-    });
 </script>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.annotation.Resource;
@@ -47,8 +48,11 @@ public class ToolsCategoryController {
     }
 
     @RequestMapping(value="write", method = RequestMethod.GET)
-    public String write()
+    public String write(@RequestParam(value = "seq", required = false, defaultValue = "0") long categorySeq, Model model)
     {
+        if(categorySeq > 0) {
+            boardCategoryService.findCategory(categorySeq, model);
+        }
         return "tools/category/write";
     }
 

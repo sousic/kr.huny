@@ -52,6 +52,23 @@ form {
     margin: 0px;
 }
 
+.table-list {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.table-list tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+.table-list tr, .table-list tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.table-list>thead>tr>th {
+    vertical-align: bottom;
+    border-bottom: none;
+}
+
 /* login form */
 #loginForm { max-width: 300px; margin: 0 auto}
 #joinForm { max-width: 400px; margin:0 auto}

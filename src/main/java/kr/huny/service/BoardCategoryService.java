@@ -75,6 +75,7 @@ public class BoardCategoryService {
 
     public String addCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, HttpServletRequest request) {
         Locale locale = localeResolver.resolveLocale(request);
+        BoardCategory boardCategory;
 
         log.debug(categoryRegister.toString());
 
@@ -84,23 +85,43 @@ public class BoardCategoryService {
             return "tools/category/write";
         }
 
-        //중복 확인
-        BoardCategory boardCategory = boardCategoryRepository.findByRestName(categoryRegister.getRestName());
+        if(categoryRegister.getCategorySeq() == null) {
+            //중복 확인
+            boardCategory = boardCategoryRepository.findByRestName(categoryRegister.getRestName());
 
-        if(Objects.nonNull(boardCategory))
-        {
-            bindingResult.reject("restNameError");
-            model.addAttribute("restNameError", true);
-            return "tools/category/write";
+            if (Objects.nonNull(boardCategory)) {
+                bindingResult.reject("restNameError");
+                model.addAttribute("restNameError", true);
+                return "tools/category/write";
+            }
         }
 
         boardCategory = BoardCategory.builder()
                             .categoryName(categoryRegister.getCategoryName())
                             .restName(categoryRegister.getRestName())
-                            .isUsed(categoryRegister.isUsed()).build();
+                            .isUsed(categoryRegister.isUsed())
+                            .categorySeq(categoryRegister.getCategorySeq())
+                            .build();
 
         boardCategoryRepository.save(boardCategory);
 
-        return "tools/category/list";
+        return "redirect:/tools/category/list";
+    }
+
+
+    public void findCategory(Long categorySeq, Model model) {
+        BoardCategory boardCategory = boardCategoryRepository.findOne(categorySeq);
+
+        CategoryRegister categoryRegister = CategoryRegister.builder()
+                .categoryName(boardCategory.getCategoryName())
+                .restName(boardCategory.getRestName())
+                .isUsed(boardCategory.isUsed())
+                .categorySeq(boardCategory.getCategorySeq())
+                .build();
+
+        if(Objects.nonNull(categoryRegister))
+        {
+            model.addAttribute("categoryRegister", categoryRegister);
+        }
     }
 }
