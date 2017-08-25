@@ -14,7 +14,7 @@
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/validator.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.bootpag.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/handlebars.js"></script>
-<script src="<%=request.getContextPath()%>/resources/js/utils.js.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/utils.js"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>

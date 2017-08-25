@@ -92,6 +92,8 @@
         });
     });
 
+    Handlebars.registerHelper('date', Utils.DateFormate);
+
     function refreshList(url)
     {
         var template = Handlebars.compile($("#entry-categoryItem-template").html());
@@ -114,7 +116,7 @@
         <td>{{removeCount}}</td>
         <td>{{used}}</td>
         <td>{{regdate}}</td>
-        <td>{{modifyDate}}</td>
+        <td>{{date modifyDate}}</td>
         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
     </tr>
 </script>

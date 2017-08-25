@@ -1,8 +1,9 @@
 var Utils = {};
 
 Utils = {
-    DateFormate:function(value, format)
+    DateFormate:function(value)
     {
-        return value;
-    };
-}
+        var date = new Date(value);
+        return date.toTimeString();
+    }
+};
