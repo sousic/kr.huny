@@ -3,7 +3,6 @@ var Utils = {};
 Utils = {
     DateFormate:function(value)
     {
-        var date = new Date(value);
-        return date.toTimeString();
+        return (new Date(value).toString("yyyy-MM-dd HH:mm:ss"));
     }
 };
