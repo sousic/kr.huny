@@ -66,10 +66,13 @@
                 <h4 class="modal-title">삭제</h4>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="cseq" value=""/>
+                <p class="tag"></p>
                 <p>삭제 하시겠습니까?</p>
             </div>
+            <div class="modal-body-popover"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">삭제</button>
+                <button type="button" class="btn btn-default btn-danger">삭제</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -87,8 +90,25 @@
         });
 
         $("#categoryList").on("click", ".btnDelete", function() {
-            console.log($(this).parents("tr").find("td:eq(1)").text());
+            $("#deleteLayer .tag").text('['+$(this).parents("tr").find("td:eq(1)").text()+'] 분류를');
+            $("#cseq").val($(this).parents("tr").find("td:eq(0)").text());
             $("#deleteLayer").modal("show");
+        });
+
+        $("#deleteLayer").on("click", ".btn-danger", function(){
+            $.post('<c:url value="/api/tools/category/remove/"/>' + $("#cseq").val(), function (data) {
+                if(data.retCode == 1) {
+                    $("#cseq").val("");
+                    $("#deleteLayer").modal('hide');
+                    var url = "<c:url value="/api/tools/category/list"/>?page=1&size=${categoryList.pageNaviInfo.size}";
+                    refreshList(url);
+                } else {
+                    alert(data.retMsg);
+                    return false;
+                }
+            }).fail(function() {
+               alert('잠시 후 다시 이용해 주세요.')
+            });
         });
     });
 
@@ -97,7 +117,7 @@
     function refreshList(url)
     {
         var template = Handlebars.compile($("#entry-categoryItem-template").html());
-        //$("#categoryList").html('');
+        $("#categoryList").html('');
 
         $.getJSON(url, function(data) {
             $(data.list).each(function() {

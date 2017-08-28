@@ -2,6 +2,8 @@
 category.msg.form.placeholder.category=카테고리 명을 입력 해주세요.
 category.msg.form.placeholder.restname=카테고리 rest명을 입력 해주세요.
 category.msg.form.placeholder.restname.fail=카테고리 rest명을 사용 중입니다.
+category.msg.delete.fail=해당 카테고리에 게시물이 있어서 삭제 할수 없습니다.
+category.msg.delete.ok=삭제 되었습니다.
 
 #common
 common.title=MySite

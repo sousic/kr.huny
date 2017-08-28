@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Locale;
 
 /**
  * Created by sousic on 2017-08-01.
@@ -30,9 +27,6 @@ public class ToolsCategoryController {
     @Autowired
     BoardCategoryService boardCategoryService;
 
-    @Resource
-    CookieLocaleResolver localeResolver;
-
     @RequestMapping(value = "")
     public String Inits()
     {
@@ -42,8 +36,7 @@ public class ToolsCategoryController {
     @RequestMapping(value = "/list")
     public String list(HttpServletRequest request, Model model, @ModelAttribute BoardInfo boardInfo)
     {
-        Locale locale = localeResolver.resolveLocale(request);
-        boardCategoryService.getCategoryList(model, locale, boardInfo);
+        boardCategoryService.getCategoryList(model, boardInfo, request);
         return "tools/category/list";
     }
 

@@ -1,6 +1,7 @@
 package kr.huny.service;
 
 import kr.huny.model.db.BoardCategory;
+import kr.huny.model.db.common.AjaxJsonCommon;
 import kr.huny.model.db.common.BoardInfo;
 import kr.huny.model.db.common.BoardPageInfo;
 import kr.huny.model.db.common.PageNaviInfo;
@@ -15,7 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -30,11 +31,17 @@ import java.util.Objects;
 @Slf4j
 public class BoardCategoryService {
     @Autowired
-    LocaleResolver localeResolver;
+    CookieLocaleResolver localeResolver;
+
     @Autowired
     BoardCategoryRepository boardCategoryRepository;
 
-    public void getCategoryList(Model model, Locale locale, BoardInfo boardInfo) {
+    @Autowired
+    CommonService commonService;
+
+    public void getCategoryList(Model model, BoardInfo boardInfo, HttpServletRequest request) {
+        Locale locale = localeResolver.resolveLocale(request);
+
         BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
 
         Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
@@ -123,5 +130,26 @@ public class BoardCategoryService {
         {
             model.addAttribute("categoryRegister", categoryRegister);
         }
+    }
+
+    public AjaxJsonCommon categoryDelete(long categorySeq, HttpServletRequest request) {
+        AjaxJsonCommon ajaxJsonCommon = new AjaxJsonCommon();
+
+        Locale locale = localeResolver.resolveLocale(request);
+
+        //수량 체크
+        BoardCategory boardCategory = boardCategoryRepository.findOne(categorySeq);
+        if(boardCategory.getCreateCount() > 0)
+        {
+            ajaxJsonCommon.setRetMsg(commonService.getResourceBudleMessage(locale, "message.category","category.msg.delete.fail"));
+            ajaxJsonCommon.setRetCode(-1);
+            return ajaxJsonCommon;
+        }
+
+        //삭제
+        boardCategoryRepository.delete(categorySeq);
+        ajaxJsonCommon.setRetMsg(commonService.getResourceBudleMessage(locale,"message.category","category.msg.delete.ok"));
+        ajaxJsonCommon.setRetCode(1);
+        return ajaxJsonCommon;
     }
 }
