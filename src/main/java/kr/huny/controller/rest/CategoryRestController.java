@@ -8,9 +8,11 @@ import kr.huny.service.BoardCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by sousic on 2017-08-02.
@@ -19,6 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value="/api/tools/category")
 public class CategoryRestController {
+    @Autowired
+    CookieLocaleResolver localeResolver;
+
     @Autowired
     BoardCategoryService boardCategoryService;
 
@@ -31,11 +36,12 @@ public class CategoryRestController {
         return listBoardPageInfo;
     }
 
-    @ResponseBody
     @RequestMapping(value = "/remove/{categorySeq}", method = RequestMethod.POST)
     public AjaxJsonCommon categoryDelete(@PathVariable long categorySeq, HttpServletRequest request)
     {
-        AjaxJsonCommon ajaxJsonCommon = boardCategoryService.categoryDelete(categorySeq, request);
+        Locale locale = localeResolver.resolveLocale(request);
+
+        AjaxJsonCommon ajaxJsonCommon = boardCategoryService.categoryDelete(categorySeq, locale);
 
         return ajaxJsonCommon;
     }

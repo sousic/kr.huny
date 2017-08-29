@@ -8,6 +8,7 @@
                 <value>classpath:messages/common</value>
                 <value>classpath:messages/user</value>
                 <value>classpath:messages/category</value>
+                <value>classpath:messages/gallery</value>
             </list>
         </property>
 

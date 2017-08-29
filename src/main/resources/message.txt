@@ -26,3 +26,7 @@ user.msg.form.static.email=아이디를 넣어주세요.
 user.msg.form.static.username=닉네임 넣어주세요.
 user.msg.form.static.password=암호를 넣어주세요.
 user.msg.form.static.about=소개글 넣어주세요.
+
+#gallery
+gallery.msg.api.save.error = 이미지 저장에 실패 하였습니다.
+gallery.msg.api.save.ok = 이미지가 저장 되었습니다.

@@ -16,9 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -30,8 +28,6 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class BoardCategoryService {
-    @Autowired
-    CookieLocaleResolver localeResolver;
 
     @Autowired
     BoardCategoryRepository boardCategoryRepository;
@@ -39,9 +35,7 @@ public class BoardCategoryService {
     @Autowired
     CommonService commonService;
 
-    public void getCategoryList(Model model, BoardInfo boardInfo, HttpServletRequest request) {
-        Locale locale = localeResolver.resolveLocale(request);
-
+    public void getCategoryList(Model model, BoardInfo boardInfo, Locale locale) {
         BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
 
         Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
@@ -80,8 +74,7 @@ public class BoardCategoryService {
         return tmpList;
     }
 
-    public String addCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, HttpServletRequest request) {
-        Locale locale = localeResolver.resolveLocale(request);
+    public String addCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, Locale locale) {
         BoardCategory boardCategory;
 
         log.debug(categoryRegister.toString());
@@ -132,10 +125,8 @@ public class BoardCategoryService {
         }
     }
 
-    public AjaxJsonCommon categoryDelete(long categorySeq, HttpServletRequest request) {
+    public AjaxJsonCommon categoryDelete(long categorySeq, Locale locale) {
         AjaxJsonCommon ajaxJsonCommon = new AjaxJsonCommon();
-
-        Locale locale = localeResolver.resolveLocale(request);
 
         //수량 체크
         BoardCategory boardCategory = boardCategoryRepository.findOne(categorySeq);
