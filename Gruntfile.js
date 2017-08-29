@@ -63,11 +63,12 @@ module.exports = function (grunt) {
                 flatten: true,
                 src: 'node_modules/font-awesome/fonts/!*.*',
                 dest: dest_css_path + '/fonts/'
-            },
+            }
+            /*,
             angular : {
                 src : 'node_modules/angular/angular.min.js',
                 dest : dest_js_path + '/angular/angular.min.js'
-            }
+            }*/
         },
 
         /*cssmin : {

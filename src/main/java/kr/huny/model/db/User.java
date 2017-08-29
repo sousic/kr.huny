@@ -26,7 +26,7 @@ import java.util.Date;
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seq;
+    private long seq;
 
     private String email;
 

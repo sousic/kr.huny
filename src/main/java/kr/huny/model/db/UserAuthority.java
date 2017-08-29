@@ -22,10 +22,10 @@ public class UserAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seq")
-    private Long id;
+    private long id;
 
     @Column(name = "user_no", nullable = false)
-    private Long userSeq;
+    private long userSeq;
 
     @Column(name = "authority_no", nullable = false)
     private int authoritySeq;

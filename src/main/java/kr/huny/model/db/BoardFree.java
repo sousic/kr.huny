@@ -21,10 +21,10 @@ public class BoardFree {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_seq")
-    private Long boardSeq;
+    private long boardSeq;
 
     @Column(name="user_seq")
-    private Long userSeq;
+    private long userSeq;
 
     @Column(length = 50)
     private String username;

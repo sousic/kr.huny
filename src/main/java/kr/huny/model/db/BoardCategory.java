@@ -25,7 +25,7 @@ import java.util.Date;
 public class BoardCategory {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cate_seq")
-    private Long categorySeq;
+    private long categorySeq;
 
     @NotNull
     private String categoryName;
