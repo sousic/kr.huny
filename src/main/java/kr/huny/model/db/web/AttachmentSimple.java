@@ -1,6 +1,6 @@
 package kr.huny.model.db.web;
 
-import kr.huny.model.db.embedded.GalleryStatus;
+import kr.huny.model.db.embedded.AttachmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GallerySimple {
-    private long gallerySeq;
+public class AttachmentSimple {
+    private long attachSeq;
 
     private String urlPath;
 
-    private GalleryStatus status;
+    private AttachmentStatus status;
 }

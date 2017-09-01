@@ -4,8 +4,8 @@ import kr.huny.authentication.common.CommonPrincipal;
 import kr.huny.common.CommonUtils;
 import kr.huny.model.db.Gallery;
 import kr.huny.model.db.common.AjaxJsonCommon;
-import kr.huny.model.db.embedded.GalleryStatus;
-import kr.huny.model.db.web.GallerySimple;
+import kr.huny.model.db.embedded.AttachmentStatus;
+import kr.huny.model.db.web.AttachmentSimple;
 import kr.huny.repository.GalleryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -38,17 +38,17 @@ public class GalleryService {
     @Autowired
     GalleryRepository galleryRepository;
 
-    public AjaxJsonCommon<GallerySimple> updateImage(Locale locale, MultipartFile[] files) {
+    public AjaxJsonCommon<AttachmentSimple> updateImage(Locale locale, MultipartFile[] files) {
 
         try {
-            AjaxJsonCommon<GallerySimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
+            AjaxJsonCommon<AttachmentSimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
             CommonPrincipal commonPrincipal = commonService.getCommonPrincipal();
 
             for(MultipartFile file : files) {
                 Gallery gallery = new Gallery();
                 gallery.setUserSeq(commonPrincipal.getSeq());
                 gallery.setUsername(commonPrincipal.getUsername());
-                gallery.setStatus(GalleryStatus.QUEUE);
+                gallery.setStatus(AttachmentStatus.QUEUE);
                 gallery.setFileName(file.getOriginalFilename());
                 gallery.setSize(file.getSize());
                 gallery.setContentType(file.getContentType());
@@ -73,10 +73,10 @@ public class GalleryService {
 
                 //반환 결과 생성
 
-                GallerySimple gallerySimple = GallerySimple.builder()
+                AttachmentSimple gallerySimple = AttachmentSimple.builder()
                         .urlPath("/gallery/")
                         .status(gallery.getStatus())
-                        .gallerySeq(gallery.getGallerySeq())
+                        .attachSeq(gallery.getGallerySeq())
                         .build();
 
                 gallerySimpleAjaxJsonCommon.addResultItem(gallerySimple);

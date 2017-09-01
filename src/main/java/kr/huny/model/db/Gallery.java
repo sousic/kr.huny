@@ -1,6 +1,6 @@
 package kr.huny.model.db;
 
-import kr.huny.model.db.embedded.GalleryStatus;
+import kr.huny.model.db.embedded.AttachmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,7 +42,7 @@ public class Gallery {
 
     private String contentType;
 
-    private GalleryStatus status = GalleryStatus.QUEUE;
+    private AttachmentStatus status = AttachmentStatus.QUEUE;
 
     private int views = 0;
 

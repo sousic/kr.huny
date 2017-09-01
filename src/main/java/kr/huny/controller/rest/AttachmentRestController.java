@@ -1,8 +1,8 @@
 package kr.huny.controller.rest;
 
 import kr.huny.model.db.common.AjaxJsonCommon;
+import kr.huny.model.db.embedded.AttachmentStatus;
 import kr.huny.model.db.web.AttachmentSimple;
-import kr.huny.service.GalleryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,19 +17,25 @@ import java.util.Locale;
 
 @Slf4j
 @RestController
-@RequestMapping(value="/api/gallery")
-public class GalleryRestController {
+@RequestMapping(value="/api/attachment")
+public class AttachmentRestController {
     @Autowired
     CookieLocaleResolver localeResolver;
-    @Autowired
-    GalleryService galleryService;
 
     @RequestMapping(value="/add", method = RequestMethod.POST)
-    public AjaxJsonCommon<AttachmentSimple> uploadImage(@RequestParam(required = true)MultipartFile[] file, HttpServletRequest request)
+    public AjaxJsonCommon<AttachmentSimple> uploadAttachment(@RequestParam(required = true)MultipartFile[] file, HttpServletRequest request)
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        AjaxJsonCommon<AttachmentSimple> gallery = galleryService.updateImage(locale, file);
+        AjaxJsonCommon<AttachmentSimple> gallery = new AjaxJsonCommon<>();
+
+        AttachmentSimple gallerySimple = AttachmentSimple.builder()
+                .urlPath("/attchment/")
+                .status(AttachmentStatus.QUEUE)
+                .attachSeq(1)
+                .build();
+
+        gallery.addResultItem(gallerySimple);
 
         return gallery;
     }
