@@ -7,12 +7,15 @@
 <link rel="icon" href="<%=request.getContextPath()%>/image/favicon.ico">
 <!-- Bootstrap core CSS -->
 <link href="<%=request.getContextPath()%>/resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/resources/css/summernote/summernote.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/main.css?<%=System.currentTimeMillis()%>" rel="stylesheet">
 
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/validator.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.bootpag.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/summernote/summernote.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/summernote/lang/summernote-ko-KR.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/handlebars.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/date.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/utils.js"></script>

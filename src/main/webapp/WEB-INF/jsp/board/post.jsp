@@ -7,45 +7,68 @@
 <head>
     <title><spring:message code="common.title"/></title>
     <jsp:include page="../include/header.jsp"></jsp:include>
-    <link href="/resources/css/summernote/summernote.css" rel="stylesheet">
-    <script src="/resources/js/summernote/summernote.min.js"></script>
-    <script src="/resources/js/summernote/lang/summernote-ko-KR.min.js"></script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/include/navi.jsp"></jsp:include>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-sm-8 col-md-offset-2">
+            <form method="post" action="">
             <div class="form_header">
                 <span>게시물 등록</span>
             </div>
-            <div>
+            <div class="form-group">
+                <select id="category" name="category" class="form-control">
+                    <option value="0">카테고리선택</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" id="title" name="title" placeholder="제목" class="form-control"/>
+            </div>
+            <div class="form-group">
                 <div id="summernote"></div>
             </div>
-            <script>
-                $(document).ready(function() {
-                    $('#summernote').summernote(
-                    {
-                        lang:'ko-KR',
-                        height:350,
-                        width:750,
-                        callbacks:{
-                            onImageUpload:function(files) {
-                                sendFile(files[0],this);
-                            }
-                        }
-                    });
-                });
-            </script>
+            <div class="form-group">
+                <span>첨부파일</span>
+                <div class="row">
+
+                </div>
+                <input type="file" title="첨부"/>
+            </div>
             <div class="form_button_container">
                 <div class="text-right">
                     <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
+                    <a href="javascript:GetValue()">저장</a>
                 </div>
             </div>
+            <textarea id="content"></textarea>
+            </form>
         </div>
     </div>
 </div>
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#summernote').summernote(
+            {
+                lang:'ko-KR',
+                height:350,
+                width:720,
+                callbacks:{
+                    onImageUpload:function(files) {
+                        sendFile(files[0],this);
+                    }
+                }
+            });
+    });
+
+    function GetValue()
+    {
+        if ($('#summernote').summernote('isEmpty')) {
+            alert('contents is empty');
+        }
+        $("#content").text($("#summernote").summernote('code'));
+    }
+
     function sendFile(file, el)
     {
         var form_data = new FormData();
@@ -68,24 +91,6 @@
             }
         });
     }
-
-    /*$(function(){
-        $("#deleteLayer").on("click", ".btn-danger", function(){
-            $.post('<c:url value="/api/tools/category/remove/"/>' + $("#cseq").val(), function (data) {
-                if(data.retCode == 1) {
-                    $("#cseq").val("");
-                    $("#deleteLayer").modal('hide');
-                    var url = "<c:url value="/api/tools/category/list"/>?page=1&size=${categoryList.pageNaviInfo.size}";
-                    refreshList(url);
-                } else {
-                    alert(data.retMsg);
-                    return false;
-                }
-            }).fail(function() {
-                alert('잠시 후 다시 이용해 주세요.')
-            });
-        });
-    });*/
 </script>
 <jsp:include page="../include/footer.jsp"></jsp:include>
 </body>
