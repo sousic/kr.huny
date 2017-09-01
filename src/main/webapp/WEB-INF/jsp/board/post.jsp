@@ -30,10 +30,10 @@
             </div>
             <div class="form-group">
                 <span>첨부파일</span>
-                <div class="row">
+                <div class="row preview">
 
                 </div>
-                <input type="file" title="첨부"/>
+                <input type="file" title="첨부" name="files[]" multiple id="attatchFile"/>
             </div>
             <div class="form_button_container">
                 <div class="text-right">
@@ -55,10 +55,21 @@
                 width:720,
                 callbacks:{
                     onImageUpload:function(files) {
-                        sendFile(files[0],this);
+                        sendFile(files,this);
                     }
                 }
             });
+        $("#attatchFile").on("change", function() {
+            var fileList = this.files ;
+            // 읽기
+            var reader = new FileReader();
+            reader.readAsText(fileList[0]);
+
+            //로드 한 후
+            reader.onload = function  () {
+                document.querySelector('.preview').src += reader;
+            };
+        });
     });
 
     function GetValue()
@@ -69,10 +80,12 @@
         $("#content").text($("#summernote").summernote('code'));
     }
 
-    function sendFile(file, el)
+    function sendFile(files, el)
     {
         var form_data = new FormData();
-        form_data.append('file', file);
+        for(var i = 0; i < files.length;i++) {
+            form_data.append('file', files[i]);
+        }
         $.ajax({
             data:form_data,
             type:"POST",
@@ -83,7 +96,9 @@
             processData:false,
             success:function(data) {
                 if(data.retCode == 1) {
-                    $(el).summernote('editor.insertImage', data.result.urlPath + data.result.gallerySeq);
+                    data.result.forEach(function(item) {
+                        $(el).summernote('editor.insertImage', item.urlPath + item.gallerySeq);
+                    });
                 } else {
                     alert('이미지 업로드에 실패 했습니다.');
                     return false;

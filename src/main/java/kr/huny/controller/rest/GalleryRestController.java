@@ -25,7 +25,7 @@ public class GalleryRestController {
     GalleryService galleryService;
 
     @RequestMapping(value="/add", method = RequestMethod.POST)
-    public AjaxJsonCommon<GallerySimple> uploadImage(@RequestParam(required = true)MultipartFile file, HttpServletRequest request)
+    public AjaxJsonCommon<GallerySimple> uploadImage(@RequestParam(required = true)MultipartFile[] file, HttpServletRequest request)
     {
         Locale locale = localeResolver.resolveLocale(request);
 
