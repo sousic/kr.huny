@@ -42,8 +42,7 @@
                     <a href="javascript:GetValue()">저장</a>
                 </div>
             </div>
-            <textarea id="content"></textarea>
-            </form>
+            <textarea id="content" style="display:none;"></textarea>
             <%--<div class="form-group">
                 <span>첨부파일</span>
                 <div class="row preview">
@@ -54,7 +53,7 @@
             <div class="form-group">
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
+                    <span>첨부파일...</span>
                     <!-- The file input field used as target for the file upload widget -->
                     <input id="fileupload" type="file" name="file" multiple>
                 </span>
@@ -68,6 +67,7 @@
                 <div id="files" class="files"></div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 <script>
@@ -76,11 +76,11 @@
     $(function () {
         'use strict';
         // Change this to the location of your server-side upload handler:
-        var url = '<c:url value="/api/attachment/add"/>';
+        var url = '<c:url value="/api/attachment/add"/>';//,
             /*uploadButton = $('<button/>')
                 .addClass('btn btn-primary')
                 .prop('disabled', true)
-                .text('Processing...')
+                .text('업로드중...')
                 .on('click', function () {
                     var $this = $(this),
                         data = $this.data();
@@ -137,7 +137,7 @@
             }
             if (index + 1 === data.files.length) {
                 data.context.find('button')
-                    .text('Upload')
+                    .text('올리기')
                     .prop('disabled', !!data.files.error);
             }
         }).on('fileuploadprogressall', function (e, data) {
@@ -151,12 +151,11 @@
                 if (file.urlPath) {
                     var link = $('<a>')
                         .attr('target', '_blank')
-                        .prop('href', file.urlPath + file.attachSeq)
-                        .prop('class', 'addFiles')
+                        .prop('href', file.urlPath + file.attachSeq);
+                    var delLink = $("<button>")
+                        .text('삭제')
+                        .prop('class','addFiles btn-sm btn-danger')
                         .attr('data-fseq', file.attachSeq);
-                    var delLink = $("<spna>")
-                        .text('[X]')
-                        .prop('class','btn-sm btn-dangder');
                     $(data.context.children()[index])
                         .wrap(link);
                     $(data.context.children()[index]).parent().append(delLink);
@@ -169,13 +168,19 @@
             });
         }).on('fileuploadfail', function (e, data) {
             $.each(data.files, function (index) {
-                var error = $('<span class="text-danger"/>').text('File upload failed.');
+                var error = $('<span class="text-danger"/>').text('파일 올리기 실패.');
                 $(data.context.children()[index])
                     .append('<br>')
                     .append(error);
             });
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+
+    $("#files").on("click", ".addFiles", function(){
+        alert($(this).data("fseq"));
+        $(this).parent("div").remove();
+        return false;
     });
 </script>
 <script type="text/javascript">
