@@ -16,4 +16,8 @@ public class AttachmentSimple {
     private String urlPath;
 
     private AttachmentStatus status;
+
+    private String fileName;
+
+    private long size;
 }

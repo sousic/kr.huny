@@ -42,48 +42,59 @@ public class GalleryService {
 
         try {
             AjaxJsonCommon<AttachmentSimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
+
             CommonPrincipal commonPrincipal = commonService.getCommonPrincipal();
 
             for(MultipartFile file : files) {
-                Gallery gallery = new Gallery();
-                gallery.setUserSeq(commonPrincipal.getSeq());
-                gallery.setUsername(commonPrincipal.getUsername());
-                gallery.setStatus(AttachmentStatus.QUEUE);
-                gallery.setFileName(file.getOriginalFilename());
-                gallery.setSize(file.getSize());
-                gallery.setContentType(file.getContentType());
-                gallery.setSaveName(String.format("%s.%s", UUID.randomUUID().toString(), FilenameUtils.getExtension(gallery.getFileName())));
-                gallery.setSavePath(CommonUtils.GetSavePath(storageImagePath));
+                if(file.getContentType().indexOf("image/") > -1) {
+                    Gallery gallery = new Gallery();
+                    gallery.setUserSeq(commonPrincipal.getSeq());
+                    gallery.setUsername(commonPrincipal.getUsername());
+                    gallery.setStatus(AttachmentStatus.QUEUE);
+                    gallery.setFileName(file.getOriginalFilename());
+                    gallery.setSize(file.getSize());
+                    gallery.setContentType(file.getContentType());
+                    gallery.setSaveName(String.format("%s.%s", UUID.randomUUID().toString(), FilenameUtils.getExtension(gallery.getFileName())));
+                    gallery.setSavePath(CommonUtils.GetSavePath(storageImagePath));
 
-                Path destPath = Paths.get(gallery.getSavePath());
+                    Path destPath = Paths.get(gallery.getSavePath());
 
-                if (Files.notExists(destPath)) {
-                    Files.createDirectories(destPath);
+                    if (Files.notExists(destPath)) {
+                        Files.createDirectories(destPath);
+                    }
+
+                    destPath = destPath.resolve(gallery.getSaveName());
+                    if (Files.notExists(destPath)) {
+                        Files.write(destPath, file.getBytes());
+                    }
+
+                    galleryRepository.save(gallery);
+
+                    //파일저장
+                    log.debug("gallery =>" + gallery);
+
+                    //반환 결과 생성
+
+                    AttachmentSimple gallerySimple = AttachmentSimple.builder()
+                            .urlPath("/gallery/")
+                            .status(gallery.getStatus())
+                            .attachSeq(gallery.getGallerySeq())
+                            .build();
+
+                    gallerySimpleAjaxJsonCommon.addResultItem(gallerySimple);
+                }
+                else
+                {
+                    AttachmentSimple gallerySimple = AttachmentSimple.builder()
+                            .attachSeq(-1)
+                            .build();
+
+                    gallerySimpleAjaxJsonCommon.addResultItem(gallerySimple);
                 }
 
-                destPath = destPath.resolve(gallery.getSaveName());
-                if (Files.notExists(destPath)) {
-                    Files.write(destPath, file.getBytes());
-                }
-
-                galleryRepository.save(gallery);
-
-                //파일저장
-                log.debug("gallery =>" + gallery);
-
-                //반환 결과 생성
-
-                AttachmentSimple gallerySimple = AttachmentSimple.builder()
-                        .urlPath("/gallery/")
-                        .status(gallery.getStatus())
-                        .attachSeq(gallery.getGallerySeq())
-                        .build();
-
-                gallerySimpleAjaxJsonCommon.addResultItem(gallerySimple);
+                gallerySimpleAjaxJsonCommon.setRetCode(1);
+                gallerySimpleAjaxJsonCommon.setRetMsg(commonService.getResourceBudleMessage(locale, "messages.gallery", "gallery.msg.api.save.ok"));
             }
-
-            gallerySimpleAjaxJsonCommon.setRetCode(1);
-            gallerySimpleAjaxJsonCommon.setRetMsg(commonService.getResourceBudleMessage(locale, "messages.gallery", "gallery.msg.api.save.ok"));
 
             return gallerySimpleAjaxJsonCommon;
         }

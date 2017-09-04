@@ -32,6 +32,8 @@ public class AttachmentRestController {
         AttachmentSimple gallerySimple = AttachmentSimple.builder()
                 .urlPath("/attchment/")
                 .status(AttachmentStatus.QUEUE)
+                .fileName(file[0].getOriginalFilename())
+                .size(file[0].getSize())
                 .attachSeq(1)
                 .build();
 
