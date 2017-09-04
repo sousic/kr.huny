@@ -5,7 +5,7 @@
 <%@ page session="false" %>
 <html>
 <head>
-    <jsp:include page="../../include/header.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
     <title><spring:message code="common.title"/></title>
 </head>
 <body>
@@ -38,7 +38,16 @@
                         <td>${category.restName}</td>
                         <td>${category.createCount}</td>
                         <td>${category.removeCount}</td>
-                        <td>${category.used}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${category.used eq 'true'}">
+                                    사용
+                                </c:when>
+                                <c:when test="${category.used eq 'false'}">
+                                    미사용
+                                </c:when>
+                            </c:choose>
+                        </td>
                         <td>${category.regdate}</td>
                         <td>${category.modifyDate}</td>
                         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
@@ -140,6 +149,6 @@
         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
     </tr>
 </script>
-<jsp:include page="../../include/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 </body>
 </html>

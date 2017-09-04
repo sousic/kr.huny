@@ -85,7 +85,7 @@ public class BoardCategoryService {
             return "tools/category/write";
         }
 
-        if(categoryRegister.getCategorySeq() == null) {
+        if(categoryRegister.getCategorySeq() == 0) {
             //중복 확인
             boardCategory = boardCategoryRepository.findByRestName(categoryRegister.getRestName());
 
@@ -100,8 +100,11 @@ public class BoardCategoryService {
                             .categoryName(categoryRegister.getCategoryName())
                             .restName(categoryRegister.getRestName())
                             .isUsed(categoryRegister.isUsed())
-                            .categorySeq(categoryRegister.getCategorySeq())
                             .build();
+
+        if(categoryRegister.getCategorySeq() > 0) {
+            boardCategory.setCategorySeq(categoryRegister.getCategorySeq());
+        }
 
         boardCategoryRepository.save(boardCategory);
 
@@ -109,20 +112,24 @@ public class BoardCategoryService {
     }
 
 
-    public void findCategory(Long categorySeq, Model model) {
+    public void findCategory(long categorySeq, Model model) {
         BoardCategory boardCategory = boardCategoryRepository.findOne(categorySeq);
 
-        CategoryRegister categoryRegister = CategoryRegister.builder()
-                .categoryName(boardCategory.getCategoryName())
-                .restName(boardCategory.getRestName())
-                .isUsed(boardCategory.isUsed())
-                .categorySeq(boardCategory.getCategorySeq())
-                .build();
-
-        if(Objects.nonNull(categoryRegister))
-        {
-            model.addAttribute("categoryRegister", categoryRegister);
+        CategoryRegister categoryRegister;
+        if(categorySeq > 0) {
+            categoryRegister = CategoryRegister.builder()
+                    .categoryName(boardCategory.getCategoryName())
+                    .restName(boardCategory.getRestName())
+                    .isUsed(boardCategory.isUsed())
+                    .categorySeq(boardCategory.getCategorySeq())
+                    .build();
         }
+        else
+        {
+            categoryRegister = CategoryRegister.builder().build();
+        }
+
+        model.addAttribute("categoryRegister", categoryRegister);
     }
 
     public AjaxJsonCommon categoryDelete(long categorySeq, Locale locale) {

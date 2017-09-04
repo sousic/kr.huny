@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Builder
 @Data
 public class CategoryRegister {
-    private Long categorySeq;
+    private long categorySeq = 0;
     @NotNull
     @Size(max = 50)
     private String categoryName;

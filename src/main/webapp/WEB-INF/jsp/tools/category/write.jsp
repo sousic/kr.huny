@@ -5,7 +5,7 @@
 <%@ page session="false" %>
 <html>
 <head>
-    <jsp:include page="../../include/header.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
     <title><spring:message code="common.title"/></title>
 </head>
 <body>
@@ -52,6 +52,6 @@
 </div>
 <script type="text/javascript">
 </script>
-<jsp:include page="../../include/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 </body>
 </html>

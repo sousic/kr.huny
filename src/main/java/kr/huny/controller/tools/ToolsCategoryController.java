@@ -50,9 +50,8 @@ public class ToolsCategoryController {
     @RequestMapping(value="write", method = RequestMethod.GET)
     public String write(@RequestParam(value = "seq", required = false, defaultValue = "0") long categorySeq, Model model)
     {
-        if(categorySeq > 0) {
-            boardCategoryService.findCategory(categorySeq, model);
-        }
+        boardCategoryService.findCategory(categorySeq, model);
+
         return "tools/category/write";
     }
 
