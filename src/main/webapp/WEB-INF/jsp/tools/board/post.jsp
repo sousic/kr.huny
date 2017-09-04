@@ -75,7 +75,7 @@
                 <h4 class="modal-title">첨부파일</h4>
             </div>
             <div class="modal-body">
-                <p><input type="file" name="file" multiple/></p>
+                <p><input type="file" id="addFiles" name="file" multiple/></p>
                 <p>최대 10MB까지 올리수 있습니다.</p>
             </div>
             <div class="modal-body-popover"></div>
@@ -114,8 +114,9 @@
             $("#popLayer").modal('show');
             e.preventDefault();
         });
-        $("#file").on("change", function(e) {
-
+        $("#addFiles").on("change", function(e) {
+            console.log('chnaged...');
+            //$("#popLayer").modal('hide');
            e.preventDefault();
         });
     });
