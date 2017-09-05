@@ -5,7 +5,7 @@ import kr.huny.common.CommonUtils;
 import kr.huny.model.db.Gallery;
 import kr.huny.model.db.common.AjaxJsonCommon;
 import kr.huny.model.db.embedded.AttachmentStatus;
-import kr.huny.model.db.web.AttachmentSimple;
+import kr.huny.model.db.web.GallerySimple;
 import kr.huny.repository.GalleryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -38,10 +38,10 @@ public class GalleryService {
     @Autowired
     GalleryRepository galleryRepository;
 
-    public AjaxJsonCommon<AttachmentSimple> updateImage(Locale locale, MultipartFile[] files) {
+    public AjaxJsonCommon<GallerySimple> updateImage(Locale locale, MultipartFile[] files) {
 
         try {
-            AjaxJsonCommon<AttachmentSimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
+            AjaxJsonCommon<GallerySimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
 
             CommonPrincipal commonPrincipal = commonService.getCommonPrincipal();
 
@@ -75,18 +75,18 @@ public class GalleryService {
 
                     //반환 결과 생성
 
-                    AttachmentSimple gallerySimple = AttachmentSimple.builder()
+                    GallerySimple gallerySimple = GallerySimple.builder()
                             .urlPath("/gallery/")
                             .status(gallery.getStatus())
-                            .attachSeq(gallery.getGallerySeq())
+                            .fSeq(gallery.getGallerySeq())
                             .build();
 
                     gallerySimpleAjaxJsonCommon.addResultItem(gallerySimple);
                 }
                 else
                 {
-                    AttachmentSimple gallerySimple = AttachmentSimple.builder()
-                            .attachSeq(-1)
+                    GallerySimple gallerySimple = GallerySimple.builder()
+                            .fSeq(-1)
                             .build();
 
                     gallerySimpleAjaxJsonCommon.addResultItem(gallerySimple);

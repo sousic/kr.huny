@@ -18,7 +18,7 @@
 <script src="<%=request.getContextPath()%>/resources/js/summernote/lang/summernote-ko-KR.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/handlebars.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/date.js"></script>
-<script src="<%=request.getContextPath()%>/resources/js/utils.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/utils.js?<%=System.currentTimeMillis()%>"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>

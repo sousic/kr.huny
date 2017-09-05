@@ -30,7 +30,7 @@ public class AttachmentRestController {
         AjaxJsonCommon<AttachmentSimple> gallery = new AjaxJsonCommon<>();
 
         AttachmentSimple gallerySimple = AttachmentSimple.builder()
-                .urlPath("/attchment/")
+                .urlPath("/attachment/")
                 .status(AttachmentStatus.QUEUE)
                 .fileName(file[0].getOriginalFilename())
                 .size(file[0].getSize())

@@ -59,10 +59,11 @@
             <div class="form_button_container">
                 <div class="text-right">
                     <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
-                    <a href="javascript:GetValue()">저장</a>
+                    <a href="javascript:Posts.GetValue()">저장</a>
                 </div>
             </div>
             <textarea id="content" style="display:none;"></textarea>
+            <input type="text" id="galleryQueueList"/>
             </form>
         </div>
     </div>
@@ -77,6 +78,10 @@
             <div class="modal-body">
                 <p><input type="file" id="addFiles" name="file" multiple/></p>
                 <p>최대 10MB까지 올리수 있습니다.</p>
+                <h3>선택된 파일들</h3>
+                <ul id="file-list">
+                    <li class="no-items">(파일이 선택되지 않음)</li>
+                </ul>
             </div>
             <div class="modal-body-popover"></div>
             <div class="modal-footer">
@@ -94,7 +99,11 @@
                 width:720,
                 callbacks:{
                     onImageUpload:function(files) {
-                        sendFile(files,this);
+                        Posts.sendImageFile(files,this);
+                    },
+                    onMediaDelete : function($target) {
+                        Posts.removeGalleryQueueItem($target.attr("src").replace("/gallery/",""));
+                        console.log($target.attr("src"));
                     }
                 }
             });
@@ -114,57 +123,99 @@
             $("#popLayer").modal('show');
             e.preventDefault();
         });
+        
+        
         $("#addFiles").on("change", function(e) {
-            console.log('chnaged...');
-            //$("#popLayer").modal('hide');
-           e.preventDefault();
+            $("#file-list").empty();
+            Posts.traverseFiles(this.files);
+            e.preventDefault();
         });
     });
-
-    function GetValue()
-    {
-        if ($('#summernote').summernote('isEmpty')) {
-            alert('contents is empty');
-        }
-        $("#content").text($("#summernote").summernote('code'));
-    }
-
-    function sendFile(files, el)
-    {
-        var form_data = new FormData();
-        var textType = /image.*/;
-        for(var i = 0; i < files.length;i++) {
-            var file = files[i];
-            if(file.type.match(textType))
-                form_data.append('file', files[i]);
-        }
-        $.ajax({
-            data:form_data,
-            type:"POST",
-            url:'<c:url value="/api/gallery/add"/>',
-            cache:false,
-            contentType:false,
-            enctype:'multipart/form-data',
-            processData:false,
-            success:function(data) {
-                if(data.retCode == 1) {
-                    if(data.result.attachSeq > 0) {
+    var Posts = {
+        galleryQueueList : [],
+        sendImageFile:function(files, el)
+        {
+            var form_data = new FormData();
+            var textType = /image.*/;
+            for(var i = 0; i < files.length;i++) {
+                var file = files[i];
+                if(file.type.match(textType))
+                    form_data.append('file', files[i]);
+            }
+            $.ajax({
+                data:form_data,
+                type:"POST",
+                url:'<c:url value="/api/gallery/add"/>',
+                cache:false,
+                contentType:false,
+                enctype:'multipart/form-data',
+                processData:false,
+                success:function(data) {
+                    if(data.retCode == 1) {
                         data.result.forEach(function (item) {
-                            $(el).summernote('editor.insertImage', item.urlPath + item.attachSeq);
+                            $(el).summernote('editor.insertImage', item.urlPath + item.fseq);
+                            this.Posts.addGalleryQueueItem(item.fseq);
                         });
-                    }
-                    else
-                    {
-                        alert('이미지만 올릴수 있습니다.');
+                    } else {
+                        alert('이미지 업로드에 실패 했습니다.');
                         return false;
                     }
-                } else {
-                    alert('이미지 업로드에 실패 했습니다.');
-                    return false;
                 }
+            });
+        },
+        addGalleryQueueItem:function(seq) {
+            if(!this.galleryQueueList.contains(seq)) {
+                this.galleryQueueList.push(seq);
+                console.log(this.galleryQueueList);
             }
-        });
-    }
+        },
+        removeGalleryQueueItem:function(seq) {
+            //if(this.galleryQueueList.contains(seq)) {
+            this.galleryQueueList.delete(parseInt(seq));// = this.galleryQueueList.filter(function (item) {  return item.toString() !== seq.toString() });
+            //}
+            console.log(this.galleryQueueList);
+        },
+        traverseFiles:function(files)
+        {
+            var form_data = new FormData();
+            form_data.append(files);
+            /*$.ajax({
+                data:form_data,
+                type:"POST",
+                url:'<c:url value="/api/gallery/add"/>',
+                cache:false,
+                contentType:false,
+                enctype:'multipart/form-data',
+                processData:false,
+                success:function(data) {
+                    if(data.retCode == 1) {
+                        if(data.result.fSeq > 0) {
+                            data.result.forEach(function (item) {
+                                $(el).summernote('editor.insertImage', item.urlPath + item.fSeq);
+                            });
+                        }
+                        else
+                        {
+                            alert('이미지만 올릴수 있습니다.');
+                            return false;
+                        }
+                    } else {
+                        alert('파일 업로드에 실패 했습니다.');
+                        return false;
+                    }
+                }
+            });*/
+        },
+        GetValue:function()
+        {
+            if ($('#summernote').summernote('isEmpty')) {
+                alert('contents is empty');
+            }
+            $("#content").text($("#summernote").summernote('code'));
+            $("#galleryQueueList").val(this.galleryQueueList);
+        }
+    };
+
 </script>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 </body>
