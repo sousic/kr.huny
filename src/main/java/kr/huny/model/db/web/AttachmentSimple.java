@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttachmentSimple {
-    private long attachSeq;
+    private long fSeq;
 
     private String urlPath;
 
@@ -20,4 +20,6 @@ public class AttachmentSimple {
     private String fileName;
 
     private long size;
+
+    private String fileSize;
 }

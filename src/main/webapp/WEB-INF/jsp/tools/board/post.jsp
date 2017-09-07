@@ -38,7 +38,7 @@
                     <li>
                         <h5><a href="#;" target="_blank">선수스테미너변경요청.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
                     </li>
-                    <li>
+                    <%--<li>
                         <h5><a href="#;">선수스테미너변경요청222.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
                     </li>
                     <li>
@@ -52,7 +52,7 @@
                     </li>
                     <li>
                         <h5><a href="#;">선수스테미너변경요청6666.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                    </li>
+                    </li>--%>
                 </ul>
             </div>
 
@@ -179,33 +179,40 @@
         traverseFiles:function(files)
         {
             var form_data = new FormData();
-            form_data.append(files);
-            /*$.ajax({
+            for(var i = 0; i < files.length;i++) {
+                form_data.append('file', files[i]);
+            }
+            $.ajax({
                 data:form_data,
                 type:"POST",
-                url:'<c:url value="/api/gallery/add"/>',
+                url:'<c:url value="/api/attachment/add"/>',
                 cache:false,
                 contentType:false,
                 enctype:'multipart/form-data',
                 processData:false,
                 success:function(data) {
                     if(data.retCode == 1) {
-                        if(data.result.fSeq > 0) {
-                            data.result.forEach(function (item) {
-                                $(el).summernote('editor.insertImage', item.urlPath + item.fSeq);
-                            });
-                        }
-                        else
-                        {
-                            alert('이미지만 올릴수 있습니다.');
-                            return false;
-                        }
+                        Posts.updateAttachementList(data.result);
                     } else {
                         alert('파일 업로드에 실패 했습니다.');
                         return false;
                     }
                 }
-            });*/
+            });
+        },
+        updateAttachementList:function(list)
+        {
+            //$("#files")
+            for(var i = 0; i < list.length;i++)
+            {
+                var linkBtn = $("<a/>")
+                    .attr("href","/attachment/" + list[i].fseq).attr("target","_blank").text(list[i].fileName + '(' + list[i].fileSize + ') ');
+                var delBtn = $("<button/>").attr("class","btn btn-danger btn-xs").text("삭제");
+                var wrap = $("<h5/>").html(linkBtn).append(delBtn);
+                var li = $("<li/>").html(wrap);
+                $("#files").append(li);
+            }
+            $("#popLayer").modal('hide');
         },
         GetValue:function()
         {

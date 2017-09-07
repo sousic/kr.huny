@@ -26,7 +26,7 @@ public class GalleryRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        return galleryService.updateImage(locale, file);
+        return galleryService.uploadImage(locale, file);
     }
 
     @RequestMapping(value = "/remove/{fseq}", method = RequestMethod.GET)

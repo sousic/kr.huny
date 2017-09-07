@@ -9,6 +9,7 @@
                 <value>classpath:messages/user</value>
                 <value>classpath:messages/category</value>
                 <value>classpath:messages/gallery</value>
+                <value>classpath:messages/attachment</value>
             </list>
         </property>
 

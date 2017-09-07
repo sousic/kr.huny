@@ -24,4 +24,7 @@ public class ApplicationPropertyConfig {
 
     @Value("${stroage.thumbnail.path}")
     private String storageThumbnailPath;
+
+    @Value("${stroage.attachment.path}")
+    private String storageAttachmentPath;
 }

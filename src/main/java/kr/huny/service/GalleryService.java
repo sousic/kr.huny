@@ -2,6 +2,7 @@ package kr.huny.service;
 
 import kr.huny.authentication.common.CommonPrincipal;
 import kr.huny.common.CommonUtils;
+import kr.huny.common.MediaUtils;
 import kr.huny.configuration.ApplicationPropertyConfig;
 import kr.huny.model.db.Gallery;
 import kr.huny.model.db.common.AjaxJsonCommon;
@@ -29,6 +30,12 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class GalleryService {
+    public static class GalleryExtention
+    {
+        public ByteArrayOutputStream byteArrayOutputStream;
+        public String contentType;
+    }
+
     @Autowired
     ApplicationPropertyConfig applicationPropertyConfig;
     @Autowired
@@ -36,7 +43,7 @@ public class GalleryService {
     @Autowired
     GalleryRepository galleryRepository;
 
-    public AjaxJsonCommon<GallerySimple> updateImage(Locale locale, MultipartFile[] files) {
+    public AjaxJsonCommon<GallerySimple> uploadImage(Locale locale, MultipartFile[] files) {
 
         try {
             AjaxJsonCommon<GallerySimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
@@ -69,7 +76,10 @@ public class GalleryService {
                     destPath = destPath.resolve(gallery.getSaveName());
                     if (Files.notExists(destPath)) {
                         Files.write(destPath, file.getBytes());
-                        CommonUtils.makeThumbnail(destThumbPath.toString(), 150, 150, BufferedImage.TYPE_INT_RGB, file.getInputStream(), gallery.getSaveThumbName());
+
+                        log.debug("[image type check] => " +  MediaUtils.getMediaType(gallery.getContentType()));
+                        if(MediaUtils.getMediaType(gallery.getContentType()) != null)
+                            CommonUtils.makeThumbnail(destThumbPath.toString(), 150, 150, BufferedImage.TYPE_INT_RGB, file.getInputStream(), gallery.getSaveThumbName());
                     }
 
                     galleryRepository.save(gallery);
@@ -165,5 +175,26 @@ public class GalleryService {
         }
 
         return gallerySimpleAjaxJsonCommon;
+    }
+
+    public GalleryExtention getGallery(Locale locale, long fSeq) throws IOException
+    {
+        GalleryExtention galleryExtention = new GalleryExtention();
+
+        Gallery gallery = galleryRepository.findOne(fSeq);
+
+        if(Objects.isNull(gallery))
+            throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.objects.notnull"));
+
+        try {
+            galleryExtention.contentType = gallery.getContentType();
+            galleryExtention.byteArrayOutputStream = getImage(locale, gallery);
+
+            return galleryExtention;
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.exception.io"));
+        }
     }
 }

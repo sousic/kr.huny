@@ -1,14 +1,12 @@
 package kr.huny.controller.rest;
 
 import kr.huny.model.db.common.AjaxJsonCommon;
-import kr.huny.model.db.embedded.AttachmentStatus;
 import kr.huny.model.db.web.AttachmentSimple;
+import kr.huny.service.AttachmentService;
+import kr.huny.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
@@ -21,24 +19,24 @@ import java.util.Locale;
 public class AttachmentRestController {
     @Autowired
     CookieLocaleResolver localeResolver;
+    @Autowired
+    CommonService commonService;
+    @Autowired
+    AttachmentService attachmentService;
 
     @RequestMapping(value="/add", method = RequestMethod.POST)
     public AjaxJsonCommon<AttachmentSimple> uploadAttachment(@RequestParam(required = true)MultipartFile[] file, HttpServletRequest request)
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        AjaxJsonCommon<AttachmentSimple> gallery = new AjaxJsonCommon<>();
+        return attachmentService.uploadAttachments(locale, file);
+    }
 
-        AttachmentSimple gallerySimple = AttachmentSimple.builder()
-                .urlPath("/attachment/")
-                .status(AttachmentStatus.QUEUE)
-                .fileName(file[0].getOriginalFilename())
-                .size(file[0].getSize())
-                .attachSeq(1)
-                .build();
+    @RequestMapping(value="/remove/{fseq}", method = RequestMethod.GET)
+    public AjaxJsonCommon<AttachmentSimple> removeAttachment(@PathVariable long fseq, HttpServletRequest request)
+    {
+        Locale locale = localeResolver.resolveLocale(request);
 
-        gallery.addResultItem(gallerySimple);
-
-        return gallery;
+        return attachmentService.removeQueueAttachments(locale, fseq);
     }
 }
