@@ -2,6 +2,7 @@ package kr.huny.service;
 
 import kr.huny.authentication.common.CommonPrincipal;
 import kr.huny.common.CommonUtils;
+import kr.huny.configuration.ApplicationPropertyConfig;
 import kr.huny.model.db.Gallery;
 import kr.huny.model.db.common.AjaxJsonCommon;
 import kr.huny.model.db.embedded.AttachmentStatus;
@@ -10,10 +11,10 @@ import kr.huny.repository.GalleryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -22,17 +23,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
 @Service
 public class GalleryService {
-    @Value("${storage.image.path}")
-    private String storageImagePath;
-
-    @Value("${stroage.thumbnail.path}")
-    private String storageThumbnailPath;
-
+    @Autowired
+    ApplicationPropertyConfig applicationPropertyConfig;
     @Autowired
     CommonService commonService;
     @Autowired
@@ -47,6 +45,7 @@ public class GalleryService {
 
             for(MultipartFile file : files) {
                 if(file.getContentType().indexOf("image/") > -1) {
+                    String tempFileName = UUID.randomUUID().toString();
                     Gallery gallery = new Gallery();
                     gallery.setUserSeq(commonPrincipal.getSeq());
                     gallery.setUsername(commonPrincipal.getUsername());
@@ -54,18 +53,23 @@ public class GalleryService {
                     gallery.setFileName(file.getOriginalFilename());
                     gallery.setSize(file.getSize());
                     gallery.setContentType(file.getContentType());
-                    gallery.setSaveName(String.format("%s.%s", UUID.randomUUID().toString(), FilenameUtils.getExtension(gallery.getFileName())));
-                    gallery.setSavePath(CommonUtils.GetSavePath(storageImagePath));
+                    gallery.setSaveName(String.format("%s.%s", tempFileName, FilenameUtils.getExtension(gallery.getFileName())));
+                    gallery.setSaveThumbName(String.format("%s_thumb.%s", tempFileName, FilenameUtils.getExtension(gallery.getFileName())));
+                    gallery.setSavePath(CommonUtils.GetSavePath());
 
-                    Path destPath = Paths.get(gallery.getSavePath());
+                    Path destPath = Paths.get(applicationPropertyConfig.getStorageImagePath(), gallery.getSavePath());
+                    Path destThumbPath = Paths.get(applicationPropertyConfig.getStorageThumbnailPath(), gallery.getSavePath());
 
                     if (Files.notExists(destPath)) {
                         Files.createDirectories(destPath);
                     }
+                    if(Files.notExists(destThumbPath))
+                        Files.createDirectories(destThumbPath);
 
                     destPath = destPath.resolve(gallery.getSaveName());
                     if (Files.notExists(destPath)) {
                         Files.write(destPath, file.getBytes());
+                        CommonUtils.makeThumbnail(destThumbPath.toString(), 150, 150, BufferedImage.TYPE_INT_RGB, file.getInputStream(), gallery.getSaveThumbName());
                     }
 
                     galleryRepository.save(gallery);
@@ -105,7 +109,7 @@ public class GalleryService {
     }
 
     public ByteArrayOutputStream getImage(Locale locale, Gallery gallery) throws IOException {
-        Path destPath = Paths.get(gallery.getSavePath(), gallery.getSaveName());
+        Path destPath = Paths.get(applicationPropertyConfig.getStorageImagePath(), gallery.getSavePath(), gallery.getSaveName());
         if(Files.exists(destPath))
         {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(destPath.toString()));
@@ -126,5 +130,40 @@ public class GalleryService {
         {
             throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.exception.io"));
         }
+    }
+
+    /**
+     * 대기 이미지 삭제 처리
+     * @param locale
+     * @param fseq
+     * @return
+     */
+    public AjaxJsonCommon<GallerySimple> removeQueueImage(Locale locale, long fseq) {
+        AjaxJsonCommon<GallerySimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
+
+        Gallery gallery = galleryRepository.findByGallerySeqAndStatusEquals(fseq, AttachmentStatus.QUEUE);
+
+        try {
+            if (Objects.nonNull(gallery)) {
+                Path destPath = Paths.get(applicationPropertyConfig.getStorageImagePath(), gallery.getSavePath(), gallery.getSaveName());
+                Path destThumbPath = Paths.get(applicationPropertyConfig.getStorageThumbnailPath(), gallery.getSavePath(), gallery.getSaveThumbName());
+
+                if (Files.exists(destPath)) {
+                    Files.delete(destPath);
+                    Files.delete(destThumbPath);
+
+                    galleryRepository.delete(fseq);
+                }
+            }
+
+            gallerySimpleAjaxJsonCommon.setRetCode(1);
+            gallerySimpleAjaxJsonCommon.setRetMsg(commonService.getResourceBudleMessage(locale, "messages.gallery", "gallery.msg.api.remove.ok"));
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.exception.io"));
+        }
+
+        return gallerySimpleAjaxJsonCommon;
     }
 }

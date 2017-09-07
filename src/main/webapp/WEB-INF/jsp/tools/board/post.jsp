@@ -170,9 +170,10 @@
             }
         },
         removeGalleryQueueItem:function(seq) {
-            //if(this.galleryQueueList.contains(seq)) {
-            this.galleryQueueList.delete(parseInt(seq));// = this.galleryQueueList.filter(function (item) {  return item.toString() !== seq.toString() });
-            //}
+            if(this.galleryQueueList.contains(seq)) {
+                this.galleryQueueList.delete(parseInt(seq));
+                $.getJSON('<c:url value="/api/gallery/remove/"/>'+seq);
+            }
             console.log(this.galleryQueueList);
         },
         traverseFiles:function(files)

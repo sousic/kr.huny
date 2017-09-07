@@ -14,7 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="gallery")
+@Table(name="gallery", indexes = {
+        @Index(name="gallery_idx_00_gseq_status", columnList = "gseq, status" )
+})
 public class Gallery {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="gseq")
@@ -35,6 +37,8 @@ public class Gallery {
     private String fileName;
     //저장파일명
     private String saveName;
+    //저장파일명
+    private String saveThumbName;
 
     private String savePath;
 

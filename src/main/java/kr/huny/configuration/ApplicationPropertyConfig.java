@@ -18,4 +18,10 @@ public class ApplicationPropertyConfig {
 
     @Value("${social.facebook.appSecret}")
     private String app_secret;
+
+    @Value("${storage.image.path}")
+    private String storageImagePath;
+
+    @Value("${stroage.thumbnail.path}")
+    private String storageThumbnailPath;
 }

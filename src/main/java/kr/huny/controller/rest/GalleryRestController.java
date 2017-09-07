@@ -5,10 +5,7 @@ import kr.huny.model.db.web.GallerySimple;
 import kr.huny.service.GalleryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
@@ -29,8 +26,14 @@ public class GalleryRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        AjaxJsonCommon<GallerySimple> gallery = galleryService.updateImage(locale, file);
+        return galleryService.updateImage(locale, file);
+    }
 
-        return gallery;
+    @RequestMapping(value = "/remove/{fseq}", method = RequestMethod.GET)
+    public AjaxJsonCommon<GallerySimple> removeImage(@PathVariable long fseq, HttpServletRequest request)
+    {
+        Locale locale = localeResolver.resolveLocale(request);
+
+        return galleryService.removeQueueImage(locale, fseq);
     }
 }
