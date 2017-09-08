@@ -39,7 +39,7 @@ public class BoardFreeRepositoryTest {
                 .restName("free")
                 .createCount(10)
                 .removeCount(0)
-                .isUsed(true)
+                .used(true)
                 .build();
 
         boardCategoryRepository.save(boardCategory);

@@ -1,4 +1,4 @@
-package kr.huny.model.db.web;
+package kr.huny.model.db.web.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

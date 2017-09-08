@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 @Data
 @Entity
 @Table(name = "board_Category",
@@ -37,7 +38,7 @@ public class BoardCategory {
 
     private int removeCount;
 
-    private boolean isUsed;
+    private boolean used;
 
     @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Date regdate;

@@ -31,7 +31,7 @@ public class BoardCategoryRepositoryTest {
                 .categoryName("자유게시판")
                 .createCount(10)
                 .removeCount(0)
-                .isUsed(true)
+                .used(true)
                 .build();
     }
 

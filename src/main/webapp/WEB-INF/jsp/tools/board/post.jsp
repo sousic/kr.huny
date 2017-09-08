@@ -13,17 +13,23 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-sm-8 col-md-offset-2">
-            <form method="post" action="">
+            <form method="post" action="<c:url value="/tools/board/post"/>" onsubmit="return Posts.GetValue();">
             <div class="form_header">
                 <span>게시물 등록</span>
             </div>
             <div class="form-group">
-                <select id="category" name="category" class="form-control">
+                <select id="categorySeq" name="categorySeq" class="form-control" required="required">
                     <option value="0">카테고리선택</option>
+                    <c:forEach var="cate" items="${category}">
+                    <option value="${cate.categorySeq}">${cate.categoryName}</option>
+                    </c:forEach>
                 </select>
+                <c:if test="${categoryNotFound == true}">
+                <span class="text-danger"><spring:message code="post.msg.form.category.notfound"/></span>
+                </c:if>
             </div>
             <div class="form-group">
-                <input type="text" id="title" name="title" placeholder="제목" class="form-control"/>
+                <input type="text" id="title" name="title" placeholder="<spring:message code="post.msg.form.placeholder.title"/>" class="form-control" required="required"/>
             </div>
             <div class="form-group">
                 <div id="summernote"></div>
@@ -35,10 +41,10 @@
             <div class="form-group">
                 <span>첨부파일</span>
                 <ul id="files" class="list-inline">
-                    <li>
-                        <h5><a href="#;" target="_blank">선수스테미너변경요청.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                    </li>
                     <%--<li>
+                        <h5><a href="#;" target="_blank">선수스테미너변경요청.csv</a> <button class="btn btn-danger btn-xs delFile" data-fseq="1">삭제</button></h5>
+                    </li>
+                    <li>
                         <h5><a href="#;">선수스테미너변경요청222.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
                     </li>
                     <li>
@@ -58,12 +64,13 @@
 
             <div class="form_button_container">
                 <div class="text-right">
+                    <input type="submit" value="저장">
                     <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
-                    <a href="javascript:Posts.GetValue()">저장</a>
                 </div>
             </div>
-            <textarea id="content" style="display:none;"></textarea>
-            <input type="text" id="galleryQueueList"/>
+            <textarea id="content" style="display:none;" name="content"></textarea>
+            <input type="text" id="galleryQueueList" name="galleryQueueList"/>
+            <input type="text" id="attachQueueList" name="attachQueueList"/>
             </form>
         </div>
     </div>
@@ -92,21 +99,20 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#summernote').summernote(
-            {
-                lang:'ko-KR',
-                height:350,
-                width:720,
-                callbacks:{
-                    onImageUpload:function(files) {
-                        Posts.sendImageFile(files,this);
-                    },
-                    onMediaDelete : function($target) {
-                        Posts.removeGalleryQueueItem($target.attr("src").replace("/gallery/",""));
-                        console.log($target.attr("src"));
-                    }
+        $('#summernote').summernote({
+            lang:'ko-KR',
+            height:350,
+            callbacks:{
+                onImageUpload:function(files) {
+                    Posts.sendImageFile(files,this);
+                },
+                onMediaDelete : function($target) {
+                    Posts.removeGalleryQueueItem($target.attr("src").replace("/gallery/",""));
+                    console.log($target.attr("src"));
                 }
-            });
+            }
+        });
+
         $("#attatchFile").on("change", function() {
             var fileList = this.files ;
             // 읽기
@@ -130,9 +136,15 @@
             Posts.traverseFiles(this.files);
             e.preventDefault();
         });
+
+        $("#files").on("click",".delFile", function(e) {
+           Posts.removeAttachment($(this));
+           e.preventDefault();
+        });
     });
     var Posts = {
         galleryQueueList : [],
+        attachmentQueueList : [],
         sendImageFile:function(files, el)
         {
             var form_data = new FormData();
@@ -166,7 +178,6 @@
         addGalleryQueueItem:function(seq) {
             if(!this.galleryQueueList.contains(seq)) {
                 this.galleryQueueList.push(seq);
-                console.log(this.galleryQueueList);
             }
         },
         removeGalleryQueueItem:function(seq) {
@@ -174,7 +185,6 @@
                 this.galleryQueueList.delete(parseInt(seq));
                 $.getJSON('<c:url value="/api/gallery/remove/"/>'+seq);
             }
-            console.log(this.galleryQueueList);
         },
         traverseFiles:function(files)
         {
@@ -200,6 +210,16 @@
                 }
             });
         },
+        addAttachmentQueueItem:function(seq) {
+            if(!this.attachmentQueueList.contains(seq)) {
+                this.attachmentQueueList.push(seq);
+            }
+        },
+        removeAttachmentQueueItem:function(seq) {
+            if(this.attachmentQueueList.contains(seq)) {
+                this.attachmentQueueList.delete(parseInt(seq));
+            }
+        },
         updateAttachementList:function(list)
         {
             //$("#files")
@@ -207,20 +227,32 @@
             {
                 var linkBtn = $("<a/>")
                     .attr("href","/attachment/" + list[i].fseq).attr("target","_blank").text(list[i].fileName + '(' + list[i].fileSize + ') ');
-                var delBtn = $("<button/>").attr("class","btn btn-danger btn-xs").text("삭제");
+                var delBtn = $("<button/>").attr("class","btn btn-danger btn-xs delFile").text("삭제").attr("data-fseq", list[i].fseq);
                 var wrap = $("<h5/>").html(linkBtn).append(delBtn);
                 var li = $("<li/>").html(wrap);
                 $("#files").append(li);
+                Posts.addAttachmentQueueItem(list[i].fseq);
             }
             $("#popLayer").modal('hide');
+        },
+        removeAttachment:function (target) {
+            var fseq = parseInt(target.data("fseq"));
+            $.getJSON('<c:url value="/api/attachment/remove/"/>'+ fseq, function (data) {
+                if(data.retCode == 1) {
+                    Posts.removeAttachmentQueueItem(fseq);
+                    target.parents("li").remove();
+                }
+            });
         },
         GetValue:function()
         {
             if ($('#summernote').summernote('isEmpty')) {
                 alert('contents is empty');
+                return false;
             }
             $("#content").text($("#summernote").summernote('code'));
             $("#galleryQueueList").val(this.galleryQueueList);
+            $("#attachQueueList").val(this.attachmentQueueList);
         }
     };
 

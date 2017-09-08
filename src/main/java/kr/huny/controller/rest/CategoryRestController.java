@@ -41,7 +41,7 @@ public class CategoryRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        AjaxJsonCommon ajaxJsonCommon = boardCategoryService.categoryDelete(categorySeq, locale);
+        AjaxJsonCommon ajaxJsonCommon = boardCategoryService.deleteCategory(categorySeq, locale);
 
         return ajaxJsonCommon;
     }

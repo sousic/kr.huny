@@ -1,7 +1,7 @@
 package kr.huny.controller.rest;
 
 import kr.huny.model.db.common.AjaxJsonCommon;
-import kr.huny.model.db.web.GallerySimple;
+import kr.huny.model.db.web.response.GallerySimple;
 import kr.huny.service.GalleryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class GalleryRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        return galleryService.uploadImage(locale, file);
+        return galleryService.insertImage(locale, file);
     }
 
     @RequestMapping(value = "/remove/{fseq}", method = RequestMethod.GET)
@@ -34,6 +34,6 @@ public class GalleryRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        return galleryService.removeQueueImage(locale, fseq);
+        return galleryService.deleteQueueImage(locale, fseq);
     }
 }

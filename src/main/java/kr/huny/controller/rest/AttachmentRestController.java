@@ -1,7 +1,7 @@
 package kr.huny.controller.rest;
 
 import kr.huny.model.db.common.AjaxJsonCommon;
-import kr.huny.model.db.web.AttachmentSimple;
+import kr.huny.model.db.web.response.AttachmentSimple;
 import kr.huny.service.AttachmentService;
 import kr.huny.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class AttachmentRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        return attachmentService.uploadAttachments(locale, file);
+        return attachmentService.insertAttachments(locale, file);
     }
 
     @RequestMapping(value="/remove/{fseq}", method = RequestMethod.GET)
@@ -37,6 +37,6 @@ public class AttachmentRestController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        return attachmentService.removeQueueAttachments(locale, fseq);
+        return attachmentService.deleteQueueAttachments(locale, fseq);
     }
 }

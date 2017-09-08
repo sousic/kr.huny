@@ -4,9 +4,10 @@ import kr.huny.authentication.common.CommonPrincipal;
 import kr.huny.common.CommonUtils;
 import kr.huny.configuration.ApplicationPropertyConfig;
 import kr.huny.model.db.Attachments;
+import kr.huny.model.db.BoardFree;
 import kr.huny.model.db.common.AjaxJsonCommon;
 import kr.huny.model.db.embedded.AttachmentStatus;
-import kr.huny.model.db.web.AttachmentSimple;
+import kr.huny.model.db.web.response.AttachmentSimple;
 import kr.huny.repository.AttachmentsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -22,9 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -86,7 +85,7 @@ public class AttachmentService {
         }
     }
 
-    public AjaxJsonCommon<AttachmentSimple> uploadAttachments(Locale locale, MultipartFile[] files) {
+    public AjaxJsonCommon<AttachmentSimple> insertAttachments(Locale locale, MultipartFile[] files) {
         try {
             AjaxJsonCommon<AttachmentSimple> attachmentSimpleAjaxJsonCommon = new AjaxJsonCommon<>();
 
@@ -151,7 +150,7 @@ public class AttachmentService {
      * @param fseq
      * @return
      */
-    public AjaxJsonCommon<AttachmentSimple> removeQueueAttachments(Locale locale, long fseq) {
+    public AjaxJsonCommon<AttachmentSimple> deleteQueueAttachments(Locale locale, long fseq) {
         AjaxJsonCommon<AttachmentSimple> attachmentSimpleAjaxJsonCommon = new AjaxJsonCommon<>();
 
         Attachments attachments = attachmentsRepository.findByAttachSeqAndStatusEquals(fseq, AttachmentStatus.QUEUE);
@@ -182,4 +181,16 @@ public class AttachmentService {
         return attachmentsRepository.findOne(fseq);
     }
 
+    public void updateAttachQueueList(String attachQueueList, BoardFree boardFree) {
+        List<String> seqList = Arrays.asList(attachQueueList.split(","));
+
+        Attachments attachments;
+
+        for(String seq : seqList) {
+            attachments = attachmentsRepository.findOne(Long.parseLong(seq));
+            attachments.setBoardFree(boardFree);
+            attachments.setStatus(AttachmentStatus.STORED);
+            attachmentsRepository.save(attachments);
+        }
+    }
 }

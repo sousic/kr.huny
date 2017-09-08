@@ -4,10 +4,11 @@ import kr.huny.authentication.common.CommonPrincipal;
 import kr.huny.common.CommonUtils;
 import kr.huny.common.MediaUtils;
 import kr.huny.configuration.ApplicationPropertyConfig;
+import kr.huny.model.db.BoardFree;
 import kr.huny.model.db.Gallery;
 import kr.huny.model.db.common.AjaxJsonCommon;
 import kr.huny.model.db.embedded.AttachmentStatus;
-import kr.huny.model.db.web.GallerySimple;
+import kr.huny.model.db.web.response.GallerySimple;
 import kr.huny.repository.GalleryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -23,9 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -43,7 +42,7 @@ public class GalleryService {
     @Autowired
     GalleryRepository galleryRepository;
 
-    public AjaxJsonCommon<GallerySimple> uploadImage(Locale locale, MultipartFile[] files) {
+    public AjaxJsonCommon<GallerySimple> insertImage(Locale locale, MultipartFile[] files) {
 
         try {
             AjaxJsonCommon<GallerySimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
@@ -148,7 +147,7 @@ public class GalleryService {
      * @param fseq
      * @return
      */
-    public AjaxJsonCommon<GallerySimple> removeQueueImage(Locale locale, long fseq) {
+    public AjaxJsonCommon<GallerySimple> deleteQueueImage(Locale locale, long fseq) {
         AjaxJsonCommon<GallerySimple> gallerySimpleAjaxJsonCommon = new AjaxJsonCommon<>();
 
         Gallery gallery = galleryRepository.findByGallerySeqAndStatusEquals(fseq, AttachmentStatus.QUEUE);
@@ -195,6 +194,20 @@ public class GalleryService {
         catch (IOException e)
         {
             throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.exception.io"));
+        }
+    }
+
+
+    public void updateGalleryQueueList(String galleryQueueList, BoardFree boardFree) {
+        List<String> seqList = Arrays.asList(galleryQueueList.split(","));
+
+        Gallery gallery;
+
+        for(String seq : seqList) {
+            gallery = galleryRepository.findOne(Long.parseLong(seq));
+            gallery.setBoardFree(boardFree);
+            gallery.setStatus(AttachmentStatus.STORED);
+            galleryRepository.save(gallery);
         }
     }
 }

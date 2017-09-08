@@ -1,4 +1,4 @@
-package kr.huny.model.db.web;
+package kr.huny.model.db.web.response;
 
 import kr.huny.model.db.embedded.AttachmentStatus;
 import lombok.AllArgsConstructor;
@@ -10,10 +10,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GallerySimple {
+public class AttachmentSimple {
     private long fSeq;
 
     private String urlPath;
 
     private AttachmentStatus status;
+
+    private String fileName;
+
+    private long size;
+
+    private String fileSize;
 }

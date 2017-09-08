@@ -5,7 +5,7 @@ import kr.huny.model.db.common.AjaxJsonCommon;
 import kr.huny.model.db.common.BoardInfo;
 import kr.huny.model.db.common.BoardPageInfo;
 import kr.huny.model.db.common.PageNaviInfo;
-import kr.huny.model.db.web.CategoryRegister;
+import kr.huny.model.db.web.request.CategoryRegister;
 import kr.huny.repository.BoardCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class BoardCategoryService {
         return tmpList;
     }
 
-    public String addCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, Locale locale) {
+    public String insertCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, Locale locale) {
         BoardCategory boardCategory;
 
         log.debug(categoryRegister.toString());
@@ -99,7 +99,7 @@ public class BoardCategoryService {
         boardCategory = BoardCategory.builder()
                             .categoryName(categoryRegister.getCategoryName())
                             .restName(categoryRegister.getRestName())
-                            .isUsed(categoryRegister.isUsed())
+                            .used(categoryRegister.isUsed())
                             .build();
 
         if(categoryRegister.getCategorySeq() > 0) {
@@ -132,7 +132,7 @@ public class BoardCategoryService {
         model.addAttribute("categoryRegister", categoryRegister);
     }
 
-    public AjaxJsonCommon categoryDelete(long categorySeq, Locale locale) {
+    public AjaxJsonCommon deleteCategory(long categorySeq, Locale locale) {
         AjaxJsonCommon ajaxJsonCommon = new AjaxJsonCommon();
 
         //수량 체크
@@ -149,5 +149,10 @@ public class BoardCategoryService {
         ajaxJsonCommon.setRetMsg(commonService.getResourceBudleMessage(locale,"message.category","category.msg.delete.ok"));
         ajaxJsonCommon.setRetCode(1);
         return ajaxJsonCommon;
+    }
+
+    public List<BoardCategory> findAllWithUsed()
+    {
+        return boardCategoryRepository.findByUsedTrue();
     }
 }

@@ -1,7 +1,7 @@
 package kr.huny.controller.tools;
 
 import kr.huny.model.db.common.BoardInfo;
-import kr.huny.model.db.web.CategoryRegister;
+import kr.huny.model.db.web.request.CategoryRegister;
 import kr.huny.service.BoardCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class ToolsCategoryController {
     {
         Locale locale = localeResolver.resolveLocale(request);
 
-        String redirectView = boardCategoryService.addCategory(categoryRegister, bindingResult, model, locale);
+        String redirectView = boardCategoryService.insertCategory(categoryRegister, bindingResult, model, locale);
 
         if(!StringUtils.isEmpty(redirectView))
             return redirectView;
