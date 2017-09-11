@@ -91,7 +91,15 @@ public class BoardFreeService {
     }
 
     public void getBoardList(Model model, BoardInfo boardInfo, Locale locale) {
+        BoardPageInfo<List<BoardFree>> boardPageInfo = getBoardList(boardInfo);
+
+        model.addAttribute("boardFreeList", boardPageInfo);
+    }
+
+    public BoardPageInfo<List<BoardFree>> getBoardList(BoardInfo boardInfo) {
         BoardPageInfo<List<BoardFree>> boardPageInfo = new BoardPageInfo<>();
+
+        log.debug("boardInfo => " + boardInfo.toString());
 
         Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("boardSeq"));
         Pageable pageable = new PageRequest(boardInfo.getPage()-1, boardInfo.getSize(), sort);
@@ -105,6 +113,6 @@ public class BoardFreeService {
                 .size(boardInfo.getSize())
                 .build());
 
-        model.addAttribute("boardFreeList", boardPageInfo);
+        return boardPageInfo;
     }
 }

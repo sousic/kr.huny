@@ -131,7 +131,7 @@
         $.getJSON(url, function(data) {
             $(data.list).each(function() {
                 var html = template(this);
-                $("#categoryList").html(html);
+                $("#categoryList").append(html);
             });
         });
     }
@@ -139,7 +139,7 @@
 <script type="text/x-handlebars-template" id="entry-categoryItem-template">
     <tr>
         <td>{{categorySeq}}</td>
-        <td>{{categoryName}}</td>
+        <td><a href="<c:url value="/tools/category/write"/>?seq=${categorySeq}">{{categoryName}}</a></td>
         <td>{{restName}}</td>
         <td>{{createCount}}</td>
         <td>{{removeCount}}</td>

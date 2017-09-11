@@ -30,7 +30,7 @@ public class CategoryRestController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public BoardPageInfo<List<BoardCategory>> listJSON(@ModelAttribute BoardInfo boardInfo)
     {
-        log.debug("BoardInfo => " + boardInfo.toString());
+        log.debug("boardInfo => " + boardInfo.toString());
         BoardPageInfo<List<BoardCategory>> listBoardPageInfo = boardCategoryService.getCategoryList(boardInfo);
 
         return listBoardPageInfo;

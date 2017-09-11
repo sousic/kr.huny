@@ -34,8 +34,8 @@
                 <c:forEach var="free" items="${boardFreeList.list}">
                     <tr>
                         <td>${free.boardSeq}</td>
-                        <td><a href="<c:url value="/tools/category/write"/>?seq=${free.boardSeq}">${free.boardCategory.categoryName}</a></td>
-                        <td>${free.title}</td>
+                        <td>${free.boardCategory.categoryName}</td>
+                        <td><a href="<c:url value="/tools/category/write"/>?seq=${free.boardSeq}">${free.title}</a></td>
                         <td>${free.username}</td>
                         <td>${free.regdate}</td>
                         <td>${free.lastDateModify}</td>
@@ -52,7 +52,7 @@
             </div>
             <div class="form_button_container">
                 <div class="text-right">
-                    <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
+                    <a href="<c:url value="/tools/board/post"/>" class="btn btn-default">등록</a>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
             page: ${boardFreeList.pageNaviInfo.currentPage+1},
             maxVisible:10
         }).on('page', function(event,num){
-            var url = "<c:url value="/api/tools/category/list"/>?page=" + num + "&size=${boardFreeList.pageNaviInfo.size}";
+            var url = "<c:url value="/api/tools/board/list"/>?page=" + num + "&size=${boardFreeList.pageNaviInfo.size}";
             refreshList(url);
         });
 
@@ -95,7 +95,7 @@
             $("#deleteLayer").modal("show");
         });
 
-        $("#deleteLayer").on("click", ".btn-danger", function(){
+        /*$("#deleteLayer").on("click", ".btn-danger", function(){
             $.post('<c:url value="/api/tools/category/remove/"/>' + $("#cseq").val(), function (data) {
                 if(data.retCode == 1) {
                     $("#cseq").val("");
@@ -109,34 +109,34 @@
             }).fail(function() {
                alert('잠시 후 다시 이용해 주세요.')
             });
-        });
+        });*/
     });
 
     Handlebars.registerHelper('date', Utils.DateFormate);
 
     function refreshList(url)
     {
-        var template = Handlebars.compile($("#entry-categoryItem-template").html());
-        $("#categoryList").html('');
+        var template = Handlebars.compile($("#entry-freeboardItem-template").html());
+        $("#boardFreeList").html('');
 
         $.getJSON(url, function(data) {
             $(data.list).each(function() {
                 var html = template(this);
-                $("#categoryList").html(html);
+                $("#boardFreeList").append(html);
             });
         });
     }
 </script>
-<script type="text/x-handlebars-template" id="entry-categoryItem-template">
+<script type="text/x-handlebars-template" id="entry-freeboardItem-template">
     <tr>
-        <td>{{categorySeq}}</td>
-        <td>{{categoryName}}</td>
-        <td>{{restName}}</td>
-        <td>{{createCount}}</td>
-        <td>{{removeCount}}</td>
-        <td>{{used}}</td>
-        <td>{{regdate}}</td>
-        <td>{{date modifyDate}}</td>
+        <td>{{boardSeq}}</td>
+        <td>{{boardCategory.categoryName}}</td>
+        <td><a href="<c:url value="/tools/category/write"/>?seq={{boardSeq}}">{{title}}</a></td>
+        <td>{{username}}</td>
+        <td>{{date regdate}}</td>
+        <td>{{date lastDateModify}}</td>
+        <td>{{commentCount}}</td>
+        <td>{{attachmentCount}}</td>
         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
     </tr>
 </script>

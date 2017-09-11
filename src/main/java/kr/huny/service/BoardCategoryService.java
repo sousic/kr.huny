@@ -36,16 +36,7 @@ public class BoardCategoryService {
     CommonService commonService;
 
     public void getCategoryList(Model model, BoardInfo boardInfo, Locale locale) {
-        BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
-
-        Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
-        boardPageInfo.setPageNaviInfo(
-            PageNaviInfo.builder()
-                .currentPage(tmpList.getNumber())
-                .totalPage(tmpList.getTotalPages())
-                .size(boardInfo.getSize())
-                .build()
-        );
+        BoardPageInfo<List<BoardCategory>> boardPageInfo = getCategoryList(boardInfo);
 
         model.addAttribute("categoryList",boardPageInfo);
     }
@@ -53,7 +44,14 @@ public class BoardCategoryService {
     public BoardPageInfo<List<BoardCategory>> getCategoryList(BoardInfo boardInfo) {
         BoardPageInfo<List<BoardCategory>> boardPageInfo = new BoardPageInfo<>();
 
-        Page<BoardCategory> tmpList = getBoardCategories(boardInfo, boardPageInfo);
+        log.debug("boardInfo => " + boardInfo.toString());
+
+        Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("categorySeq"));
+        Pageable pageable = new PageRequest(boardInfo.getPage()-1, boardInfo.getSize(), sort);
+
+        Page<BoardCategory> tmpList = boardCategoryRepository.findAll(pageable);
+
+        boardPageInfo.setList(tmpList.getContent());
         boardPageInfo.setPageNaviInfo(
                 PageNaviInfo.builder()
                         .currentPage(tmpList.getNumber())
@@ -62,16 +60,6 @@ public class BoardCategoryService {
                         .build()
         );
         return boardPageInfo;
-    }
-
-    private Page<BoardCategory> getBoardCategories(BoardInfo boardInfo, BoardPageInfo<List<BoardCategory>> boardPageInfo) {
-        Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("categorySeq"));
-        Pageable pageable = new PageRequest(boardInfo.getPage()-1, boardInfo.getSize(), sort);
-
-        Page<BoardCategory> tmpList = boardCategoryRepository.findAll(pageable);
-
-        boardPageInfo.setList(tmpList.getContent());
-        return tmpList;
     }
 
     public String insertCategory(CategoryRegister categoryRegister, BindingResult bindingResult, Model model, Locale locale) {
