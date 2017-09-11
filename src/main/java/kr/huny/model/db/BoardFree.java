@@ -40,7 +40,7 @@ public class BoardFree {
     private String title;
 
     @Column(columnDefinition = "TEXT")
-    private String context;
+    private String content;
 
     private int attachmentCount;
     private int galleryCount;

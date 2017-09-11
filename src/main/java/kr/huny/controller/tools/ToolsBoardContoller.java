@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -53,8 +54,12 @@ public class ToolsBoardContoller {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(Model model, BoardInfo boardInfo)
+    public String list(Model model, @ModelAttribute BoardInfo boardInfo, HttpServletRequest request)
     {
+        Locale locale = localeResolver.resolveLocale(request);
+
+        boardFreeService.getBoardList(model, boardInfo, locale);
+
         return "tools/board/list";
     }
 }

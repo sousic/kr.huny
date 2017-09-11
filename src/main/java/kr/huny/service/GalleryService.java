@@ -201,13 +201,8 @@ public class GalleryService {
     public void updateGalleryQueueList(String galleryQueueList, BoardFree boardFree) {
         List<String> seqList = Arrays.asList(galleryQueueList.split(","));
 
-        Gallery gallery;
-
         for(String seq : seqList) {
-            gallery = galleryRepository.findOne(Long.parseLong(seq));
-            gallery.setBoardFree(boardFree);
-            gallery.setStatus(AttachmentStatus.STORED);
-            galleryRepository.save(gallery);
+            galleryRepository.updateBoardSeq(boardFree, AttachmentStatus.QUEUE, Long.parseLong(seq));
         }
     }
 }

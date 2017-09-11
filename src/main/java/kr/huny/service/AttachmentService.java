@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,50 +38,6 @@ public class AttachmentService {
     AttachmentsRepository attachmentsRepository;
     @Autowired
     CommonService commonService;
-
-    public AttachmentExtention download(Locale locale, long fseq) {
-        AttachmentExtention attachmentExtention = new AttachmentExtention();
-
-        Attachments attachments = attachmentsRepository.findOne(fseq);
-
-        if(Objects.isNull(attachments))
-            throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.objects.notnull"));
-
-        try {
-            attachmentExtention.attachments = attachments;
-            attachmentExtention.byteArrayOutputStream = getAttachment(locale, attachments);
-
-            return attachmentExtention;
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.exception.io"));
-        }
-    }
-
-    public ByteArrayOutputStream getAttachment(Locale locale, Attachments attachments) throws IOException {
-        Path destPath = Paths.get(applicationPropertyConfig.getStorageAttachmentPath(), attachments.getSavePath(), attachments.getSaveName());
-        if(Files.exists(destPath))
-        {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(destPath.toString()));
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(512);
-
-            int imageByte;
-
-            while((imageByte = bufferedInputStream.read()) != -1)
-            {
-                byteArrayOutputStream.write(imageByte);
-            }
-
-            bufferedInputStream.close();
-
-            return byteArrayOutputStream;
-        }
-        else
-        {
-            throw new RuntimeException(commonService.getResourceBudleMessage(locale, "message.common","common.exception.io"));
-        }
-    }
 
     public AjaxJsonCommon<AttachmentSimple> insertAttachments(Locale locale, MultipartFile[] files) {
         try {
@@ -177,20 +131,17 @@ public class AttachmentService {
         return attachmentSimpleAjaxJsonCommon;
     }
 
-    public Attachments findOne(long fseq) {
-        return attachmentsRepository.findOne(fseq);
+    public Attachments findOneWithDownload(long fseq) {
+        Attachments attachments = attachmentsRepository.findOne(fseq);
+        attachments.setDownloads(attachments.getDownloads()+1);
+        attachmentsRepository.save(attachments);
+        return attachments;
     }
 
     public void updateAttachQueueList(String attachQueueList, BoardFree boardFree) {
         List<String> seqList = Arrays.asList(attachQueueList.split(","));
-
-        Attachments attachments;
-
         for(String seq : seqList) {
-            attachments = attachmentsRepository.findOne(Long.parseLong(seq));
-            attachments.setBoardFree(boardFree);
-            attachments.setStatus(AttachmentStatus.STORED);
-            attachmentsRepository.save(attachments);
+            attachmentsRepository.updateBoardSeq(boardFree, AttachmentStatus.QUEUE, Long.parseLong(seq));
         }
     }
 }

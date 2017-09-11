@@ -38,7 +38,8 @@ public class AttachmentController {
         Locale locale = localeResolver.resolveLocale(request);
 
         try {
-            Attachments attachments = attachmentService.findOne(fseq);
+            Attachments attachments = attachmentService.findOneWithDownload(fseq);
+
             byte fileByte[] = FileUtils.readFileToByteArray(new File(Paths.get(applicationPropertyConfig.getStorageAttachmentPath(), attachments.getSavePath(), attachments.getSaveName()).toString()));
 
             response.setContentType("application/octet-stream");

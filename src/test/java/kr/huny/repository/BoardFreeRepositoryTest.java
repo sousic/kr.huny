@@ -46,7 +46,7 @@ public class BoardFreeRepositoryTest {
 
         boardFree = BoardFree.builder()
                 .title("제목입니다.")
-                .context("내용입니다.")
+                .content("내용입니다.")
                 .userSeq(1L)
                 .username("홍길동")
                 .build();
@@ -68,7 +68,7 @@ public class BoardFreeRepositoryTest {
         for(int i =0;i<10;i++) {
             BoardFree tmpBoardFree = BoardFree.builder()
                     .title("제목입니다.")
-                    .context("내용입니다.")
+                    .content("내용입니다.")
                     .userSeq(1L)
                     .boardCategory(boardCategory)
                     .username("홍길동")
@@ -98,7 +98,7 @@ public class BoardFreeRepositoryTest {
         for(int i =0;i<10;i++) {
             BoardFree tmpBoardFree = BoardFree.builder()
                     .title("제목입니다.")
-                    .context("내용입니다.")
+                    .content("내용입니다.")
                     .userSeq(1L)
                     .boardCategory(boardCategory)
                     .username("홍길동")

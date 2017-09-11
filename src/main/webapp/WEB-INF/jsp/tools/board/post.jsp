@@ -64,8 +64,8 @@
 
             <div class="form_button_container">
                 <div class="text-right">
-                    <input type="submit" value="저장">
-                    <a href="<c:url value="/tools/category/write"/>" class="btn btn-default">등록</a>
+                    <input type="submit" value="저장" class="btn btn-default btn-success">
+                    <a href="<c:url value="/tools/board/list"/>" class="btn btn-default">목록</a>
                 </div>
             </div>
             <textarea id="content" style="display:none;" name="content"></textarea>

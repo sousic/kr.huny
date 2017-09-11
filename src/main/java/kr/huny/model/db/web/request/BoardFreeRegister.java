@@ -19,7 +19,7 @@ public class BoardFreeRegister {
     @NotNull
     private String title;
     @NotNull
-    private String context;
+    private String content;
 
     private String galleryQueueList;
     private String attachQueueList;
