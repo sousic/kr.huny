@@ -43,7 +43,7 @@ public class BoardFreeService {
 
         String returnPostView = "tools/board/post";
 
-        if(bindingResult.hasErrors())
+        if(!bindingResult.hasErrors())
         {
             model.addAttribute("post", boardFreeRegister);
             return returnPostView;

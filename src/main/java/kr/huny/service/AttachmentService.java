@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -143,5 +144,45 @@ public class AttachmentService {
         for(String seq : seqList) {
             attachmentsRepository.updateBoardSeq(boardFree, AttachmentStatus.QUEUE, Long.parseLong(seq));
         }
+    }
+
+    /**
+     * 글 등록시 사용하는 첨부파일 정보 조회
+     * @param fseq
+     * @param locale
+     * @return
+     */
+    public AjaxJsonCommon<AttachmentSimple> getAttachments(String fseq, Locale locale) {
+        AjaxJsonCommon<AttachmentSimple> attachmentsInfo = new AjaxJsonCommon<>();
+        if(StringUtils.isEmpty(fseq))
+        {
+            attachmentsInfo.setRetCode(-1);
+            attachmentsInfo.setRetMsg(commonService.getResourceBudleMessage(locale,"messages.attachment", "attachement.msg.api.parameter.error"));
+        }
+        else
+        {
+            ArrayList<String> fileTargets = new ArrayList<>(Arrays.asList(fseq.split(",")));
+            Attachments attachments;
+            for(String seq : fileTargets)
+            {
+                attachments = attachmentsRepository.findOne(Long.parseLong(seq));
+                AttachmentSimple attachmentSimple = AttachmentSimple.builder()
+                        .urlPath("/attach/")
+                        .status(attachments.getStatus())
+                        .fSeq(attachments.getAttachSeq())
+                        .size(attachments.getSize())
+                        .fileName(attachments.getFileName())
+                        .fileSize(FileUtils.byteCountToDisplaySize(attachments.getSize()))
+                        .build();
+
+                attachmentsInfo.addResultItem(attachmentSimple);
+            }
+
+
+            attachmentsInfo.setRetCode(1);
+            attachmentsInfo.setRetMsg(commonService.getResourceBudleMessage(locale, "messages.attachment", "attachement.msg.api.ok"));
+        }
+
+        return attachmentsInfo;
     }
 }

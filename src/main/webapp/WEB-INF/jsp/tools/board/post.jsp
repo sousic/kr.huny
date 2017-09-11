@@ -21,7 +21,7 @@
                 <select id="categorySeq" name="categorySeq" class="form-control" required="required">
                     <option value="0">카테고리선택</option>
                     <c:forEach var="cate" items="${category}">
-                    <option value="${cate.categorySeq}">${cate.categoryName}</option>
+                    <option value="${cate.categorySeq}" <c:if test="${cate.categorySeq eq post.categorySeq}">selected="selected"</c:if>> ${cate.categoryName}</option>
                     </c:forEach>
                 </select>
                 <c:if test="${categoryNotFound == true}">
@@ -29,10 +29,10 @@
                 </c:if>
             </div>
             <div class="form-group">
-                <input type="text" id="title" name="title" placeholder="<spring:message code="post.msg.form.placeholder.title"/>" class="form-control" required="required"/>
+                <input type="text" id="title" name="title" placeholder="<spring:message code="post.msg.form.placeholder.title"/>" value="${post.title}" class="form-control" required="required"/>
             </div>
             <div class="form-group">
-                <div id="summernote"></div>
+                <div id="summernote">${post.content}</div>
             </div>
 
             <div class="form-group">
@@ -69,8 +69,8 @@
                 </div>
             </div>
             <textarea id="content" style="display:none;" name="content"></textarea>
-            <input type="text" id="galleryQueueList" name="galleryQueueList"/>
-            <input type="text" id="attachQueueList" name="attachQueueList"/>
+            <input type="text" id="galleryQueueList" name="galleryQueueList" value="${post.galleryQueueList}"/>
+            <input type="text" id="attachQueueList" name="attachQueueList" value="${post.attachQueueList}"/>
             </form>
         </div>
     </div>
@@ -113,6 +113,9 @@
             }
         });
 
+        Posts.InitGalleryQueue();
+        Posts.InitAttachQueue();
+
         $("#attatchFile").on("change", function() {
             var fileList = this.files ;
             // 읽기
@@ -145,6 +148,34 @@
     var Posts = {
         galleryQueueList : [],
         attachmentQueueList : [],
+        InitGalleryQueue:function(e) {
+            var strQueue = $("#galleryQueueList").val();
+            if ($.trim(strQueue) != '') {
+                var queue = strQueue.split(",");
+                for (var i = 0; i < queue.length; i++) {
+                    this.galleryQueueList.push(parseInt(queue[i]));
+                }
+            }
+        },
+        InitAttachQueue:function(e)
+        {
+            var strQueue = $("#attachQueueList").val();
+            if ($.trim(strQueue) != '') {
+                var queue = strQueue.split(",");
+                for (var i = 0; i < queue.length; i++) {
+                    this.attachmentQueueList.push(parseInt(queue[i]));
+                }
+
+                $.post("<c:url value="/api/attachment/attachments"/>", { fseq : strQueue }, function (data) {
+                    if(data.retCode == 1) {
+                        Posts.updateAttachementList(data.result);
+                    } else {
+                        alert(data.retMsg);
+                        return false;
+                    }
+                });
+            }
+        },
         sendImageFile:function(files, el)
         {
             var form_data = new FormData();
@@ -247,7 +278,7 @@
         GetValue:function()
         {
             if ($('#summernote').summernote('isEmpty')) {
-                alert('contents is empty');
+                alert('내용을 입력해주세요.');
                 return false;
             }
             $("#content").text($("#summernote").summernote('code'));

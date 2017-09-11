@@ -39,4 +39,12 @@ public class AttachmentRestController {
 
         return attachmentService.deleteQueueAttachments(locale, fseq);
     }
+
+    @RequestMapping(value = "/attachments", method = RequestMethod.POST)
+    public AjaxJsonCommon<AttachmentSimple> getAttachments(@RequestParam String fseq, HttpServletRequest request)
+    {
+        Locale locale = localeResolver.resolveLocale(request);
+
+        return attachmentService.getAttachments(fseq, locale);
+    }
 }
