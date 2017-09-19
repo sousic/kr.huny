@@ -185,4 +185,9 @@ public class AttachmentService {
 
         return attachmentsInfo;
     }
+
+    public List<Attachments> getPostWithAttachList(long boardSeq)
+    {
+        return attachmentsRepository.findByBoardFreeBoardSeq(boardSeq);
+    }
 }

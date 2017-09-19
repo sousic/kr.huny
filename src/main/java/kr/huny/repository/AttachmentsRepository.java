@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface AttachmentsRepository extends JpaRepository<Attachments, Long> {
     Attachments findByAttachSeqAndStatusEquals(long attachSeq, AttachmentStatus status);
@@ -16,4 +17,6 @@ public interface AttachmentsRepository extends JpaRepository<Attachments, Long> 
     @Modifying
     @Query("update Attachments a set a.boardFree = ?1, a.status = ?2 where a.attachSeq = ?3")
     void updateBoardSeq(BoardFree boardFree, AttachmentStatus status, Long attachSeq);
+
+    List<Attachments> findByBoardFreeBoardSeq(long boardSeq);
 }

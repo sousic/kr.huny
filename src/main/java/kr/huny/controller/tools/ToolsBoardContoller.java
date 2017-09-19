@@ -65,9 +65,20 @@ public class ToolsBoardContoller {
     }
 
     @RequestMapping(value ="/{bSeq}", method = RequestMethod.GET)
-    public String viewPost(@PathVariable Long bSeq, HttpServletRequest request)
+    public String viewPost(@PathVariable Long bSeq, Model model, HttpServletRequest request)
     {
         Locale locale = localeResolver.resolveLocale(request);
+
+        if(bSeq == null)
+        {
+            return "redirect:/tools/board/postList";
+        }
+
+        String redirectView = boardFreeService.viewPost(bSeq, model, locale);
+        if(!StringUtils.isEmpty(redirectView))
+        {
+            return redirectView;
+        }
 
         return "tools/board/viewPost";
     }

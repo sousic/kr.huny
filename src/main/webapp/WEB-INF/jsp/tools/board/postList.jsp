@@ -35,7 +35,7 @@
                     <tr>
                         <td>${free.boardSeq}</td>
                         <td>${free.boardCategory.categoryName}</td>
-                        <td><a href="<c:url value="/tools/category/write"/>?seq=${free.boardSeq}">${free.title}</a></td>
+                        <td><a href="<c:url value="/tools/board/"/>${free.boardSeq}">${free.title}</a></td>
                         <td>${free.username}</td>
                         <td>${free.regdate}</td>
                         <td>${free.lastDateModify}</td>
@@ -133,7 +133,7 @@
     <tr>
         <td>{{boardSeq}}</td>
         <td>{{boardCategory.categoryName}}</td>
-        <td><a href="<c:url value="/tools/category/write"/>?seq={{boardSeq}}">{{title}}</a></td>
+        <td><a href="<c:url value="/tools/board/"/>{{boardSeq}}">{{title}}</a></td>
         <td>{{username}}</td>
         <td>{{date regdate}}</td>
         <td>{{date lastDateModify}}</td>

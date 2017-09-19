@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -41,7 +42,7 @@ public class BoardFreeService {
 
     public String insertPost(BoardFreeRegister boardFreeRegister, BindingResult bindingResult, Model model, Locale locale) {
 
-        String returnPostView = "tools/board/post";
+        String returnPostView = "tools/board/postList";
 
         if(bindingResult.hasErrors())
         {
@@ -87,7 +88,7 @@ public class BoardFreeService {
             attachmentService.updateAttachQueueList(boardFreeRegister.getAttachQueueList(), boardFree);
         }
 
-        return "redirect:/tools/board/list";
+        return "redirect:/tools/board/postList";
     }
 
     public void getBoardList(Model model, BoardInfo boardInfo, Locale locale) {
@@ -114,5 +115,20 @@ public class BoardFreeService {
                 .build());
 
         return boardPageInfo;
+    }
+
+    public String viewPost(Long bSeq, Model model, Locale locale) {
+        String returnListView = "redirect:/tools/board/postList";
+
+        BoardFree boardFree = boardFreeRepository.findOne(bSeq.longValue());
+        if(Objects.isNull(boardFree))
+        {
+            return returnListView;
+        }
+
+        model.addAttribute("boardFree", boardFree);
+        model.addAttribute("attach",attachmentService.getPostWithAttachList(boardFree.getBoardSeq()));
+
+        return null;
     }
 }

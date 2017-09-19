@@ -70,7 +70,7 @@ public class BoardCategoryService {
         if(bindingResult.hasErrors())
         {
             model.addAttribute("categoryRegister",categoryRegister);
-            return "tools/category/write";
+            return "tools/category/cateWrite";
         }
 
         if(categoryRegister.getCategorySeq() == 0) {
@@ -80,7 +80,7 @@ public class BoardCategoryService {
             if (Objects.nonNull(boardCategory)) {
                 bindingResult.reject("restNameError");
                 model.addAttribute("restNameError", true);
-                return "tools/category/write";
+                return "tools/category/cateWrite";
             }
         }
 
