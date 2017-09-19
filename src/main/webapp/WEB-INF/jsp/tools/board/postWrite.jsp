@@ -32,7 +32,7 @@
                 <input type="text" id="title" name="title" placeholder="<spring:message code="post.msg.form.placeholder.title"/>" value="${post.title}" class="form-control" required="required"/>
             </div>
             <div class="form-group">
-                <div id="summernote">${post.content}</div>
+                <textarea id="summernote">${post.content}</textarea>
             </div>
 
             <div class="form-group">
@@ -98,7 +98,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(function() {
         $('#summernote').summernote({
             lang:'ko-KR',
             height:350,
@@ -108,7 +108,7 @@
                 },
                 onMediaDelete : function($target) {
                     Posts.removeGalleryQueueItem($target.attr("src").replace("/gallery/",""));
-                    console.log($target.attr("src"));
+                    //console.log($target.attr("src"));
                 }
             }
         });

@@ -119,11 +119,13 @@
         var template = Handlebars.compile($("#entry-freeboardItem-template").html());
         $("#boardFreeList").html('');
 
+        var tmp = '';
+
         $.getJSON(url, function(data) {
             $(data.list).each(function() {
-                var html = template(this);
-                $("#boardFreeList").append(html);
+                tmp += template(this);
             });
+            $("#boardFreeList").html(tmp);
         });
     }
 </script>

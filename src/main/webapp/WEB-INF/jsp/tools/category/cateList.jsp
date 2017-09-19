@@ -128,11 +128,14 @@
         var template = Handlebars.compile($("#entry-categoryItem-template").html());
         $("#categoryList").html('');
 
+        var tmp = '';
+
         $.getJSON(url, function(data) {
             $(data.list).each(function() {
-                var html = template(this);
-                $("#categoryList").append(html);
+                tmp +=template(this);
+
             });
+            $("#categoryList").html(tmp);
         });
     }
 </script>

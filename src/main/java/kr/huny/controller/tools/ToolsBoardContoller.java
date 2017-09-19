@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -35,7 +36,7 @@ public class ToolsBoardContoller {
     {
         model.addAttribute("category", boardCategoryService.findAllWithUsed());
 
-        return "tools/board/post";
+        return "tools/board/postList";
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
@@ -50,7 +51,7 @@ public class ToolsBoardContoller {
         if(!StringUtils.isEmpty(redirectView))
             return redirectView;
         else
-            return "tools/board/post";
+            return "tools/board/postWrite";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -60,6 +61,14 @@ public class ToolsBoardContoller {
 
         boardFreeService.getBoardList(model, boardInfo, locale);
 
-        return "tools/board/list";
+        return "tools/board/postList";
+    }
+
+    @RequestMapping(value ="/{bSeq}", method = RequestMethod.GET)
+    public String viewPost(@PathVariable Long bSeq, HttpServletRequest request)
+    {
+        Locale locale = localeResolver.resolveLocale(request);
+
+        return "tools/board/viewPost";
     }
 }

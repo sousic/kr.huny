@@ -44,7 +44,7 @@ public class ToolsCategoryController {
         Locale locale = localeResolver.resolveLocale(request);
 
         boardCategoryService.getCategoryList(model, boardInfo, locale);
-        return "tools/category/list";
+        return "tools/category/cateList";
     }
 
     @RequestMapping(value="write", method = RequestMethod.GET)
@@ -52,7 +52,7 @@ public class ToolsCategoryController {
     {
         boardCategoryService.findCategory(categorySeq, model);
 
-        return "tools/category/write";
+        return "tools/category/cateWrite";
     }
 
     @RequestMapping(value="write", method = RequestMethod.POST)
@@ -65,6 +65,6 @@ public class ToolsCategoryController {
         if(!StringUtils.isEmpty(redirectView))
             return redirectView;
         else
-            return "tools/category/write";
+            return "tools/category/cateWrite";
     }
 }
