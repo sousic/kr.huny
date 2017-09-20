@@ -39,8 +39,8 @@
                 <button class="btn btn-default" id="addAttach">파일첨부</button>
             </div>
             <div class="form-group">
-                <span>첨부파일</span>
-                <ul id="files" class="list-inline">
+                <div class="attacments_header">첨부파일</div>
+                <ul id="files" class="list-group">
                     <%--<li>
                         <h5><a href="#;" target="_blank">선수스테미너변경요청.csv</a> <button class="btn btn-danger btn-xs delFile" data-fseq="1">삭제</button></h5>
                     </li>
@@ -253,15 +253,12 @@
         },
         updateAttachementList:function(list)
         {
+            var template = Handlebars.compile($("#entry-attachements-template").html());
+
             //$("#files")
             for(var i = 0; i < list.length;i++)
             {
-                var linkBtn = $("<a/>")
-                    .attr("href","/attachment/" + list[i].fseq).attr("target","_blank").text(list[i].fileName + '(' + list[i].fileSize + ') ');
-                var delBtn = $("<button/>").attr("class","btn btn-danger btn-xs delFile").text("삭제").attr("data-fseq", list[i].fseq);
-                var wrap = $("<h5/>").html(linkBtn).append(delBtn);
-                var li = $("<li/>").html(wrap);
-                $("#files").append(li);
+                $("#files").append(template(list[i]));
                 Posts.addAttachmentQueueItem(list[i].fseq);
             }
             $("#popLayer").modal('hide');
@@ -286,7 +283,11 @@
             $("#attachQueueList").val(this.attachmentQueueList);
         }
     };
-
+</script>
+<script type="text/x-handlebars-template" id="entry-attachements-template">
+    <li class="list-group-item">
+        <i class="fa fa-file-o"></i> <a href="<c:url value="/attachment/"/>{{fseq}}">{{fileName}}</a> ({{fileSize}}) <button class="btn btn-danger btn-xs delFile" data-fseq="{{fseq}}">삭제</button>
+    </li>
 </script>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 </body>

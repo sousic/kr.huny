@@ -21,6 +21,7 @@
         <security:intercept-url pattern="/user/register" access="isAnonymous()"/>
         <security:intercept-url pattern="/user/**" access="hasAnyRole('USER')"/>
         <security:intercept-url pattern="/api/tools/**" access="hasRole('ROOT')"/>
+        <security:intercept-url pattern="/tools/**" access="hasRole('ROOT')"/>
 
         <security:form-login
                 username-parameter="loginID"

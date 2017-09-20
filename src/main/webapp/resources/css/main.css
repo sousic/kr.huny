@@ -75,3 +75,10 @@ form {
 #joinForm .input-group-addon { min-width: 110px; }
 
 /* category */
+
+/* post */
+.attacments_header {
+    border-bottom: 1px solid #8c8c8c;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}

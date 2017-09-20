@@ -36,7 +36,7 @@ public class ToolsBoardContoller {
     {
         model.addAttribute("category", boardCategoryService.findAllWithUsed());
 
-        return "tools/board/postList";
+        return "tools/board/postWrite";
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)

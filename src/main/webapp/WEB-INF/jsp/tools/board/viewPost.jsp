@@ -1,3 +1,4 @@
+<%@ page import="org.apache.commons.io.FileUtils" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -21,31 +22,16 @@
                     ${boardFree.content}
                 </div>
                 <div class="form-group">
-                    <span>첨부파일</span>
-                    <ul id="files" class="list-inline">
+                    <div class="attacments_header">첨부파일</div>
+                    <ul id="files" class="list-group">
+                        <c:if test="${attach.size() eq 0}">
+                            <li class="list-group-item-info">등록된 첨부 파일이 없습니다.</li>
+                        </c:if>
                         <c:forEach items="${attach}" var="item">
-                            <li>
-                                <h5><i class="fa fa-file" aria-hidden="true"></i> <a href="<c:url value="/attachment/"/>${item.attachSeq}" target="_blank">${item.fileName}</a></h5>
+                            <li class="list-group-item">
+                                <i class="fa fa-file-o"></i> <a href="<c:url value="/attachment/"/>${item.attachSeq}">${item.fileName}</a> / ${FileUtils.byteCountToDisplaySize(item.size)} / Downloads: ${item.downloads}
                             </li>
                         </c:forEach>
-                        <%--<li>
-                            <h5><a href="#;" target="_blank">선수스테미너변경요청.csv</a> <button class="btn btn-danger btn-xs delFile" data-fseq="1">삭제</button></h5>
-                        </li>
-                        <li>
-                            <h5><a href="#;">선수스테미너변경요청222.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                        </li>
-                        <li>
-                            <h5><a href="#;">선수스테미너변경요청333.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                        </li>
-                        <li>
-                            <h5><a href="#;">선수스테미너변경요청444.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                        </li>
-                        <li>
-                            <h5><a href="#;">선수스테미너변경요청55.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                        </li>
-                        <li>
-                            <h5><a href="#;">선수스테미너변경요청6666.csv</a> <button class="btn btn-danger btn-xs">삭제</button></h5>
-                        </li>--%>
                     </ul>
                 </div>
 

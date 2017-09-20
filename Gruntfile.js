@@ -50,7 +50,7 @@ module.exports = function (grunt) {
                 filter:'isFile',
                 expand:true,
                 flatten:true,
-                src : 'node_modules/summernote/dist/font/!*.*',
+                src : 'node_modules/summernote/dist/font/*',
                 dest : dest_css_path + '/summernote/font/'
             },
             font_awesome : {
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                 filter: 'isFile',
                 expand: true,
                 flatten: true,
-                src: 'node_modules/font-awesome/fonts/!*.*',
+                src: 'node_modules/font-awesome/fonts/*',
                 dest: dest_css_path + '/fonts/'
             }
             /*,
