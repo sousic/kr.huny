@@ -46,9 +46,15 @@ public class BoardFree {
     private int galleryCount;
     private int commentCount;
     private int recommendCount;
+    private int readcount;
 
     //@Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Date regdate;
     private Date lastDateModify;
+
+    public void ReadCountAdd()
+    {
+        this.readcount++;
+    }
 }

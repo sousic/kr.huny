@@ -131,6 +131,9 @@ public class BoardFreeService {
             return returnListView;
         }
 
+        boardFree.ReadCountAdd();
+        boardFreeRepository.save(boardFree);
+
         model.addAttribute("boardFree", boardFree);
         model.addAttribute("attach",attachmentService.getPostWithAttachList(boardFree.getBoardSeq()));
 
