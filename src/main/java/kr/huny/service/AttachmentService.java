@@ -139,10 +139,10 @@ public class AttachmentService {
         return attachments;
     }
 
-    public void updateAttachQueueList(String attachQueueList, BoardFree boardFree) {
-        List<String> seqList = Arrays.asList(attachQueueList.split(","));
+    public void updateAttachQueueList(List<String> seqList, BoardFree boardFree) {
+        //List<String> seqList = Arrays.asList(attachQueueList.split(","));
         for(String seq : seqList) {
-            attachmentsRepository.updateBoardSeq(boardFree, AttachmentStatus.QUEUE, Long.parseLong(seq));
+            attachmentsRepository.updateBoardSeq(boardFree, AttachmentStatus.STORED, Long.parseLong(seq));
         }
     }
 

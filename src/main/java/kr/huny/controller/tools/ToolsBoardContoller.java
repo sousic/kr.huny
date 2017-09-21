@@ -71,7 +71,7 @@ public class ToolsBoardContoller {
 
         if(bSeq == null)
         {
-            return "redirect:/tools/board/postList";
+            return "redirect:/tools/board/list";
         }
 
         String redirectView = boardFreeService.viewPost(bSeq, model, locale);

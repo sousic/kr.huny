@@ -24,7 +24,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -198,11 +201,11 @@ public class GalleryService {
     }
 
 
-    public void updateGalleryQueueList(String galleryQueueList, BoardFree boardFree) {
-        List<String> seqList = Arrays.asList(galleryQueueList.split(","));
+    public void updateGalleryQueueList(List<String> seqList, BoardFree boardFree) {
+        //List<String> seqList = Arrays.asList(galleryQueueList.split(","));
 
         for(String seq : seqList) {
-            galleryRepository.updateBoardSeq(boardFree, AttachmentStatus.QUEUE, Long.parseLong(seq));
+            galleryRepository.updateBoardSeq(boardFree, AttachmentStatus.STORED, Long.parseLong(seq));
         }
     }
 }

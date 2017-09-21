@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 
 import java.util.Arrays;
@@ -69,26 +68,32 @@ public class BoardFreeService {
                 .username(commonPrincipal.getUsername())
                 .build();
 
+        //이미지,첨부 수량 추출
+        List<String> galleryList = Arrays.asList(boardFreeRegister.getGalleryQueueList().split(","));
+        List<String> attachList = Arrays.asList(boardFreeRegister.getAttachQueueList().split(","));
+
         //게시물 저장
+        boardFree.setAttachmentCount(attachList.size());
+        boardFree.setGalleryCount(galleryList.size());
         boardFreeRepository.save(boardFree);
 
         //카테고리 업데이트
         boardCategoryRepository.updateCategoryCreateCount(boardFreeRegister.getCategorySeq());
 
         //이미지 업데이트
-        if(!StringUtils.isEmpty(boardFreeRegister.getGalleryQueueList())) {
+        if(galleryList.size() > 0) {
             log.debug("images proccess...");
-            galleryService.updateGalleryQueueList(boardFreeRegister.getGalleryQueueList(), boardFree);
+            galleryService.updateGalleryQueueList(galleryList, boardFree);
         }
 
         //첨부파일 업데이트
-        if(!StringUtils.isEmpty(boardFreeRegister.getAttachQueueList()))
+        if(attachList.size() > 0)
         {
             log.debug("attach proccess...");
-            attachmentService.updateAttachQueueList(boardFreeRegister.getAttachQueueList(), boardFree);
+            attachmentService.updateAttachQueueList(attachList, boardFree);
         }
 
-        return "redirect:/tools/board/postList";
+        return "redirect:/tools/board/list";
     }
 
     public void getBoardList(Model model, BoardInfo boardInfo, Locale locale) {
@@ -118,7 +123,7 @@ public class BoardFreeService {
     }
 
     public String viewPost(Long bSeq, Model model, Locale locale) {
-        String returnListView = "redirect:/tools/board/postList";
+        String returnListView = "redirect:/tools/board/list";
 
         BoardFree boardFree = boardFreeRepository.findOne(bSeq.longValue());
         if(Objects.isNull(boardFree))
