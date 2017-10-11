@@ -1,6 +1,7 @@
 package kr.huny.controller;
 
 import kr.huny.configuration.ApplicationPropertyConfig;
+import kr.huny.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +10,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Created by sousic on 2017-07-03.
@@ -21,16 +25,38 @@ import java.io.IOException;
 public class AccessController {
     @Autowired
     ApplicationPropertyConfig applicationPropertyConfig;
+    @Autowired
+    CookieLocaleResolver localeResolver;
+    @Autowired
+    CommonService commonService;
 
     @RequestMapping(value="/login")
     public String login(@RequestParam(required = false) String result,
                         @RequestParam(required = false) String message,
                         @RequestParam(required = false) String loginID,
-                        Model model)
+                        Model model, HttpServletRequest request)
     {
+        Locale locale = localeResolver.resolveLocale(request);
+
         if(StringUtils.isEmpty(message) == false)
         {
-            model.addAttribute("message", message);
+            String strMessage = null;
+            if(message.equals("notNormalAccount")) {
+                strMessage = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.notNormalAccount");
+            }
+            else if(message.equals("loginNotFound"))
+            {
+                strMessage = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loginNotFound");
+            }
+            else if(message.equals("loginfail"))
+            {
+                strMessage = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loginfail");
+            }
+            else if(message.equals("loingFailPassword"))
+            {
+                strMessage = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loingFailPassword");
+            }
+            model.addAttribute("message", strMessage);
         }
 
         model.addAttribute("result", result);

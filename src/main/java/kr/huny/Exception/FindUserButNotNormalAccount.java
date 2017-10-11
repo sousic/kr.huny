@@ -9,6 +9,7 @@ import org.springframework.security.authentication.InternalAuthenticationService
  */
 public class FindUserButNotNormalAccount extends InternalAuthenticationServiceException {
     private CommonConst.SocialType providerId;
+
     public FindUserButNotNormalAccount(String message, CommonConst.SocialType providerId) {
         super(message);
         this.providerId = providerId;

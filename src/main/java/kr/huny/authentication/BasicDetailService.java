@@ -41,12 +41,11 @@ public class BasicDetailService implements UserDetailsManager {
         else
         {
             User user = userRepository.findByEmail(email);
-
             if(Objects.isNull(user))
                 throw new NotFoundNormalAccountException("로그인 할 사용자 데이터가 존재 하지 않습니다. email=" + email);
 
             if(user.getProviderId().equals(CommonConst.SocialType.BASIC) == false)
-                throw new FindUserButNotNormalAccount("일반 계쩡이 아니라 SNS 계정으로 연동되어 있습니다. email=" + email, user.getProviderId());
+                throw new FindUserButNotNormalAccount("일반 계정이 아니라 SNS 계정으로 연동되어 있습니다. email=" + email, user.getProviderId());
 
             log.debug("user =>" + user);
 

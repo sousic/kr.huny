@@ -34,7 +34,6 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException exception) throws IOException, ServletException {
-        String path = String.format("%s/", httpServletRequest.getContextPath());
         String loginRedirect = httpServletRequest.getParameter("loginRedirect");
         String message = null;
         boolean fail = true;
@@ -51,24 +50,24 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
 
             if(Objects.nonNull(customException)) {
                 if(customException instanceof FindUserButNotNormalAccount) {
-                    message = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.notNormalAccount");
+                    message = "notNormalAccount";//commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.notNormalAccount");
                 } else if(customException instanceof NotFoundNormalAccountException) {
-                    message = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loginNotFound");
+                    message = "loginNotFound";//commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loginNotFound");
                 }
             } else {
-                message = commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
+                message = "loginfail";//commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
             }
 
         } else if(exception instanceof BadCredentialsException) {
-            message = commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loingFailPassword");
+            message = "loingFailPassword";//commonService.getResourceBudleMessage(locale, "messages.user", "user.msg.loingFailPassword");
         } else
         {
-            message = commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
+            message = "loginfail";//commonService.getResourceBudleMessage(locale, "messages.common", "common.msg.loginfail");
         }
 
         //log.debug("message => " + message);
 
-        path = String.format("%s/login?message=%s&fail=%s&loginID=%s&loginRedirect=%s",
+        String path = String.format("%s/login?message=%s&fail=%s&loginID=%s&loginRedirect=%s",
                 httpServletRequest.getContextPath(),
                 URLEncoder.encode(message, "UTF-8"),
                 fail,
@@ -79,6 +78,6 @@ public class BasicFailureHandler implements AuthenticationFailureHandler {
 
         //httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/access/login?message=" + URLEncoder.encode(message,"UTF-8") + "&loginRedirect=" + loginRedirect + "&result=" + results);
 
-        httpServletResponse.encodeRedirectURL(path);
+        httpServletResponse.sendRedirect(path);
     }
 }

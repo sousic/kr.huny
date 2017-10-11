@@ -1,17 +1,20 @@
 package kr.huny.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.naming.AuthenticationException;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
  * Created by sousic on 2017-07-03.
  */
-//@ControllerAdvice(value = "kr.huny")
+//@ControllerAdvice
 public class PageExceptionHandler {
 
     @ExceptionHandler(value = { RuntimeException.class })
@@ -27,8 +30,8 @@ public class PageExceptionHandler {
     }
 
 
-    /*@ExceptionHandler(InternalAuthenticationServiceException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView internalAuthenticationServiceException(AuthenticationException e)
     {
         ModelAndView model = new ModelAndView("error/error");
@@ -38,7 +41,7 @@ public class PageExceptionHandler {
         e.printStackTrace(printStream);
         model.addObject("setStackTrace", byteArrayOutputStream.toString());
         return model;
-    }*/
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

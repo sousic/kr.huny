@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-8 col-sm-8 col-md-offset-2">
             <div class="form_header">
-                <span>-</span>
+                <span>게시판</span>
             </div>
             <table class="table table-hover table-list">
                 <thead>
