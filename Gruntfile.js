@@ -63,6 +63,14 @@ module.exports = function (grunt) {
                 flatten: true,
                 src: 'node_modules/font-awesome/fonts/*',
                 dest: dest_css_path + '/fonts/'
+            },
+            timeago : {
+                src : 'node_modules/timeago/jquery.timeago.js',
+                dest : dest_js_path + '/timeago/jquery.timeago.js'
+            },
+            timeago_lang : {
+                src : 'node_modules/timeago/locales/jquery.timeago.ko.js',
+                dest : dest_js_path + '/timeago/locales/jquery.timeago.ko.js'
             }
             /*,
             angular : {

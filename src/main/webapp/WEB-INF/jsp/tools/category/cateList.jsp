@@ -89,6 +89,8 @@
 </div>
 <script type="text/javascript">
     $(function(){
+        $(".timeage").timeago();
+
         $("#pageNavi").bootpag({
             total: ${categoryList.pageNaviInfo.totalPage},
             page: ${categoryList.pageNaviInfo.currentPage+1},

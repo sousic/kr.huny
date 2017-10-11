@@ -1,3 +1,4 @@
+<%@ page import="kr.huny.common.DateTimeHelper" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -37,8 +38,8 @@
                         <td>${free.boardCategory.categoryName}</td>
                         <td><a href="<c:url value="/tools/board/"/>${free.boardSeq}">${free.title}</a></td>
                         <td>${free.username}</td>
-                        <td>${free.regdate}</td>
-                        <td>${free.lastDateModify}</td>
+                        <td><span class="timeage" title="${DateTimeHelper.GetDateTime(free.regdate)}">${DateTimeHelper.GetDateTime(free.regdate)}</span></td>
+                        <td><span class="timeage" title="${DateTimeHelper.GetDateTime(free.lastDateModify)}">${DateTimeHelper.GetDateTime(free.lastDateModify)}</span></td>
                         <td>${free.commentCount}</td>
                         <td>${free.attachmentCount}</td>
                         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
@@ -80,14 +81,19 @@
 </div>
 <script type="text/javascript">
     $(function(){
+        $("#boardFreeList .timeage").timeago();
+        //$("#boardFreeList").on(".timeage").timeago();
+
         $("#pageNavi").bootpag({
             total: ${boardFreeList.pageNaviInfo.totalPage},
             page: ${boardFreeList.pageNaviInfo.currentPage+1},
-            maxVisible:10
-        }).on('page', function(event,num){
+            maxVisible:10,
+            href:"<c:url value="/tools/board/list"/>?page={{number}}&size=${boardFreeList.pageNaviInfo.size}"
+        });
+            /*.on('page', function(event,num){
             var url = "<c:url value="/api/tools/board/list"/>?page=" + num + "&size=${boardFreeList.pageNaviInfo.size}";
             refreshList(url);
-        });
+        });*/
 
         $("#categoryList").on("click", ".btnDelete", function() {
             $("#deleteLayer .tag").text('['+$(this).parents("tr").find("td:eq(1)").text()+'] 분류를');
@@ -135,8 +141,8 @@
         <td>{{boardCategory.categoryName}}</td>
         <td><a href="<c:url value="/tools/board/"/>{{boardSeq}}">{{title}}</a></td>
         <td>{{username}}</td>
-        <td>{{date regdate}}</td>
-        <td>{{date lastDateModify}}</td>
+        <td><span class="timeage" title="{{date regdate}}">{{date regdate}}</span></td>
+        <td><span class="timeage" title="{{date lastDateModify}}">{{date lastDateModify}}</span></td>
         <td>{{commentCount}}</td>
         <td>{{attachmentCount}}</td>
         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>

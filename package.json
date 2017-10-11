@@ -37,6 +37,7 @@
     "jquery-1x": "^1.12.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "summernote": "^0.8.6"
+    "summernote": "^0.8.6",
+    "timeago": "^1.6.1"
   }
 }

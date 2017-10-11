@@ -1,3 +1,4 @@
+<%@ page import="kr.huny.common.DateTimeHelper" %>
 <%@ page import="org.apache.commons.io.FileUtils" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -16,7 +17,12 @@
         <div class="col-md-8 col-sm-8 col-md-offset-2">
             <form method="post" action="<c:url value="/tools/board/post"/>" onsubmit="return Posts.GetValue();">
                 <div class="form_header">
-                    <span>[${boardFree.boardCategory.categoryName}]</span> ${boardFree.title}
+                    <div class="form_header_title">
+                        <span>[${boardFree.boardCategory.categoryName}]</span> ${boardFree.title}
+                    </div>
+                    <div class="form_header_date">
+                        <span class="timeage" title="${DateTimeHelper.GetDateTime(boardFree.regdate)}">${DateTimeHelper.GetDateTime(boardFree.regdate)}</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     ${boardFree.content}
@@ -48,7 +54,7 @@
 </div>
 <script type="text/javascript">
     $(function() {
-
+        $(".timeage").timeago();
     });
 </script>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>

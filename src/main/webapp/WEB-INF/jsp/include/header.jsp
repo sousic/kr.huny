@@ -12,13 +12,14 @@
 <link href="<%=request.getContextPath()%>/resources/css/main.css?<%=System.currentTimeMillis()%>" rel="stylesheet">
 
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/timeago/jquery.timeago.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/timeago/locales/jquery.timeago.ko.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/bootstrap/validator.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/jquery/jquery.bootpag.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/summernote/summernote.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/summernote/lang/summernote-ko-KR.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/handlebars.js"></script>
-<script src="<%=request.getContextPath()%>/resources/js/date.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/utils.js?<%=System.currentTimeMillis()%>"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

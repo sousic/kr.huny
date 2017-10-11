@@ -69,25 +69,25 @@ public class BoardFreeService {
                 .build();
 
         //이미지,첨부 수량 추출
-        List<String> galleryList = Arrays.asList(boardFreeRegister.getGalleryQueueList().split(","));
-        List<String> attachList = Arrays.asList(boardFreeRegister.getAttachQueueList().split(","));
+        List<String> galleryList = boardFreeRegister.getGalleryQueueList().trim().equals("") == true ? null : Arrays.asList(boardFreeRegister.getGalleryQueueList().split(","));
+        List<String> attachList = boardFreeRegister.getAttachQueueList().trim().equals("") == true ? null : Arrays.asList(boardFreeRegister.getAttachQueueList().split(","));
 
         //게시물 저장
-        boardFree.setAttachmentCount(attachList.size());
-        boardFree.setGalleryCount(galleryList.size());
+        boardFree.setAttachmentCount(attachList == null ? 0 : attachList.size());
+        boardFree.setGalleryCount(galleryList == null ? 0 : galleryList.size());
         boardFreeRepository.save(boardFree);
 
         //카테고리 업데이트
         boardCategoryRepository.updateCategoryCreateCount(boardFreeRegister.getCategorySeq());
 
         //이미지 업데이트
-        if(galleryList.size() > 0) {
+        if(galleryList != null && galleryList.size() > 0) {
             log.debug("images proccess...");
             galleryService.updateGalleryQueueList(galleryList, boardFree);
         }
 
         //첨부파일 업데이트
-        if(attachList.size() > 0)
+        if(attachList != null && attachList.size() > 0)
         {
             log.debug("attach proccess...");
             attachmentService.updateAttachQueueList(attachList, boardFree);
