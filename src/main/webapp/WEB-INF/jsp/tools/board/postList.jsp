@@ -28,6 +28,7 @@
                     <th>최종수정일</th>
                     <th>댓글</th>
                     <th>첨부</th>
+                    <th>조회수</th>
                     <th>동작</th>
                 </tr>
                 </thead>
@@ -42,6 +43,7 @@
                         <td><span class="timeage" title="${DateTimeHelper.GetDateTime(free.lastDateModify)}">${DateTimeHelper.GetDateTime(free.lastDateModify)}</span></td>
                         <td>${free.commentCount}</td>
                         <td>${free.attachmentCount}</td>
+                        <td>${free.readcount}</td>
                         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
                     </tr>
                 </c:forEach>
@@ -87,13 +89,12 @@
         $("#pageNavi").bootpag({
             total: ${boardFreeList.pageNaviInfo.totalPage},
             page: ${boardFreeList.pageNaviInfo.currentPage+1},
-            maxVisible:10,
-            href:"<c:url value="/tools/board/list"/>?page={{number}}&size=${boardFreeList.pageNaviInfo.size}"
-        });
-            /*.on('page', function(event,num){
+            maxVisible:10
+            //href:"<c:url value="/tools/board/list"/>?page={{number}}&size=${boardFreeList.pageNaviInfo.size}"
+        }).on('page', function(event,num){
             var url = "<c:url value="/api/tools/board/list"/>?page=" + num + "&size=${boardFreeList.pageNaviInfo.size}";
             refreshList(url);
-        });*/
+        });
 
         $("#categoryList").on("click", ".btnDelete", function() {
             $("#deleteLayer .tag").text('['+$(this).parents("tr").find("td:eq(1)").text()+'] 분류를');
@@ -132,6 +133,8 @@
                 tmp += template(this);
             });
             $("#boardFreeList").html(tmp);
+        }).done(function() {
+            $("#boardFreeList .timeage").timeago();
         });
     }
 </script>
@@ -145,6 +148,7 @@
         <td><span class="timeage" title="{{date lastDateModify}}">{{date lastDateModify}}</span></td>
         <td>{{commentCount}}</td>
         <td>{{attachmentCount}}</td>
+        <td>{{readcount}}</td>
         <td><a href="#" class="btnDelete btn btn-default">삭제</a></td>
     </tr>
 </script>

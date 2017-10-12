@@ -23,6 +23,9 @@
                     <div class="form_header_date">
                         <span class="timeage" title="${DateTimeHelper.GetDateTime(boardFree.regdate)}">${DateTimeHelper.GetDateTime(boardFree.regdate)}</span>
                     </div>
+                    <div class="form_header_count">
+                        <i class="fa fa-eye"></i> ${boardFree.readcount}
+                    </div>
                 </div>
                 <div class="form-group">
                     ${boardFree.content}
